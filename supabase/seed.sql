@@ -92,9 +92,9 @@ INSERT INTO public.market_items (title, description, price, currency, category, 
 -- =============================================
 -- PLACES - Кафе, рестораны, коворкинги
 -- =============================================
-INSERT INTO public.places (name, description, category, price_level, tags, wifi, vegan, address, contact, rating) VALUES
+INSERT INTO public.places (name, description, category, price_level, tags, wifi, vegan, address, contact, rating, images) VALUES
   -- Cafes - An Thuong
-  ('Brewline Coffee Lab', 'Specialty coffee with quiet upstairs seating. Great for focused work. Excellent pour over.', 'Cafe', '$$', ARRAY['specialty', 'quiet', 'remote-work', 'pour-over'], true, true, 'An Thuong 5, Danang', '@brewline', 4.7),
+  ('Brewline Coffee Lab', 'Specialty coffee with quiet upstairs seating. Great for focused work. Excellent pour over.', 'Cafe', '$$', ARRAY['specialty', 'quiet', 'remote-work', 'pour-over'], true, true, 'An Thuong 5, Danang', '@brewline', 4.7, ARRAY['https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800', 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800']),
   ('The Espresso Station', 'Cozy corner cafe with strong wifi and power outlets at every table. Nomad favorite.', 'Cafe', '$$', ARRAY['cozy', 'power-outlets', 'nomad-friendly'], true, false, '42 An Thuong 4, Danang', '@espresso_st', 4.5),
   ('Cong Caphe', 'Famous Vietnamese chain with retro communist decor. Coconut coffee is a must-try.', 'Cafe', '$', ARRAY['vietnamese', 'instagram', 'coconut-coffee'], true, false, 'An Thuong 2, Danang', NULL, 4.3),
   ('Blossom Coffee', 'Garden cafe with outdoor seating. Great for morning work sessions.', 'Cafe', '$', ARRAY['garden', 'outdoor', 'peaceful'], true, true, 'An Thuong 7, Danang', '@blossom_dn', 4.4),
@@ -182,38 +182,38 @@ INSERT INTO public.events (title, description, starts_at, location, category, ma
 -- =============================================
 -- COMMUNITY_POSTS - Посты сообщества
 -- =============================================
-INSERT INTO public.community_posts (title, body, author_name, tags) VALUES
-  -- Questions
-  ('Looking for a yoga group', 'Anyone up for sunrise yoga near the beach? I usually go at 6am but would love company!', 'Lena', ARRAY['wellness', 'yoga', 'morning']),
-  ('Best SIM card for expats?', 'What is the fastest 4G provider in Danang? Need reliable internet for work calls.', 'Mark', ARRAY['tips', 'connectivity', 'sim']),
-  ('Motorbike license question', 'Can I drive with my international license? Or do I need a Vietnamese one? What is the process?', 'Tom', ARRAY['legal', 'motorbike', 'license']),
-  ('Visa run recommendations?', 'My 3-month visa is expiring. Should I extend or do a visa run to Cambodia?', 'Sarah', ARRAY['visa', 'tips', 'legal']),
-  ('Best area to live for families?', 'Moving to Danang with kids (5 and 8). Which neighborhood is best for international schools?', 'David', ARRAY['family', 'housing', 'schools']),
+INSERT INTO public.community_posts (title, body, author_name, tags, latitude, longitude, images) VALUES
+  -- Questions (с геолокацией - места в Дананге)
+  ('Looking for a yoga group', 'Anyone up for sunrise yoga near the beach? I usually go at 6am but would love company!', 'Lena', ARRAY['wellness', 'yoga', 'morning'], 16.0544, 108.2450, ARRAY['https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800']),
+  ('Best SIM card for expats?', 'What is the fastest 4G provider in Danang? Need reliable internet for work calls.', 'Mark', ARRAY['tips', 'connectivity', 'sim'], 16.0678, 108.2208, NULL),
+  ('Motorbike license question', 'Can I drive with my international license? Or do I need a Vietnamese one? What is the process?', 'Tom', ARRAY['legal', 'motorbike', 'license'], NULL, NULL, NULL),
+  ('Visa run recommendations?', 'My 3-month visa is expiring. Should I extend or do a visa run to Cambodia?', 'Sarah', ARRAY['visa', 'tips', 'legal'], NULL, NULL, NULL),
+  ('Best area to live for families?', 'Moving to Danang with kids (5 and 8). Which neighborhood is best for international schools?', 'David', ARRAY['family', 'housing', 'schools'], 16.0400, 108.2100, NULL),
 
-  -- Recommendations
-  ('Hidden gem: Ba Duong Banh Xeo', 'Discovered this local spot for banh xeo. 25k VND for the best crispy pancake ever. Cash only, always a queue but worth it!', 'Anna', ARRAY['food', 'local', 'recommendation']),
-  ('My favorite coworking setup', 'After trying all spaces in Danang, my routine: Brewline 7-11am (quiet), then Oceanic afternoon (community). Perfect combo!', 'Marcus', ARRAY['coworking', 'productivity', 'tips']),
-  ('Motorbike mechanic recommendation', 'Found an honest mechanic near An Thuong market. Fixed my Air Blade for 100k when others quoted 500k. DM for address.', 'Dan', ARRAY['motorbike', 'services', 'recommendation']),
+  -- Recommendations (с геолокацией)
+  ('Hidden gem: Ba Duong Banh Xeo', 'Discovered this local spot for banh xeo. 25k VND for the best crispy pancake ever. Cash only, always a queue but worth it!', 'Anna', ARRAY['food', 'local', 'recommendation'], 16.0712, 108.2142, ARRAY['https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800']),
+  ('My favorite coworking setup', 'After trying all spaces in Danang, my routine: Brewline 7-11am (quiet), then Oceanic afternoon (community). Perfect combo!', 'Marcus', ARRAY['coworking', 'productivity', 'tips'], 16.0589, 108.2456, ARRAY['https://images.unsplash.com/photo-1497366216548-37526070297c?w=800']),
+  ('Motorbike mechanic recommendation', 'Found an honest mechanic near An Thuong market. Fixed my Air Blade for 100k when others quoted 500k. DM for address.', 'Dan', ARRAY['motorbike', 'services', 'recommendation'], 16.0612, 108.2389, NULL),
 
-  -- Looking for
-  ('Looking for tennis partner', 'Intermediate level, looking for someone to play 2-3x per week. Morning or evening works.', 'Mike', ARRAY['sport', 'tennis', 'looking-for']),
-  ('Co-founder for SaaS project', 'Building a tool for remote teams. Need a frontend dev co-founder. Equity split negotiable.', 'Julia', ARRAY['startup', 'cofounder', 'tech']),
-  ('Language exchange partner', 'Vietnamese intermediate, looking for native speaker to practice with. I can help with English!', 'Emma', ARRAY['language', 'vietnamese', 'exchange']),
-  ('Surfing buddy needed', 'Beginner surfer, looking for someone to learn with. I have an extra board!', 'Tom', ARRAY['surfing', 'sport', 'buddy']),
+  -- Looking for (частично с геолокацией)
+  ('Looking for tennis partner', 'Intermediate level, looking for someone to play 2-3x per week. Morning or evening works.', 'Mike', ARRAY['sport', 'tennis', 'looking-for'], 16.0480, 108.2350, NULL),
+  ('Co-founder for SaaS project', 'Building a tool for remote teams. Need a frontend dev co-founder. Equity split negotiable.', 'Julia', ARRAY['startup', 'cofounder', 'tech'], NULL, NULL, NULL),
+  ('Language exchange partner', 'Vietnamese intermediate, looking for native speaker to practice with. I can help with English!', 'Emma', ARRAY['language', 'vietnamese', 'exchange'], 16.0700, 108.2200, NULL),
+  ('Surfing buddy needed', 'Beginner surfer, looking for someone to learn with. I have an extra board!', 'Tom', ARRAY['surfing', 'sport', 'buddy'], 16.0520, 108.2480, ARRAY['https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800']),
 
   -- Tips & Guides
-  ('Ultimate Danang starter guide', 'After 2 years here, compiled my top tips: 1) Get a local SIM (Viettel), 2) Use Grab for taxis, 3) Join telegram groups, 4) Get a motorbike asap. Happy to answer questions!', 'Alex', ARRAY['guide', 'tips', 'newbie']),
-  ('Where to exchange money', 'Best rates at gold shops on Phan Chau Trinh street. Better than banks. Bring clean USD bills.', 'Sarah', ARRAY['money', 'tips', 'exchange']),
-  ('Rainy season survival tips', 'Rainy season Sept-Nov: 1) Always carry rain poncho, 2) Waterproof phone case, 3) Avoid beach during storms, 4) Indoor backup plans. Stay safe!', 'Marcus', ARRAY['weather', 'tips', 'safety']),
+  ('Ultimate Danang starter guide', 'After 2 years here, compiled my top tips: 1) Get a local SIM (Viettel), 2) Use Grab for taxis, 3) Join telegram groups, 4) Get a motorbike asap. Happy to answer questions!', 'Alex', ARRAY['guide', 'tips', 'newbie'], 16.0544, 108.2022, ARRAY['https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800']),
+  ('Where to exchange money', 'Best rates at gold shops on Phan Chau Trinh street. Better than banks. Bring clean USD bills.', 'Sarah', ARRAY['money', 'tips', 'exchange'], 16.0680, 108.2120, NULL),
+  ('Rainy season survival tips', 'Rainy season Sept-Nov: 1) Always carry rain poncho, 2) Waterproof phone case, 3) Avoid beach during storms, 4) Indoor backup plans. Stay safe!', 'Marcus', ARRAY['weather', 'tips', 'safety'], NULL, NULL, NULL),
 
-  -- Events feedback
-  ('Great time at volleyball yesterday!', 'Thanks to everyone who came to beach volleyball. 16 people showed up! Same time next week?', 'Mike', ARRAY['event', 'volleyball', 'feedback']),
-  ('Cooking class was amazing', 'Learned to make real pho from scratch. 3 hours well spent. Highly recommend Vietnamese cooking class!', 'Emma', ARRAY['event', 'cooking', 'feedback']),
+  -- Events feedback (с геолокацией событий)
+  ('Great time at volleyball yesterday!', 'Thanks to everyone who came to beach volleyball. 16 people showed up! Same time next week?', 'Mike', ARRAY['event', 'volleyball', 'feedback'], 16.0510, 108.2465, ARRAY['https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?w=800']),
+  ('Cooking class was amazing', 'Learned to make real pho from scratch. 3 hours well spent. Highly recommend Vietnamese cooking class!', 'Emma', ARRAY['event', 'cooking', 'feedback'], 16.0600, 108.2380, ARRAY['https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800']),
 
   -- Discussions
-  ('Cost of living breakdown 2024', 'My monthly spend: Rent $450, Food $300, Bike $70, Cowork $100, Fun $200. Total ~$1100. Could do cheaper but I like comfort.', 'Dan', ARRAY['cost', 'budget', 'discussion']),
-  ('Is Danang getting too expensive?', 'Rents up 30% from 2022. Some cafes now charge Saigon prices. Still cheaper than Bali but trend is concerning. Thoughts?', 'Julia', ARRAY['cost', 'discussion', 'trend']),
-  ('Best time to visit Hoi An?', 'Weekday mornings are magical - no crowds, beautiful light for photos. Avoid weekends and full moon festival unless you like chaos!', 'Anna', ARRAY['hoian', 'tips', 'travel']);
+  ('Cost of living breakdown 2024', 'My monthly spend: Rent $450, Food $300, Bike $70, Cowork $100, Fun $200. Total ~$1100. Could do cheaper but I like comfort.', 'Dan', ARRAY['cost', 'budget', 'discussion'], NULL, NULL, NULL),
+  ('Is Danang getting too expensive?', 'Rents up 30% from 2022. Some cafes now charge Saigon prices. Still cheaper than Bali but trend is concerning. Thoughts?', 'Julia', ARRAY['cost', 'discussion', 'trend'], NULL, NULL, NULL),
+  ('Best time to visit Hoi An?', 'Weekday mornings are magical - no crowds, beautiful light for photos. Avoid weekends and full moon festival unless you like chaos!', 'Anna', ARRAY['hoian', 'tips', 'travel'], 15.8801, 108.3380, ARRAY['https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=800']);
 
 -- =============================================
 -- NOTIFICATIONS - Уведомления

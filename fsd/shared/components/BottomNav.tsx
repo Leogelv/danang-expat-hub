@@ -11,6 +11,7 @@ import {
   Home,
   MessageCircle,
   ShoppingBag,
+  UserCircle2,
   Users,
 } from 'lucide-react';
 import clsx from 'clsx';
@@ -24,6 +25,7 @@ const navItems = [
   { href: '/events', label: 'Events', icon: CalendarDays },
   { href: '/community', label: 'Community', icon: Users },
   { href: '/notifications', label: 'Alerts', icon: Bell },
+  { href: '/profile', label: 'Profile', icon: UserCircle2 },
 ];
 
 export const BottomNav: React.FC = () => {

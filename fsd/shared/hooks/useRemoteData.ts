@@ -11,6 +11,13 @@ export function useRemoteData<T>(url: string) {
   const refresh = useCallback(() => setRefreshKey((prev) => prev + 1), []);
 
   useEffect(() => {
+    if (!url) {
+      setData([]);
+      setIsLoading(false);
+      setError(null);
+      return;
+    }
+
     let active = true;
     setIsLoading(true);
     setError(null);

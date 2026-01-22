@@ -90,6 +90,15 @@ create table if not exists public.community_posts (
   created_at timestamptz default now()
 );
 
+create table if not exists public.favorites (
+  id uuid primary key default gen_random_uuid(),
+  tg_user_id uuid references public.tg_users(id) on delete cascade,
+  source text not null,
+  item_id uuid not null,
+  created_at timestamptz default now(),
+  unique (tg_user_id, source, item_id)
+);
+
 create or replace view public.search_items as
   select
     listings.id,
@@ -181,3 +190,4 @@ create index if not exists listings_location_idx on public.listings (location);
 create index if not exists market_items_category_idx on public.market_items (category);
 create index if not exists places_category_idx on public.places (category);
 create index if not exists events_category_idx on public.events (category);
+create index if not exists favorites_user_idx on public.favorites (tg_user_id);
