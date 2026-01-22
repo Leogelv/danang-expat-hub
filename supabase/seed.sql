@@ -95,52 +95,52 @@ INSERT INTO public.market_items (title, description, price, currency, category, 
 INSERT INTO public.places (name, description, category, price_level, tags, wifi, vegan, address, contact, rating, images) VALUES
   -- Cafes - An Thuong
   ('Brewline Coffee Lab', 'Specialty coffee with quiet upstairs seating. Great for focused work. Excellent pour over.', 'Cafe', '$$', ARRAY['specialty', 'quiet', 'remote-work', 'pour-over'], true, true, 'An Thuong 5, Danang', '@brewline', 4.7, ARRAY['https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800', 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800']),
-  ('The Espresso Station', 'Cozy corner cafe with strong wifi and power outlets at every table. Nomad favorite.', 'Cafe', '$$', ARRAY['cozy', 'power-outlets', 'nomad-friendly'], true, false, '42 An Thuong 4, Danang', '@espresso_st', 4.5),
-  ('Cong Caphe', 'Famous Vietnamese chain with retro communist decor. Coconut coffee is a must-try.', 'Cafe', '$', ARRAY['vietnamese', 'instagram', 'coconut-coffee'], true, false, 'An Thuong 2, Danang', NULL, 4.3),
-  ('Blossom Coffee', 'Garden cafe with outdoor seating. Great for morning work sessions.', 'Cafe', '$', ARRAY['garden', 'outdoor', 'peaceful'], true, true, 'An Thuong 7, Danang', '@blossom_dn', 4.4),
+  ('The Espresso Station', 'Cozy corner cafe with strong wifi and power outlets at every table. Nomad favorite.', 'Cafe', '$$', ARRAY['cozy', 'power-outlets', 'nomad-friendly'], true, false, '42 An Thuong 4, Danang', '@espresso_st', 4.5, NULL),
+  ('Cong Caphe', 'Famous Vietnamese chain with retro communist decor. Coconut coffee is a must-try.', 'Cafe', '$', ARRAY['vietnamese', 'instagram', 'coconut-coffee'], true, false, 'An Thuong 2, Danang', NULL, 4.3, NULL),
+  ('Blossom Coffee', 'Garden cafe with outdoor seating. Great for morning work sessions.', 'Cafe', '$', ARRAY['garden', 'outdoor', 'peaceful'], true, true, 'An Thuong 7, Danang', '@blossom_dn', 4.4, NULL),
 
   -- Cafes - My Khe / Son Tra
-  ('The Hideout', 'Hidden gem with ocean view. Perfect for sunset work sessions.', 'Cafe', '$$', ARRAY['ocean-view', 'sunset', 'hidden-gem'], true, false, 'My Khe Beach Road, Danang', '@hideout_dn', 4.6),
-  ('Son Tra Coffee', 'Local cafe at foot of Son Tra mountain. Cheap and authentic.', 'Cafe', '$', ARRAY['local', 'authentic', 'cheap'], true, false, 'Son Tra District, Danang', NULL, 4.2),
+  ('The Hideout', 'Hidden gem with ocean view. Perfect for sunset work sessions.', 'Cafe', '$$', ARRAY['ocean-view', 'sunset', 'hidden-gem'], true, false, 'My Khe Beach Road, Danang', '@hideout_dn', 4.6, NULL),
+  ('Son Tra Coffee', 'Local cafe at foot of Son Tra mountain. Cheap and authentic.', 'Cafe', '$', ARRAY['local', 'authentic', 'cheap'], true, false, 'Son Tra District, Danang', NULL, 4.2, NULL),
 
   -- Coworking Spaces
-  ('Oceanic Cowork', 'Coworking space with day passes and meeting rooms. Strong community. Weekly events.', 'Coworking', '$$', ARRAY['cowork', 'community', 'events', 'meeting-rooms'], true, false, 'My Khe 2, Danang', '@oceanic_cowork', 4.6),
-  ('Toong Coworking', 'Professional coworking chain. Reliable internet, AC, free coffee. Day pass 150k VND.', 'Coworking', '$$$', ARRAY['professional', 'reliable', 'chain'], true, false, 'Hai Chau, Danang', '@toong_dn', 4.5),
-  ('Nomad Station', 'Casual coworking focused on digital nomads. Chill vibe, standing desks available.', 'Coworking', '$$', ARRAY['nomad', 'casual', 'standing-desks'], true, false, 'An Thuong 4, Danang', '@nomad_station', 4.4),
-  ('Dreamplex', 'Premium coworking with private offices. Great for teams and startups.', 'Coworking', '$$$', ARRAY['premium', 'private-offices', 'startup'], true, false, 'Nguyen Van Linh, Danang', '@dreamplex_dn', 4.7),
+  ('Oceanic Cowork', 'Coworking space with day passes and meeting rooms. Strong community. Weekly events.', 'Coworking', '$$', ARRAY['cowork', 'community', 'events', 'meeting-rooms'], true, false, 'My Khe 2, Danang', '@oceanic_cowork', 4.6, NULL),
+  ('Toong Coworking', 'Professional coworking chain. Reliable internet, AC, free coffee. Day pass 150k VND.', 'Coworking', '$$$', ARRAY['professional', 'reliable', 'chain'], true, false, 'Hai Chau, Danang', '@toong_dn', 4.5, NULL),
+  ('Nomad Station', 'Casual coworking focused on digital nomads. Chill vibe, standing desks available.', 'Coworking', '$$', ARRAY['nomad', 'casual', 'standing-desks'], true, false, 'An Thuong 4, Danang', '@nomad_station', 4.4, NULL),
+  ('Dreamplex', 'Premium coworking with private offices. Great for teams and startups.', 'Coworking', '$$$', ARRAY['premium', 'private-offices', 'startup'], true, false, 'Nguyen Van Linh, Danang', '@dreamplex_dn', 4.7, NULL),
 
   -- Restaurants - Vietnamese
-  ('Pho Garden', 'Local Vietnamese spot with English menu. Authentic pho and banh mi.', 'Restaurant', '$', ARRAY['local', 'budget', 'pho', 'vietnamese'], false, false, 'Hai Chau 1, Danang', '@phogarden', 4.3),
-  ('Madam Lan', 'Central Vietnamese cuisine. Try the mi quang and bun cha ca. Always packed with locals.', 'Restaurant', '$', ARRAY['local', 'authentic', 'mi-quang'], false, false, 'Bach Dang, Danang', NULL, 4.6),
-  ('Ba Duong Banh Xeo', 'Famous for banh xeo (crispy pancakes). Cash only. Queue during lunch.', 'Restaurant', '$', ARRAY['famous', 'banh-xeo', 'cash-only'], false, false, 'Hoang Dieu, Danang', NULL, 4.5),
-  ('Com Ga A Hai', 'Best chicken rice in Danang. Simple but delicious. 35k VND per portion.', 'Restaurant', '$', ARRAY['chicken-rice', 'cheap', 'local'], false, false, 'Thai Phien, Danang', NULL, 4.7),
+  ('Pho Garden', 'Local Vietnamese spot with English menu. Authentic pho and banh mi.', 'Restaurant', '$', ARRAY['local', 'budget', 'pho', 'vietnamese'], false, false, 'Hai Chau 1, Danang', '@phogarden', 4.3, NULL),
+  ('Madam Lan', 'Central Vietnamese cuisine. Try the mi quang and bun cha ca. Always packed with locals.', 'Restaurant', '$', ARRAY['local', 'authentic', 'mi-quang'], false, false, 'Bach Dang, Danang', NULL, 4.6, NULL),
+  ('Ba Duong Banh Xeo', 'Famous for banh xeo (crispy pancakes). Cash only. Queue during lunch.', 'Restaurant', '$', ARRAY['famous', 'banh-xeo', 'cash-only'], false, false, 'Hoang Dieu, Danang', NULL, 4.5, NULL),
+  ('Com Ga A Hai', 'Best chicken rice in Danang. Simple but delicious. 35k VND per portion.', 'Restaurant', '$', ARRAY['chicken-rice', 'cheap', 'local'], false, false, 'Thai Phien, Danang', NULL, 4.7, NULL),
 
   -- Restaurants - Western & International
-  ('Waterfront', 'Upscale restaurant on Han River. Great steaks and pasta. Date night spot.', 'Restaurant', '$$$', ARRAY['upscale', 'river-view', 'steaks', 'date-night'], true, false, 'Bach Dang, Danang', '@waterfront_dn', 4.4),
-  ('Pizza 4Ps', 'Japanese pizza chain famous for cheese made in-house. Always busy, book ahead.', 'Restaurant', '$$', ARRAY['pizza', 'japanese', 'reservation'], true, true, 'My Khe, Danang', '@4ps_dn', 4.6),
-  ('Fatfish', 'Western pub with burgers, wings, and craft beer. Expat hangout on weekends.', 'Restaurant', '$$', ARRAY['burgers', 'craft-beer', 'expat', 'pub'], true, false, 'An Thuong, Danang', '@fatfish_dn', 4.3),
-  ('Luna Pub', 'Live music venue with good food. Best place for Friday night.', 'Restaurant', '$$', ARRAY['live-music', 'nightlife', 'drinks'], true, false, 'An Thuong, Danang', '@luna_dn', 4.2),
+  ('Waterfront', 'Upscale restaurant on Han River. Great steaks and pasta. Date night spot.', 'Restaurant', '$$$', ARRAY['upscale', 'river-view', 'steaks', 'date-night'], true, false, 'Bach Dang, Danang', '@waterfront_dn', 4.4, NULL),
+  ('Pizza 4Ps', 'Japanese pizza chain famous for cheese made in-house. Always busy, book ahead.', 'Restaurant', '$$', ARRAY['pizza', 'japanese', 'reservation'], true, true, 'My Khe, Danang', '@4ps_dn', 4.6, NULL),
+  ('Fatfish', 'Western pub with burgers, wings, and craft beer. Expat hangout on weekends.', 'Restaurant', '$$', ARRAY['burgers', 'craft-beer', 'expat', 'pub'], true, false, 'An Thuong, Danang', '@fatfish_dn', 4.3, NULL),
+  ('Luna Pub', 'Live music venue with good food. Best place for Friday night.', 'Restaurant', '$$', ARRAY['live-music', 'nightlife', 'drinks'], true, false, 'An Thuong, Danang', '@luna_dn', 4.2, NULL),
 
   -- Restaurants - Healthy & Vegan
-  ('Loving Hut', 'Vegan Vietnamese and Western food. Clean and cheap. Great mock meat.', 'Restaurant', '$', ARRAY['vegan', 'healthy', 'mock-meat'], true, true, 'Hai Chau, Danang', NULL, 4.4),
-  ('The Vegan Kitchen', 'Fully vegan cafe with smoothie bowls and salads. Instagram-worthy.', 'Restaurant', '$$', ARRAY['vegan', 'smoothie-bowls', 'instagram'], true, true, 'An Thuong, Danang', '@vegan_kitchen', 4.5),
-  ('Hum Vegetarian', 'Upscale vegetarian Vietnamese. Beautiful presentation.', 'Restaurant', '$$', ARRAY['vegetarian', 'vietnamese', 'upscale'], true, true, 'Nguyen Van Linh, Danang', '@hum_dn', 4.6),
+  ('Loving Hut', 'Vegan Vietnamese and Western food. Clean and cheap. Great mock meat.', 'Restaurant', '$', ARRAY['vegan', 'healthy', 'mock-meat'], true, true, 'Hai Chau, Danang', NULL, 4.4, NULL),
+  ('The Vegan Kitchen', 'Fully vegan cafe with smoothie bowls and salads. Instagram-worthy.', 'Restaurant', '$$', ARRAY['vegan', 'smoothie-bowls', 'instagram'], true, true, 'An Thuong, Danang', '@vegan_kitchen', 4.5, NULL),
+  ('Hum Vegetarian', 'Upscale vegetarian Vietnamese. Beautiful presentation.', 'Restaurant', '$$', ARRAY['vegetarian', 'vietnamese', 'upscale'], true, true, 'Nguyen Van Linh, Danang', '@hum_dn', 4.6, NULL),
 
   -- Gyms & Fitness
-  ('Fit24 Gym', 'Modern gym with good equipment. Day pass available. Open 24/7.', 'Gym', '$$', ARRAY['24-7', 'modern', 'day-pass'], false, false, 'Hai Chau, Danang', '@fit24_dn', 4.3),
-  ('California Fitness', 'Premium gym chain with pool and classes. Expensive but worth it.', 'Gym', '$$$', ARRAY['pool', 'classes', 'premium'], false, false, 'My Khe, Danang', '@cali_dn', 4.4),
-  ('Beach Yoga Danang', 'Sunrise yoga on My Khe beach. Drop-in classes 100k VND.', 'Fitness', '$', ARRAY['yoga', 'beach', 'sunrise'], false, false, 'My Khe Beach, Danang', '@beach_yoga_dn', 4.8),
-  ('CrossFit Danang', 'Serious CrossFit box with certified coaches. Friendly community.', 'Gym', '$$', ARRAY['crossfit', 'community', 'coaches'], false, false, 'Son Tra, Danang', '@crossfit_dn', 4.5),
+  ('Fit24 Gym', 'Modern gym with good equipment. Day pass available. Open 24/7.', 'Gym', '$$', ARRAY['24-7', 'modern', 'day-pass'], false, false, 'Hai Chau, Danang', '@fit24_dn', 4.3, NULL),
+  ('California Fitness', 'Premium gym chain with pool and classes. Expensive but worth it.', 'Gym', '$$$', ARRAY['pool', 'classes', 'premium'], false, false, 'My Khe, Danang', '@cali_dn', 4.4, NULL),
+  ('Beach Yoga Danang', 'Sunrise yoga on My Khe beach. Drop-in classes 100k VND.', 'Fitness', '$', ARRAY['yoga', 'beach', 'sunrise'], false, false, 'My Khe Beach, Danang', '@beach_yoga_dn', 4.8, NULL),
+  ('CrossFit Danang', 'Serious CrossFit box with certified coaches. Friendly community.', 'Gym', '$$', ARRAY['crossfit', 'community', 'coaches'], false, false, 'Son Tra, Danang', '@crossfit_dn', 4.5, NULL),
 
   -- Healthcare
-  ('Family Medical Practice', 'International clinic with English-speaking doctors. Expensive but reliable.', 'Healthcare', '$$$', ARRAY['international', 'english', 'reliable'], false, false, 'Nguyen Van Linh, Danang', '@fmp_dn', 4.7),
-  ('Vinmec Hospital', 'Modern private hospital. Emergency services 24/7. Accepts travel insurance.', 'Healthcare', '$$$', ARRAY['hospital', 'emergency', 'insurance'], false, false, 'Ngu Hanh Son, Danang', '@vinmec_dn', 4.6),
-  ('Danang Dental', 'Affordable dental clinic with good reviews. English spoken.', 'Healthcare', '$$', ARRAY['dental', 'affordable', 'english'], false, false, 'Hai Chau, Danang', '@dental_dn', 4.4),
+  ('Family Medical Practice', 'International clinic with English-speaking doctors. Expensive but reliable.', 'Healthcare', '$$$', ARRAY['international', 'english', 'reliable'], false, false, 'Nguyen Van Linh, Danang', '@fmp_dn', 4.7, NULL),
+  ('Vinmec Hospital', 'Modern private hospital. Emergency services 24/7. Accepts travel insurance.', 'Healthcare', '$$$', ARRAY['hospital', 'emergency', 'insurance'], false, false, 'Ngu Hanh Son, Danang', '@vinmec_dn', 4.6, NULL),
+  ('Danang Dental', 'Affordable dental clinic with good reviews. English spoken.', 'Healthcare', '$$', ARRAY['dental', 'affordable', 'english'], false, false, 'Hai Chau, Danang', '@dental_dn', 4.4, NULL),
 
   -- Services
-  ('Vietcombank', 'Best bank for foreigners. Easy to open account with passport and visa.', 'Services', '$', ARRAY['bank', 'foreigner-friendly'], false, false, 'Multiple locations, Danang', NULL, 4.0),
-  ('Laundry Express', 'Same-day laundry service. 20k VND per kg. Free pickup over 5kg.', 'Services', '$', ARRAY['laundry', 'pickup', 'same-day'], false, false, 'An Thuong, Danang', '@laundry_dn', 4.5),
-  ('VN Visa Extension', 'Reliable visa extension service. 3-month extension from $80.', 'Services', '$$', ARRAY['visa', 'extension', 'reliable'], false, false, 'Online service', '@visa_vn', 4.3);
+  ('Vietcombank', 'Best bank for foreigners. Easy to open account with passport and visa.', 'Services', '$', ARRAY['bank', 'foreigner-friendly'], false, false, 'Multiple locations, Danang', NULL, 4.0, NULL),
+  ('Laundry Express', 'Same-day laundry service. 20k VND per kg. Free pickup over 5kg.', 'Services', '$', ARRAY['laundry', 'pickup', 'same-day'], false, false, 'An Thuong, Danang', '@laundry_dn', 4.5, NULL),
+  ('VN Visa Extension', 'Reliable visa extension service. 3-month extension from $80.', 'Services', '$$', ARRAY['visa', 'extension', 'reliable'], false, false, 'Online service', '@visa_vn', 4.3, NULL);
 
 -- =============================================
 -- EVENTS - События и мероприятия
