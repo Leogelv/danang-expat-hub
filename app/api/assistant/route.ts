@@ -120,9 +120,12 @@ export async function POST(request: NextRequest) {
     ];
 
     for (const call of assistantMessage.tool_calls) {
-      if (call.function?.name !== 'search_supabase') continue;
+      // Проверяем что это function call (не custom tool call)
+      if (call.type !== 'function') continue;
+      const fn = call.function;
+      if (fn?.name !== 'search_supabase') continue;
 
-      const args = safeJsonParse(call.function.arguments) ?? { query: '' };
+      const args = safeJsonParse(fn.arguments) ?? { query: '' };
       const result = await searchSupabase({
         query: String(args.query || ''),
         category: typeof args.category === 'string' ? args.category : undefined,
@@ -131,7 +134,7 @@ export async function POST(request: NextRequest) {
       });
 
       toolCallsSummary.push({
-        name: call.function.name,
+        name: fn.name,
         args,
         result,
       });

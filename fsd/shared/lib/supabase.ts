@@ -14,8 +14,8 @@ export const supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
 
 export function getSupabaseServer(options: { serviceRole?: boolean } = {}): SupabaseClient {
   const key = options.serviceRole ? supabaseServiceRoleKey : supabaseAnonKey;
-  if (!key) {
-    throw new Error('Supabase service role key is missing. Set SUPABASE_SERVICE_ROLE_KEY.');
+  if (!key || !supabaseUrl) {
+    throw new Error('Supabase env vars are missing. Set SUPABASE_SERVICE_ROLE_KEY.');
   }
   return createClient(supabaseUrl, key, {
     auth: { persistSession: false, autoRefreshToken: false },

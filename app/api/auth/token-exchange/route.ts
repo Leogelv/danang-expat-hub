@@ -23,11 +23,13 @@ function generateAuthPassword(telegramId: number): string {
 export async function POST(request: NextRequest) {
   try {
     const { initData } = await request.json();
+    console.log('[token-exchange] initData length', initData?.length ?? 0);
     if (!initData || typeof initData !== 'string') {
       return NextResponse.json({ error: 'Missing initData' }, { status: 400 });
     }
 
     const telegramUser = parseTelegramUser(initData);
+    console.log('[token-exchange] parsed telegram user', telegramUser);
     if (!telegramUser?.id) {
       return NextResponse.json({ error: 'Invalid initData' }, { status: 401 });
     }
@@ -50,6 +52,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (tgUserError || !tgUser) {
+      console.error('[token-exchange] upsert failed', tgUserError);
       return NextResponse.json({ error: 'Failed to upsert user' }, { status: 500 });
     }
 
@@ -67,6 +70,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (signInError) {
+      console.warn('[token-exchange] signIn failed, creating user', signInError.message);
       await adminClient.auth.admin.createUser({
         id: tgUser.id,
         email,
@@ -81,6 +85,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (signInError || !signInData.session) {
+      console.error('[token-exchange] signIn failed after retry', signInError);
       return NextResponse.json({ error: 'Failed to create session' }, { status: 500 });
     }
 

@@ -3,26 +3,30 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import {
   init,
+  isTMA,
   miniApp,
   postEvent,
+  mountBackButton,
   mountViewport,
   bindViewportCssVars,
   viewportSafeAreaInsets,
   viewportContentSafeAreaInsets,
   expandViewport,
 } from '@telegram-apps/sdk-react';
-import { getTelegramUser, initTelegramFeatures, type TelegramUser } from '@/fsd/shared/lib/telegram';
+import { getTelegramUser, getTelegramInitData, type TelegramUser } from '@/fsd/shared/lib/telegram';
 
 interface TelegramContextValue {
   isTelegram: boolean;
   initData: string | null;
   telegramUser: TelegramUser | null;
+  isReady: boolean; // флаг что инициализация завершена
 }
 
 const TelegramContext = createContext<TelegramContextValue>({
   isTelegram: false,
   initData: null,
   telegramUser: null,
+  isReady: false,
 });
 
 export const useTelegram = () => useContext(TelegramContext);
@@ -32,32 +36,63 @@ export const TelegramProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     isTelegram: false,
     initData: null,
     telegramUser: null,
+    isReady: false,
   });
 
   useEffect(() => {
     console.log('[TelegramProvider] init start');
+
+    // Проверяем окружение через SDK функцию isTMA()
+    let insideTelegram = false;
     try {
-      init();
-      console.log('[TelegramProvider] SDK init ok');
-    } catch (error) {
-      console.warn('[TelegramProvider] SDK init failed', error);
+      insideTelegram = isTMA();
+      console.log('[TelegramProvider] isTMA() =', insideTelegram);
+    } catch (err) {
+      console.warn('[TelegramProvider] isTMA() check failed', err);
+      // Fallback на window.Telegram.WebApp
+      insideTelegram = typeof window !== 'undefined' && !!(window as any).Telegram?.WebApp;
+      console.log('[TelegramProvider] fallback check =', insideTelegram);
     }
 
-    const result = initTelegramFeatures();
-    console.log('[TelegramProvider] initTelegramFeatures', {
-      isTelegram: result.isTelegram,
-      initDataLength: result.initData?.length ?? 0,
-    });
-    if (result.isTelegram) {
+    // Инициализируем SDK
+    try {
+      init();
+      console.log('[TelegramProvider] SDK init() ok');
+    } catch (error) {
+      console.warn('[TelegramProvider] SDK init() failed', error);
+    }
+
+    if (insideTelegram) {
+      // Монтируем back button
       try {
-        miniApp.ready();
-        miniApp.setBackgroundColor('#0B0B0F');
-        miniApp.setHeaderColor('#0B0B0F');
-        console.log('[TelegramProvider] miniApp ready + colors');
+        mountBackButton();
+        console.log('[TelegramProvider] mountBackButton() ok');
+      } catch (error) {
+        console.warn('[TelegramProvider] mountBackButton failed', error);
+      }
+
+      // miniApp ready и цвета
+      try {
+        if (miniApp && typeof miniApp.mount === 'function') {
+          miniApp.mount();
+          console.log('[TelegramProvider] miniApp.mount() ok');
+        }
+        if (miniApp && typeof miniApp.ready === 'function') {
+          miniApp.ready();
+          console.log('[TelegramProvider] miniApp.ready() ok');
+        }
+        if (miniApp && typeof miniApp.setBackgroundColor === 'function') {
+          miniApp.setBackgroundColor('#0B0B0F');
+        }
+        if (miniApp && typeof miniApp.setHeaderColor === 'function') {
+          miniApp.setHeaderColor('#0B0B0F');
+        }
+        console.log('[TelegramProvider] miniApp colors set');
       } catch (error) {
         console.warn('[TelegramProvider] miniApp setup failed', error);
       }
 
+      // postEvent для fullscreen и swipe
       try {
         postEvent('web_app_setup_swipe_behavior', { allow_vertical_swipe: false });
         postEvent('web_app_request_fullscreen');
@@ -66,6 +101,7 @@ export const TelegramProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         console.warn('[TelegramProvider] postEvent failed', error);
       }
 
+      // Viewport и safe area
       try {
         if (mountViewport.isAvailable && mountViewport.isAvailable()) {
           mountViewport();
@@ -111,15 +147,21 @@ export const TelegramProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
     }
 
+    // Получаем данные через SDK функции
+    const initData = getTelegramInitData();
+    const telegramUser = getTelegramUser();
+
     setState({
-      isTelegram: result.isTelegram,
-      initData: result.initData,
-      telegramUser: getTelegramUser(),
+      isTelegram: insideTelegram,
+      initData,
+      telegramUser,
+      isReady: true, // Инициализация завершена
     });
+
     console.log('[TelegramProvider] final state', {
-      isTelegram: result.isTelegram,
-      initDataLength: result.initData?.length ?? 0,
-      telegramUser: getTelegramUser(),
+      isTelegram: insideTelegram,
+      initDataLength: initData?.length ?? 0,
+      telegramUser,
       webAppVersion: (window as any)?.Telegram?.WebApp?.version ?? null,
     });
   }, []);

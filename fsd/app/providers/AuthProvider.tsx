@@ -35,17 +35,24 @@ async function fetchProfile(userId: string): Promise<TgUser | null> {
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { initData, isTelegram, telegramUser } = useTelegram();
+  const { initData, isTelegram, telegramUser, isReady } = useTelegram();
   const [user, setUser] = useState<TgUser | null>(null);
   const [status, setStatus] = useState<AuthContextValue['status']>('loading');
   const [error, setError] = useState<string | null>(null);
   const allowBrowser = process.env.NEXT_PUBLIC_ALLOW_BROWSER_ACCESS === 'true';
 
   const runAuth = async () => {
+    // Ждём пока TelegramProvider полностью инициализируется
+    if (!isReady) {
+      console.log('[AuthProvider] waiting for TelegramProvider to be ready...');
+      return;
+    }
+
     console.log('[AuthProvider] runAuth start', {
       initDataLength: initData?.length ?? 0,
       isTelegram,
       hasTelegramUser: !!telegramUser,
+      isReady,
     });
     setStatus('loading');
     setError(null);
@@ -132,7 +139,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     runAuth();
-  }, [initData, isTelegram]);
+  }, [initData, isTelegram, isReady]);
 
   useEffect(() => {
     const { data: { subscription } } = supabaseClient.auth.onAuthStateChange(async (_event, session) => {

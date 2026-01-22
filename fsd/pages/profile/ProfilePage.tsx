@@ -20,11 +20,11 @@ interface FavoriteItem {
 export const ProfilePage: React.FC = () => {
   const { user, status } = useAuth();
   const favoritesUrl = useMemo(() => {
-    if (!user?.id) return null;
+    if (!user?.id) return '';
     return `/api/favorites?userId=${user.id}`;
   }, [user?.id]);
 
-  const { data: favorites, isLoading } = useRemoteData<FavoriteItem>(favoritesUrl || '/api/favorites?userId=');
+  const { data: favorites, isLoading } = useRemoteData<FavoriteItem>(favoritesUrl);
 
   return (
     <AppShell

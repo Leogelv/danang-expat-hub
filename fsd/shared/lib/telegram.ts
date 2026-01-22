@@ -1,4 +1,4 @@
-import { postEvent } from '@telegram-apps/sdk-react';
+import { postEvent, isTMA, retrieveRawInitData, retrieveLaunchParams } from '@telegram-apps/sdk-react';
 
 const EVENT_REQUEST_FULLSCREEN = 'web_app_request_fullscreen' as const;
 
@@ -29,16 +29,77 @@ export function getTelegramWebApp(): TelegramWebApp | null {
   return (window as any).Telegram?.WebApp ?? null;
 }
 
+// Проверка окружения Telegram через SDK (более надёжно)
 export function isTelegramEnvironment(): boolean {
-  return !!getTelegramWebApp();
+  try {
+    return isTMA();
+  } catch {
+    // Fallback на проверку window.Telegram.WebApp
+    return !!getTelegramWebApp();
+  }
 }
 
+// Получение initData через SDK (правильный способ)
 export function getTelegramInitData(): string | null {
+  // Способ 1: через retrieveRawInitData
+  try {
+    const rawData = retrieveRawInitData?.();
+    if (rawData && rawData.length > 0) {
+      console.log('[getTelegramInitData] via retrieveRawInitData, length:', rawData.length);
+      return rawData;
+    }
+  } catch (e) {
+    console.warn('[getTelegramInitData] retrieveRawInitData failed', e);
+  }
+
+  // Способ 2: через launchParams.tgWebAppData.raw или initDataRaw
+  try {
+    const launchParams = retrieveLaunchParams?.();
+    // SDK v3 использует initDataRaw
+    const rawFromParams = (launchParams as any)?.initDataRaw;
+    if (rawFromParams && rawFromParams.length > 0) {
+      console.log('[getTelegramInitData] via launchParams.initDataRaw, length:', rawFromParams.length);
+      return rawFromParams;
+    }
+  } catch (e) {
+    console.warn('[getTelegramInitData] launchParams.initDataRaw failed', e);
+  }
+
+  // Способ 3: Fallback на window.Telegram.WebApp.initData
   const tg = getTelegramWebApp();
-  return tg?.initData ?? null;
+  if (tg?.initData && tg.initData.length > 0) {
+    console.log('[getTelegramInitData] via window.Telegram.WebApp.initData, length:', tg.initData.length);
+    return tg.initData;
+  }
+
+  console.warn('[getTelegramInitData] no initData found');
+  return null;
 }
 
+// Получение пользователя через SDK
 export function getTelegramUser(): TelegramUser | null {
+  try {
+    const launchParams = retrieveLaunchParams?.();
+    if (launchParams?.tgWebAppData?.user) {
+      const u = launchParams.tgWebAppData.user as {
+        id: number;
+        username?: string;
+        firstName?: string;
+        lastName?: string;
+        photoUrl?: string;
+      };
+      return {
+        id: u.id,
+        username: u.username,
+        first_name: u.firstName,
+        last_name: u.lastName,
+        photo_url: u.photoUrl,
+      };
+    }
+  } catch {
+    // Вне Telegram - нормально
+  }
+  // Fallback
   const tg = getTelegramWebApp();
   return tg?.initDataUnsafe?.user ?? null;
 }
@@ -101,13 +162,15 @@ export function bindTelegramSafeAreaVars(): void {
 }
 
 export function initTelegramFeatures(): { isTelegram: boolean; initData: string | null } {
-  const tg = getTelegramWebApp();
-  if (!tg) return { isTelegram: false, initData: null };
+  // Используем SDK-проверку окружения
+  const inTelegram = isTelegramEnvironment();
+  if (!inTelegram) return { isTelegram: false, initData: null };
 
+  const tg = getTelegramWebApp();
   try {
-    tg.ready?.();
-    tg.setBackgroundColor?.('#0B0B0F');
-    tg.setHeaderColor?.('#0B0B0F');
+    tg?.ready?.();
+    tg?.setBackgroundColor?.('#0B0B0F');
+    tg?.setHeaderColor?.('#0B0B0F');
   } catch {
     // ignore
   }
@@ -116,5 +179,7 @@ export function initTelegramFeatures(): { isTelegram: boolean; initData: string 
   requestFullscreen();
   bindTelegramSafeAreaVars();
 
-  return { isTelegram: true, initData: tg.initData ?? null };
+  // Получаем initData через SDK
+  const initData = getTelegramInitData();
+  return { isTelegram: true, initData };
 }
