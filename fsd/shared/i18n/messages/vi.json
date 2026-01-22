@@ -1,0 +1,132 @@
+{
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Đã xảy ra lỗi",
+    "empty": "Không tìm thấy",
+    "search": "Tìm kiếm",
+    "all": "Tất cả",
+    "translate": "Dịch",
+    "translating": "Đang dịch...",
+    "translated": "Đã dịch",
+    "apply": "Áp dụng",
+    "reset": "Đặt lại",
+    "close": "Đóng",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "create": "Tạo",
+    "send": "Gửi",
+    "new": "Mới",
+    "filters": "Bộ lọc"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "rentals": "Thuê",
+    "market": "Chợ",
+    "places": "Địa điểm",
+    "events": "Sự kiện",
+    "community": "Cộng đồng",
+    "chat": "AI Chat",
+    "notifications": "Thông báo"
+  },
+  "home": {
+    "eyebrow": "Danang Expat Hub",
+    "title": "Trợ lý AI của bạn",
+    "description": "Thuê nhà, sự kiện, địa điểm và mẹo - tất cả trong một chat.",
+    "askAnything": "Hỏi bất cứ điều gì",
+    "askPlaceholder": "Tìm studio gần biển...",
+    "explore": "Khám phá",
+    "rentals": "Thuê",
+    "rentalsDesc": "Nhà ở & xe máy dài hạn",
+    "market": "Chợ",
+    "marketDesc": "Mua & bán từ expat",
+    "places": "Địa điểm",
+    "placesDesc": "Quán cà phê, cowork, đá ngầm",
+    "events": "Sự kiện",
+    "eventsDesc": "Gặp gỡ, thể thao, xã hội",
+    "community": "Cộng đồng",
+    "communityDesc": "Mẹo, thread & kiến thức địa phương"
+  },
+  "rentals": {
+    "eyebrow": "Thuê",
+    "title": "Nhà ở và xe máy",
+    "description": "Căn hộ, biệt thự và thuê xe máy uy tín với liên hệ trực tiếp.",
+    "housing": "Nhà ở",
+    "housingDesc": "Studio, căn hộ và biệt thự từ 1 tháng.",
+    "bikes": "Xe máy",
+    "bikesDesc": "Xe tay ga đáng tin cậy với giao hàng và mũ bảo hiểm.",
+    "searchPlaceholder": "Tìm theo tên",
+    "location": "Vị trí",
+    "price": "Giá",
+    "priceRange": "Khoảng giá",
+    "amenities": "Tiện nghi",
+    "perMonth": "/tháng"
+  },
+  "market": {
+    "eyebrow": "Chợ",
+    "title": "Mua & Bán",
+    "description": "Đồ cũ từ expat. Điện tử, nội thất và nhiều hơn nữa.",
+    "searchPlaceholder": "Tìm sản phẩm",
+    "category": "Danh mục",
+    "condition": "Tình trạng",
+    "price": "Giá"
+  },
+  "places": {
+    "eyebrow": "Địa điểm",
+    "title": "Đề xuất địa phương",
+    "description": "Quán cà phê, coworking và đá ngầm được expat đề xuất.",
+    "searchPlaceholder": "Tìm địa điểm",
+    "category": "Danh mục",
+    "wifi": "WiFi",
+    "vegan": "Chay",
+    "priceLevel": "Mức giá"
+  },
+  "events": {
+    "eyebrow": "Sự kiện",
+    "title": "Đang diễn ra",
+    "description": "Thể thao, gặp gỡ và sự kiện xã hội cho cộng đồng expat.",
+    "searchPlaceholder": "Tìm sự kiện",
+    "upcoming": "Sắp tới",
+    "past": "Đã qua",
+    "category": "Danh mục",
+    "participants": "người tham gia",
+    "spotsLeft": "chỗ còn lại"
+  },
+  "community": {
+    "eyebrow": "Cộng đồng",
+    "title": "Hỏi, chia sẻ",
+    "description": "Thread, mẹo và kiến thức từ expat.",
+    "searchPlaceholder": "Tìm bài viết",
+    "newPost": "Bài mới",
+    "listView": "Danh sách",
+    "mapView": "Bản đồ",
+    "comments": "Bình luận",
+    "noComments": "Chưa có bình luận. Hãy là người đầu tiên!",
+    "addComment": "Thêm bình luận...",
+    "geotagged": "Có vị trí",
+    "shareLocation": "Chia sẻ vị trí",
+    "postTitle": "Tiêu đề",
+    "postBody": "Bạn đang nghĩ gì?",
+    "tags": "Thẻ",
+    "tagsHint": "Phân cách bằng dấu phẩy: mẹo, nhà, ăn"
+  },
+  "profile": {
+    "language": "Ngôn ngữ",
+    "selectLanguage": "Chọn ngôn ngữ",
+    "settings": "Cài đặt",
+    "timezone": "Múi giờ"
+  },
+  "chat": {
+    "eyebrow": "AI Trợ lý",
+    "title": "Hỏi bất cứ điều gì",
+    "description": "Tôi biết Đà Nẵng rõ như lòng bàn tay. Nhà ở, địa điểm, sự kiện - cứ hỏi.",
+    "placeholder": "Nhập câu hỏi...",
+    "thinking": "Đang suy nghĩ..."
+  },
+  "notifications": {
+    "eyebrow": "Thông báo",
+    "title": "Cập nhật",
+    "description": "Cập nhật và thông báo quan trọng.",
+    "markRead": "Đánh dấu đã đọc",
+    "empty": "Chưa có thông báo"
+  }
+}

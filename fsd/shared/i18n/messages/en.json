@@ -1,0 +1,132 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "empty": "No items found",
+    "search": "Search",
+    "all": "All",
+    "translate": "Translate",
+    "translating": "Translating...",
+    "translated": "Translated",
+    "apply": "Apply",
+    "reset": "Reset",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "create": "Create",
+    "send": "Send",
+    "new": "New",
+    "filters": "Filters"
+  },
+  "nav": {
+    "home": "Home",
+    "rentals": "Rentals",
+    "market": "Market",
+    "places": "Places",
+    "events": "Events",
+    "community": "Community",
+    "chat": "AI Chat",
+    "notifications": "Alerts"
+  },
+  "home": {
+    "eyebrow": "Danang Expat Hub",
+    "title": "Your AI concierge",
+    "description": "Rentals, events, places, and local tips — all in one chat.",
+    "askAnything": "Ask anything",
+    "askPlaceholder": "Find me a studio near the beach...",
+    "explore": "Explore",
+    "rentals": "Rentals",
+    "rentalsDesc": "Housing & motorbikes for long stays",
+    "market": "Market",
+    "marketDesc": "Buy & sell from fellow expats",
+    "places": "Places",
+    "placesDesc": "Cafes, cowork, hidden gems",
+    "events": "Events",
+    "eventsDesc": "Meetups, sports, social",
+    "community": "Community",
+    "communityDesc": "Tips, threads & local wisdom"
+  },
+  "rentals": {
+    "eyebrow": "Rentals",
+    "title": "Housing and motorbikes",
+    "description": "Browse long-term apartments, villas, and trusted bike rentals with direct contacts.",
+    "housing": "Housing",
+    "housingDesc": "Studios, apartments, and villas for 1+ month stays.",
+    "bikes": "Motorbikes",
+    "bikesDesc": "Reliable scooters with delivery and helmets included.",
+    "searchPlaceholder": "Search by title",
+    "location": "Location",
+    "price": "Price",
+    "priceRange": "Price range",
+    "amenities": "Amenities",
+    "perMonth": "/month"
+  },
+  "market": {
+    "eyebrow": "Market",
+    "title": "Buy & Sell",
+    "description": "Second-hand treasures from fellow expats. Electronics, furniture, and more.",
+    "searchPlaceholder": "Search items",
+    "category": "Category",
+    "condition": "Condition",
+    "price": "Price"
+  },
+  "places": {
+    "eyebrow": "Places",
+    "title": "Local recommendations",
+    "description": "Cafes, coworking, and hidden gems curated by expats.",
+    "searchPlaceholder": "Search places",
+    "category": "Category",
+    "wifi": "WiFi",
+    "vegan": "Vegan options",
+    "priceLevel": "Price level"
+  },
+  "events": {
+    "eyebrow": "Events",
+    "title": "What's happening",
+    "description": "Sports, meetups, and social events for the expat community.",
+    "searchPlaceholder": "Search events",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "category": "Category",
+    "participants": "participants",
+    "spotsLeft": "spots left"
+  },
+  "community": {
+    "eyebrow": "Community",
+    "title": "Ask, share, connect",
+    "description": "Threads, tips, and local knowledge from fellow expats.",
+    "searchPlaceholder": "Search posts",
+    "newPost": "New Post",
+    "listView": "List",
+    "mapView": "Map",
+    "comments": "Comments",
+    "noComments": "No comments yet. Be the first!",
+    "addComment": "Add a comment...",
+    "geotagged": "Geotagged",
+    "shareLocation": "Share location",
+    "postTitle": "Title",
+    "postBody": "What's on your mind?",
+    "tags": "Tags",
+    "tagsHint": "Comma separated: tips, housing, food"
+  },
+  "profile": {
+    "language": "Language",
+    "selectLanguage": "Select your language",
+    "settings": "Settings",
+    "timezone": "Timezone"
+  },
+  "chat": {
+    "eyebrow": "AI Assistant",
+    "title": "Ask me anything",
+    "description": "I know Danang inside out. Housing, places, events — just ask.",
+    "placeholder": "Type your question...",
+    "thinking": "Thinking..."
+  },
+  "notifications": {
+    "eyebrow": "Notifications",
+    "title": "Stay updated",
+    "description": "Important updates and alerts.",
+    "markRead": "Mark as read",
+    "empty": "No notifications yet"
+  }
+}
