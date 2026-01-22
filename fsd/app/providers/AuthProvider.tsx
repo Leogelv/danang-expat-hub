@@ -121,13 +121,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return;
       }
 
+      // setSession для интеграции с Supabase клиентом
+      // В dev режиме может быть mixed content error (HTTPS→HTTP) - это нормально
       console.log('[AuthProvider] setSession start');
-      await supabaseClient.auth.setSession({
-        access_token: payload.access_token,
-        refresh_token: payload.refresh_token,
-      });
-
-      console.log('[AuthProvider] setSession ok');
+      try {
+        await supabaseClient.auth.setSession({
+          access_token: payload.access_token,
+          refresh_token: payload.refresh_token,
+        });
+        console.log('[AuthProvider] setSession ok');
+      } catch (sessionErr) {
+        // Mixed content или другие сетевые ошибки в dev - игнорируем
+        // Токены всё равно работают напрямую через наш JWT
+        console.warn('[AuthProvider] setSession failed (expected in dev with HTTPS→HTTP)', sessionErr);
+      }
       setUser(payload.user ?? null);
       setStatus('authenticated');
     } catch (err) {

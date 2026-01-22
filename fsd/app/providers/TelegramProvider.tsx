@@ -72,24 +72,42 @@ export const TelegramProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
 
       // miniApp ready и цвета
+      // Каждый вызов оборачиваем отдельно - методы могут быть недоступны
       try {
         if (miniApp && typeof miniApp.mount === 'function') {
           miniApp.mount();
           console.log('[TelegramProvider] miniApp.mount() ok');
         }
+      } catch (mountErr) {
+        console.warn('[TelegramProvider] miniApp.mount() failed', mountErr);
+      }
+
+      try {
         if (miniApp && typeof miniApp.ready === 'function') {
           miniApp.ready();
           console.log('[TelegramProvider] miniApp.ready() ok');
         }
+      } catch (readyErr) {
+        console.warn('[TelegramProvider] miniApp.ready() failed', readyErr);
+      }
+
+      // Цвета - могут упасть если компонент размонтирован или miniApp не готов
+      try {
         if (miniApp && typeof miniApp.setBackgroundColor === 'function') {
           miniApp.setBackgroundColor('#0B0B0F');
+          console.log('[TelegramProvider] setBackgroundColor ok');
         }
+      } catch (bgErr) {
+        console.warn('[TelegramProvider] setBackgroundColor failed', bgErr);
+      }
+
+      try {
         if (miniApp && typeof miniApp.setHeaderColor === 'function') {
           miniApp.setHeaderColor('#0B0B0F');
+          console.log('[TelegramProvider] setHeaderColor ok');
         }
-        console.log('[TelegramProvider] miniApp colors set');
-      } catch (error) {
-        console.warn('[TelegramProvider] miniApp setup failed', error);
+      } catch (headerErr) {
+        console.warn('[TelegramProvider] setHeaderColor failed', headerErr);
       }
 
       // postEvent для fullscreen и swipe
