@@ -23,6 +23,7 @@
     "next": "^15.1.6",
     "next-intl": "^4.7.0",
     "openai": "^6.9.1",
+    "postgres": "^3.4.8",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-map-gl": "^8.1.0"
