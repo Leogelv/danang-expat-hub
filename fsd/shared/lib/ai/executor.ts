@@ -61,7 +61,7 @@ async function searchListings(
 
   let query = supabase
     .from('listings')
-    .select('id, title, description, price, currency, category, location, images, contact_info')
+    .select('id, title, description, price, currency, category, location, images, contact')
     .eq('is_active', true)
     .order('created_at', { ascending: false })
     .limit(limit);
@@ -160,8 +160,8 @@ async function searchMarket(
 
   let query = supabase
     .from('market_items')
-    .select('id, title, description, price, currency, category, condition, images, seller_contact')
-    .eq('is_sold', false)
+    .select('id, title, description, price, currency, category, condition, images, contact')
+    .eq('is_active', true)
     .order('created_at', { ascending: false })
     .limit(limit);
 

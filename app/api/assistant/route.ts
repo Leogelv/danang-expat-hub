@@ -4,9 +4,10 @@ import { getSupabaseServer } from '@/fsd/shared/lib/supabase';
 import { AI_TOOLS, type ToolName } from '@/fsd/shared/lib/ai/tools';
 import { executeTool } from '@/fsd/shared/lib/ai/executor';
 
-// API клиент (поддерживает OpenAI и OpenRouter)
-const apiKey = process.env.OPENAI_API_KEY || process.env.OPENROUTER_API_KEY;
-const baseURL = process.env.OPENROUTER_API_KEY ? 'https://openrouter.ai/api/v1' : undefined;
+// API клиент (приоритет OpenRouter)
+const useOpenRouter = !!process.env.OPENROUTER_API_KEY;
+const apiKey = useOpenRouter ? process.env.OPENROUTER_API_KEY : process.env.OPENAI_API_KEY;
+const baseURL = useOpenRouter ? 'https://openrouter.ai/api/v1' : undefined;
 
 // Загрузка конфига агента из БД или fallback
 async function getAgentConfig() {
