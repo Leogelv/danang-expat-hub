@@ -2,6 +2,7 @@
 
 import React, { useMemo } from 'react';
 import { Bell, CalendarDays, CheckCircle2, Info, MessageCircle, TriangleAlert } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { AccentBadge, GlassCard } from '@/fsd/shared/ui/client';
 import { AppShell } from '@/fsd/shared/components/AppShell';
 import { useRemoteData } from '@/fsd/shared/hooks/useRemoteData';
@@ -26,6 +27,8 @@ const typeIcons: Record<string, React.ReactNode> = {
 };
 
 export const NotificationsPage: React.FC = () => {
+  const t = useTranslations('notifications');
+  const tCommon = useTranslations('common');
   const { user } = useAuth();
   const url = useMemo(() => {
     if (user?.id) return `/api/notifications?userId=${user.id}`;
@@ -36,16 +39,16 @@ export const NotificationsPage: React.FC = () => {
 
   return (
     <AppShell
-      eyebrow="Notifications"
-      title="Stay updated"
-      description="Reminders, replies, and system updates."
+      eyebrow={t('eyebrow')}
+      title={t('title')}
+      description={t('description')}
       variant="ember"
       action={<AccentBadge label="Live" tone="ember" />}
     >
       <div className="grid gap-3">
         {isLoading && <LoadingCard />}
         {!isLoading && data.length === 0 && (
-          <EmptyState message="No notifications yet. You'll see AI replies and reminders here." />
+          <EmptyState message={t('empty')} />
         )}
         {data.map((item) => (
           <GlassCard key={item.id} className="flex items-start gap-3" padding="md">

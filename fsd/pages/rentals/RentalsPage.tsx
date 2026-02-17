@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useMemo, useState, useCallback } from 'react';
-import { Filter, MapPin, MessageCircle, Wallet, X, Map as MapIcon, List, ArrowUpDown } from 'lucide-react';
+import { Filter, MapPin, MessageCircle, Wallet, X, Map as MapIcon, List, ArrowUpDown, Plus } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { AccentBadge, GlassCard } from '@/fsd/shared/ui/client';
 import { ImageCarousel } from '@/fsd/shared/ui/client/media/ImageCarousel';
 import { AppShell } from '@/fsd/shared/components/AppShell';
 import { useRemoteData } from '@/fsd/shared/hooks/useRemoteData';
 import { RentalsMap } from '@/fsd/widgets/rentals/RentalsMap';
+import { CreateListingModal, type CreateListingData } from '@/fsd/features/listings/create-listing';
 
 /* ==========================================
    Типы
@@ -41,18 +43,16 @@ const SORT_OPTIONS: { value: SortMode; label: string }[] = [
   { value: 'price_desc', label: 'Price ↓' },
 ];
 
-const TAB_CONFIG: Record<Tab, { label: string; icon: string; desc: string }> = {
-  housing: { label: 'Housing', icon: '🏠', desc: 'Studios, apartments, and villas for 1+ month stays.' },
-  bike: { label: 'Bikes', icon: '🏍', desc: 'Reliable scooters with delivery and helmets included.' },
-};
-
 /* ==========================================
    Главный компонент
    ========================================== */
 export const RentalsPage: React.FC = () => {
+  const t = useTranslations('rentals');
+  const tCommon = useTranslations('common');
+
   // Загрузка данных
-  const { data: housing, isLoading: housingLoading } = useRemoteData<Listing>('/api/listings?category=housing');
-  const { data: bikes, isLoading: bikesLoading } = useRemoteData<Listing>('/api/listings?category=bike');
+  const { data: housing, isLoading: housingLoading, refresh: refreshHousing } = useRemoteData<Listing>('/api/listings?category=housing');
+  const { data: bikes, isLoading: bikesLoading, refresh: refreshBikes } = useRemoteData<Listing>('/api/listings?category=bike');
 
   // Состояние UI
   const [activeTab, setActiveTab] = useState<Tab>('housing');
@@ -63,10 +63,17 @@ export const RentalsPage: React.FC = () => {
   const [priceInitialized, setPriceInitialized] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   // Текущие данные по активному табу
   const rawData = activeTab === 'housing' ? housing : bikes;
   const isLoading = activeTab === 'housing' ? housingLoading : bikesLoading;
+
+  // Конфиг табов с i18n
+  const TAB_CONFIG: Record<Tab, { label: string; icon: string; desc: string }> = useMemo(() => ({
+    housing: { label: t('housing'), icon: '🏠', desc: t('housingDesc') },
+    bike: { label: t('bikes'), icon: '🏍', desc: t('bikesDesc') },
+  }), [t]);
 
   // Авто-определение диапазона цен при загрузке данных
   const priceBounds = useMemo(() => {
@@ -119,13 +126,34 @@ export const RentalsPage: React.FC = () => {
     setShowMap(false);
   }, []);
 
+  // Создание нового листинга
+  const handleCreateListing = useCallback(async (formData: CreateListingData) => {
+    const res = await fetch('/api/listings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+    if (res.ok) {
+      refreshHousing();
+      refreshBikes();
+    }
+  }, [refreshHousing, refreshBikes]);
+
   return (
     <AppShell
-      eyebrow="Rentals"
-      title="Housing and motorbikes"
-      description="Browse long-term apartments, villas, and trusted bike rentals with direct contacts."
+      eyebrow={t('eyebrow')}
+      title={t('title')}
+      description={t('description')}
       variant="sunset"
-      action={<AccentBadge label="Verified" tone="ember" />}
+      action={
+        <button
+          onClick={() => setIsCreateModalOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500 text-white text-sm font-medium hover:bg-cyan-400 transition-colors"
+        >
+          <Plus className="w-4 h-4" />
+          {t('createListing')}
+        </button>
+      }
     >
       {/* ====== Табы ====== */}
       <div className="flex gap-2">
@@ -162,7 +190,7 @@ export const RentalsPage: React.FC = () => {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by title..."
+              placeholder={t('searchPlaceholder')}
               className="w-full bg-transparent text-sm text-white/90 placeholder:text-white/40 focus:outline-none"
             />
             {search && (
@@ -187,13 +215,13 @@ export const RentalsPage: React.FC = () => {
 
         {/* Локации */}
         <div className="flex flex-wrap gap-1.5">
-          {['All', ...LOCATION_OPTIONS].map((loc) => (
+          {[tCommon('all'), ...LOCATION_OPTIONS].map((loc, idx) => (
             <button
               key={loc}
               type="button"
-              onClick={() => setActiveLocation(loc)}
+              onClick={() => setActiveLocation(idx === 0 ? 'All' : loc)}
               className={`rounded-full border px-2.5 py-1 text-xs transition-colors ${
-                activeLocation === loc
+                (idx === 0 && activeLocation === 'All') || activeLocation === loc
                   ? 'border-orange-400/60 bg-orange-500/20 text-white'
                   : 'border-white/10 bg-white/5 text-white/60 hover:text-white/80'
               }`}
@@ -209,7 +237,7 @@ export const RentalsPage: React.FC = () => {
             <div className="flex items-center justify-between text-xs text-white/60">
               <span className="flex items-center gap-1">
                 <Wallet className="h-3 w-3" />
-                Price range
+                {t('priceRange')}
               </span>
               <span className="text-white/80 font-medium">
                 ${priceRange[0]} — ${priceRange[1]}
@@ -286,10 +314,10 @@ export const RentalsPage: React.FC = () => {
           <div className="grid gap-3 lg:grid-cols-2">
             {isLoading && <LoadingCard />}
             {!isLoading && filteredData.length === 0 && (
-              <EmptyState message="No listings found. Try adjusting filters or ask the AI assistant." />
+              <EmptyState message={tCommon('noResults')} />
             )}
             {filteredData.map((item) => (
-              <ListingCard key={item.id} item={item} onClick={() => setSelectedListing(item)} />
+              <ListingCard key={item.id} item={item} perMonth={t('perMonth')} onClick={() => setSelectedListing(item)} />
             ))}
           </div>
         </div>
@@ -300,6 +328,16 @@ export const RentalsPage: React.FC = () => {
         listing={selectedListing}
         isOpen={!!selectedListing}
         onClose={() => setSelectedListing(null)}
+        perMonthLabel={t('perMonth')}
+        amenitiesLabel={t('amenities')}
+        contactLabel={t('contactOwner')}
+      />
+
+      {/* ====== Create Listing Modal ====== */}
+      <CreateListingModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSubmit={handleCreateListing}
       />
     </AppShell>
   );
@@ -308,7 +346,7 @@ export const RentalsPage: React.FC = () => {
 /* ==========================================
    Карточка листинга
    ========================================== */
-const ListingCard: React.FC<{ item: Listing; onClick: () => void }> = ({ item, onClick }) => (
+const ListingCard: React.FC<{ item: Listing; perMonth: string; onClick: () => void }> = ({ item, perMonth, onClick }) => (
   <GlassCard
     className="flex h-full flex-col gap-3 cursor-pointer hover:border-white/20 transition-colors"
     padding="md"
@@ -333,7 +371,7 @@ const ListingCard: React.FC<{ item: Listing; onClick: () => void }> = ({ item, o
       {item.price && (
         <span className="flex items-center gap-1 text-orange-400 font-semibold">
           <Wallet className="h-3 w-3" />
-          {item.currency || 'USD'} {item.price}/mo
+          {item.currency || 'USD'} {item.price}/{perMonth}
         </span>
       )}
       {item.contact && (
@@ -368,7 +406,10 @@ const ListingDetailSheet: React.FC<{
   listing: Listing | null;
   isOpen: boolean;
   onClose: () => void;
-}> = ({ listing, isOpen, onClose }) => {
+  perMonthLabel: string;
+  amenitiesLabel: string;
+  contactLabel: string;
+}> = ({ listing, isOpen, onClose, perMonthLabel, amenitiesLabel, contactLabel }) => {
   if (!isOpen || !listing) return null;
 
   return (
@@ -402,7 +443,7 @@ const ListingDetailSheet: React.FC<{
             <div className="flex items-center gap-2 text-2xl font-bold text-orange-400">
               <Wallet className="h-6 w-6" />
               {listing.currency || 'USD'} {listing.price}
-              <span className="text-base font-normal text-white/50">/month</span>
+              <span className="text-base font-normal text-white/50">/{perMonthLabel}</span>
             </div>
           )}
           {listing.description && (
@@ -410,7 +451,7 @@ const ListingDetailSheet: React.FC<{
           )}
           {listing.amenities && listing.amenities.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold text-white/60 mb-2">Amenities</h3>
+              <h3 className="text-sm font-semibold text-white/60 mb-2">{amenitiesLabel}</h3>
               <div className="flex flex-wrap gap-2">
                 {listing.amenities.map((amenity) => (
                   <span
@@ -436,7 +477,7 @@ const ListingDetailSheet: React.FC<{
               rel="noopener noreferrer"
               className="block w-full py-4 rounded-xl bg-orange-500 text-white text-center font-semibold hover:bg-orange-400 transition-colors"
             >
-              Contact via {listing.contact_type || 'Message'}: {listing.contact}
+              {contactLabel}: {listing.contact}
             </a>
           )}
         </div>

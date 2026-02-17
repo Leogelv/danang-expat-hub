@@ -1,11 +1,15 @@
 'use client';
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Loader2, Sparkles } from 'lucide-react';
+import { Loader2, Sparkles, Bot, MessageSquare } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { AppScreen, AccentBadge, ActionButton, ChatBubble, GlassCard, SectionHeader } from '@/fsd/shared/ui/client';
 import { BottomNav } from '@/fsd/shared/components/BottomNav';
 import { useAuth } from '@/fsd/app/providers/AuthProvider';
 
+/* ==========================================
+   Типы
+   ========================================== */
 interface ToolCallSummary {
   name: string;
   args: Record<string, unknown>;
@@ -32,20 +36,23 @@ interface ChatMessage {
   toolCalls?: ToolCallSummary[];
 }
 
-const initialMessage: ChatMessage = {
-  id: 'welcome',
-  role: 'assistant',
-  content: 'Hi! I can find housing, bikes, places, events, and market deals in Danang. What are you looking for?'
-};
+type ChatTab = 'ai' | 'p2p';
 
-function buildApiMessages(messages: ChatMessage[]) {
-  return messages
-    .filter((message) => message.role !== 'tool')
-    .map((message) => ({ role: message.role, content: message.content }));
-}
-
+/* ==========================================
+   Главный компонент
+   ========================================== */
 export const ChatPage: React.FC = () => {
+  const t = useTranslations('chat');
+  const tCommon = useTranslations('common');
   const { user, status, error, refresh } = useAuth();
+  const [activeTab, setActiveTab] = useState<ChatTab>('ai');
+
+  const initialMessage: ChatMessage = useMemo(() => ({
+    id: 'welcome',
+    role: 'assistant',
+    content: t('description'),
+  }), [t]);
+
   const [messages, setMessages] = useState<ChatMessage[]>([initialMessage]);
   const [input, setInput] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -112,75 +119,130 @@ export const ChatPage: React.FC = () => {
   return (
     <AppScreen variant="midnight" contentClassName="gap-5" withBottomMenu>
       <SectionHeader
-        eyebrow="AI Assistant"
-        title="Ask about Danang"
-        description="Search housing, bikes, places, events, and the expat market."
+        eyebrow={t('eyebrow')}
+        title={t('title')}
+        description={t('description')}
         action={<AccentBadge label={status === 'authenticated' ? 'Online' : 'Guest'} tone="ember" />}
       />
 
-      <GlassCard className="flex flex-1 flex-col gap-4 overflow-hidden" padding="lg">
-        <div className="flex-1 space-y-4 overflow-y-auto pr-2 scrollbar-hide chat-messages-scroll">
-          {messages.map((message) => (
-            <div key={message.id} className="flex flex-col gap-3">
-              {message.role === 'tool' && message.toolCalls ? (
-                message.toolCalls.map((toolCall) => (
-                  <ToolCallPanel key={toolCall.name} toolCall={toolCall} />
-                ))
-              ) : (
-                <ChatBubble variant={message.role === 'user' ? 'user' : 'assistant'}>
-                  {message.content}
-                </ChatBubble>
-              )}
-            </div>
-          ))}
-          {isSending && (
-            <div className="flex items-center gap-2 text-white/70 text-sm">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Thinking...
-            </div>
-          )}
-          <div ref={endRef} />
-        </div>
+      {/* Табы AI / P2P */}
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={() => setActiveTab('ai')}
+          className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+            activeTab === 'ai'
+              ? 'bg-cyan-500/20 border border-cyan-400/50 text-white'
+              : 'bg-white/5 border border-white/10 text-white/60 hover:bg-white/10'
+          }`}
+        >
+          <Bot className="h-4 w-4" />
+          {t('aiChat')}
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('p2p')}
+          className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+            activeTab === 'p2p'
+              ? 'bg-cyan-500/20 border border-cyan-400/50 text-white'
+              : 'bg-white/5 border border-white/10 text-white/60 hover:bg-white/10'
+          }`}
+        >
+          <MessageSquare className="h-4 w-4" />
+          {t('p2pChat')}
+        </button>
+      </div>
 
-        <div className="flex flex-col gap-3 border-t border-white/10 pt-4">
-          {status === 'error' && (
-            <div className="rounded-2xl border border-rose-500/40 bg-rose-500/15 px-4 py-3 text-sm text-rose-100">
-              {error || 'Authentication failed. Try again.'}
-            </div>
-          )}
-          {status === 'unauthenticated' && (
-            <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white/80">
-              Open the mini app inside Telegram to unlock full AI features.
-            </div>
-          )}
-          <div className="flex flex-col gap-2">
-            <textarea
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-              rows={2}
-              placeholder="Ask about housing, bikes, cafes, events..."
-              className="w-full resize-none rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/90 placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-orange-400/40"
-            />
-            <div className="flex items-center justify-between">
-              <button
-                type="button"
-                onClick={() => refresh()}
-                className="text-xs text-white/50 hover:text-white"
-              >
-                Refresh session
-              </button>
-              <ActionButton onClick={sendMessage} disabled={!input.trim() || isSending}>
-                <Sparkles className="h-4 w-4" />
-                Ask AI
-              </ActionButton>
+      {/* AI Chat таб */}
+      {activeTab === 'ai' && (
+        <GlassCard className="flex flex-1 flex-col gap-4 overflow-hidden" padding="lg">
+          <div className="flex-1 space-y-4 overflow-y-auto pr-2 scrollbar-hide chat-messages-scroll">
+            {messages.map((message) => (
+              <div key={message.id} className="flex flex-col gap-3">
+                {message.role === 'tool' && message.toolCalls ? (
+                  message.toolCalls.map((toolCall) => (
+                    <ToolCallPanel key={toolCall.name} toolCall={toolCall} />
+                  ))
+                ) : (
+                  <ChatBubble variant={message.role === 'user' ? 'user' : 'assistant'}>
+                    {message.content}
+                  </ChatBubble>
+                )}
+              </div>
+            ))}
+            {isSending && (
+              <div className="flex items-center gap-2 text-white/70 text-sm">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                {t('thinking')}
+              </div>
+            )}
+            <div ref={endRef} />
+          </div>
+
+          <div className="flex flex-col gap-3 border-t border-white/10 pt-4">
+            {status === 'error' && (
+              <div className="rounded-2xl border border-rose-500/40 bg-rose-500/15 px-4 py-3 text-sm text-rose-100">
+                {error || 'Authentication failed. Try again.'}
+              </div>
+            )}
+            {status === 'unauthenticated' && (
+              <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white/80">
+                Open the mini app inside Telegram to unlock full AI features.
+              </div>
+            )}
+            <div className="flex flex-col gap-2">
+              <textarea
+                value={input}
+                onChange={(event) => setInput(event.target.value)}
+                rows={2}
+                placeholder={t('placeholder')}
+                className="w-full resize-none rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/90 placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-orange-400/40"
+              />
+              <div className="flex items-center justify-between">
+                <button
+                  type="button"
+                  onClick={() => refresh()}
+                  className="text-xs text-white/50 hover:text-white"
+                >
+                  Refresh session
+                </button>
+                <ActionButton onClick={sendMessage} disabled={!input.trim() || isSending}>
+                  <Sparkles className="h-4 w-4" />
+                  {t('sendMessage')}
+                </ActionButton>
+              </div>
             </div>
           </div>
-        </div>
-      </GlassCard>
+        </GlassCard>
+      )}
+
+      {/* P2P Chat таб — placeholder */}
+      {activeTab === 'p2p' && (
+        <GlassCard className="flex flex-1 flex-col items-center justify-center gap-4" padding="lg">
+          <MessageSquare className="h-12 w-12 text-white/20" />
+          <div className="text-center">
+            <h3 className="text-lg font-semibold text-white">{t('p2pChat')}</h3>
+            <p className="mt-2 text-sm text-white/50">
+              Coming soon
+            </p>
+          </div>
+          <p className="text-xs text-white/30">{t('noRooms')}</p>
+        </GlassCard>
+      )}
+
       <BottomNav />
     </AppScreen>
   );
 };
+
+/* ==========================================
+   Утилиты
+   ========================================== */
+function buildApiMessages(messages: ChatMessage[]) {
+  return messages
+    .filter((message) => message.role !== 'tool')
+    .map((message) => ({ role: message.role, content: message.content }));
+}
 
 const ToolCallPanel: React.FC<{ toolCall: ToolCallSummary }> = ({ toolCall }) => {
   const results = toolCall.result?.results ?? [];

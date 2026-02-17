@@ -261,3 +261,129 @@ SELECT
   false
 FROM public.tg_users
 OFFSET 4 LIMIT 3;
+
+-- =============================================
+-- EVENT_ATTENDEES - Участники событий
+-- =============================================
+INSERT INTO public.event_attendees (event_id, user_id, status)
+SELECT
+  e.id,
+  u.id,
+  CASE
+    WHEN row_number() OVER () % 3 = 0 THEN 'maybe'
+    WHEN row_number() OVER () % 5 = 0 THEN 'not_going'
+    ELSE 'going'
+  END
+FROM public.events e
+CROSS JOIN public.tg_users u
+WHERE u.telegram_id IN (123456789, 234567890, 345678901, 456789012, 567890123)
+  AND e.title IN (
+    'Beach Volleyball Meetup',
+    'Remote Builders Night',
+    'Language Exchange Night',
+    'Vietnamese Cooking Class',
+    'Hoi An Day Trip'
+  )
+ON CONFLICT (event_id, user_id) DO NOTHING;
+
+-- =============================================
+-- LIKES - Лайки (реакции на контент)
+-- =============================================
+
+-- Лайки на listings
+INSERT INTO public.likes (user_id, source_table, source_id)
+SELECT u.id, 'listings', l.id
+FROM public.tg_users u
+CROSS JOIN (SELECT id FROM public.listings ORDER BY created_at LIMIT 5) l
+WHERE u.telegram_id IN (123456789, 234567890, 345678901)
+ON CONFLICT (user_id, source_table, source_id) DO NOTHING;
+
+-- Лайки на places
+INSERT INTO public.likes (user_id, source_table, source_id)
+SELECT u.id, 'places', p.id
+FROM public.tg_users u
+CROSS JOIN (SELECT id FROM public.places ORDER BY created_at LIMIT 4) p
+WHERE u.telegram_id IN (456789012, 567890123, 678901234)
+ON CONFLICT (user_id, source_table, source_id) DO NOTHING;
+
+-- Лайки на community_posts
+INSERT INTO public.likes (user_id, source_table, source_id)
+SELECT u.id, 'community_posts', cp.id
+FROM public.tg_users u
+CROSS JOIN (SELECT id FROM public.community_posts ORDER BY created_at LIMIT 3) cp
+WHERE u.telegram_id IN (789012345, 890123456, 901234567)
+ON CONFLICT (user_id, source_table, source_id) DO NOTHING;
+
+-- =============================================
+-- CHAT_ROOMS - Комнаты чата (тестовые)
+-- =============================================
+
+-- Прямой чат Alex <-> Sarah
+INSERT INTO public.chat_rooms (id, type, context_type, context_id)
+VALUES
+  ('a0000000-0000-0000-0000-000000000001'::uuid, 'direct', NULL, NULL),
+  ('a0000000-0000-0000-0000-000000000002'::uuid, 'direct', NULL, NULL),
+  ('a0000000-0000-0000-0000-000000000003'::uuid, 'group', 'event', NULL);
+
+-- =============================================
+-- CHAT_PARTICIPANTS - Участники чатов
+-- =============================================
+
+-- Чат 1: Alex и Sarah (en/ru)
+INSERT INTO public.chat_participants (room_id, user_id, preferred_language)
+SELECT 'a0000000-0000-0000-0000-000000000001'::uuid, id, 'en'
+FROM public.tg_users WHERE telegram_id = 123456789
+ON CONFLICT (room_id, user_id) DO NOTHING;
+
+INSERT INTO public.chat_participants (room_id, user_id, preferred_language)
+SELECT 'a0000000-0000-0000-0000-000000000001'::uuid, id, 'ru'
+FROM public.tg_users WHERE telegram_id = 234567890
+ON CONFLICT (room_id, user_id) DO NOTHING;
+
+-- Чат 2: Marcus и Lena (en/en)
+INSERT INTO public.chat_participants (room_id, user_id, preferred_language)
+SELECT 'a0000000-0000-0000-0000-000000000002'::uuid, id, 'en'
+FROM public.tg_users WHERE telegram_id = 345678901
+ON CONFLICT (room_id, user_id) DO NOTHING;
+
+INSERT INTO public.chat_participants (room_id, user_id, preferred_language)
+SELECT 'a0000000-0000-0000-0000-000000000002'::uuid, id, 'en'
+FROM public.tg_users WHERE telegram_id = 456789012
+ON CONFLICT (room_id, user_id) DO NOTHING;
+
+-- Чат 3 (групповой): Alex, Marcus, Mike
+INSERT INTO public.chat_participants (room_id, user_id, preferred_language)
+SELECT 'a0000000-0000-0000-0000-000000000003'::uuid, id, 'en'
+FROM public.tg_users WHERE telegram_id IN (123456789, 345678901, 567890123)
+ON CONFLICT (room_id, user_id) DO NOTHING;
+
+-- =============================================
+-- CHAT_MESSAGES - Тестовые сообщения
+-- =============================================
+
+-- Чат 1: Alex -> Sarah
+INSERT INTO public.chat_messages (room_id, sender_id, type, content, original_language)
+SELECT 'a0000000-0000-0000-0000-000000000001'::uuid, id, 'text',
+  'Hey Sarah! Have you found a good apartment in An Thuong yet?', 'en'
+FROM public.tg_users WHERE telegram_id = 123456789;
+
+INSERT INTO public.chat_messages (room_id, sender_id, type, content, original_language)
+SELECT 'a0000000-0000-0000-0000-000000000001'::uuid, id, 'text',
+  'Hi Alex! Still looking. Found a few options but nothing perfect yet.', 'en'
+FROM public.tg_users WHERE telegram_id = 234567890;
+
+INSERT INTO public.chat_messages (room_id, sender_id, type, content, original_language)
+SELECT 'a0000000-0000-0000-0000-000000000001'::uuid, id, 'text',
+  'Check the listings section - I saw a nice studio with pool for $420.', 'en'
+FROM public.tg_users WHERE telegram_id = 123456789;
+
+-- Чат 2: Marcus -> Lena
+INSERT INTO public.chat_messages (room_id, sender_id, type, content, original_language)
+SELECT 'a0000000-0000-0000-0000-000000000002'::uuid, id, 'text',
+  'Are you coming to the yoga session tomorrow?', 'en'
+FROM public.tg_users WHERE telegram_id = 345678901;
+
+INSERT INTO public.chat_messages (room_id, sender_id, type, content, original_language)
+SELECT 'a0000000-0000-0000-0000-000000000002'::uuid, id, 'text',
+  'Yes! 6am at My Khe beach right? I will bring an extra mat.', 'en'
+FROM public.tg_users WHERE telegram_id = 456789012;

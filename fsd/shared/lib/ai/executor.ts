@@ -39,6 +39,15 @@ export async function executeTool(
       case 'get_community_posts':
         return await getCommunityPosts(supabase, args);
 
+      case 'create_listing':
+        return await createListing(supabase, args, context);
+
+      case 'create_event':
+        return await createEvent(supabase, args, context);
+
+      case 'rsvp_event':
+        return await rsvpEvent(supabase, args, context);
+
       default:
         return { success: false, error: `Unknown tool: ${toolName}` };
     }
@@ -201,6 +210,7 @@ async function searchMarket(
   };
 }
 
+// searchEvents — исправлено: date -> starts_at, organizer -> organizer_contact
 async function searchEvents(
   supabase: ReturnType<typeof getSupabaseServer>,
   args: Record<string, unknown>
@@ -209,19 +219,19 @@ async function searchEvents(
 
   let query = supabase
     .from('events')
-    .select('id, title, description, category, date, time, location, price, organizer')
-    .gte('date', new Date().toISOString().split('T')[0]) // только будущие
-    .order('date', { ascending: true })
+    .select('id, title, description, category, starts_at, ends_at, location, max_participants, organizer_contact')
+    .gte('starts_at', new Date().toISOString()) // только будущие
+    .order('starts_at', { ascending: true })
     .limit(limit);
 
   if (args.category) {
     query = query.eq('category', args.category);
   }
   if (args.dateFrom) {
-    query = query.gte('date', args.dateFrom);
+    query = query.gte('starts_at', args.dateFrom);
   }
   if (args.dateTo) {
-    query = query.lte('date', args.dateTo);
+    query = query.lte('starts_at', args.dateTo);
   }
   if (args.query) {
     query = query.or(`title.ilike.%${args.query}%,description.ilike.%${args.query}%`);
@@ -238,16 +248,16 @@ async function searchEvents(
         id: e.id,
         title: e.title,
         category: e.category,
-        date: e.date,
-        time: e.time,
+        date: e.starts_at,
         location: e.location,
-        price: e.price ? `${e.price} USD` : 'Free',
-        organizer: e.organizer,
+        maxParticipants: e.max_participants,
+        organizer: e.organizer_contact,
       })),
     },
   };
 }
 
+// getUserFavorites — исправлено: item_type -> source, user_id -> tg_user_id
 async function getUserFavorites(
   supabase: ReturnType<typeof getSupabaseServer>,
   args: Record<string, unknown>,
@@ -261,14 +271,14 @@ async function getUserFavorites(
 
   let query = supabase
     .from('favorites')
-    .select('id, item_type, item_id, created_at');
+    .select('id, source, item_id, created_at');
 
   if (context.userId) {
-    query = query.eq('user_id', context.userId);
+    query = query.eq('tg_user_id', context.userId);
   }
 
   if (type !== 'all') {
-    query = query.eq('item_type', type);
+    query = query.eq('source', type);
   }
 
   const { data, error } = await query.order('created_at', { ascending: false }).limit(20);
@@ -348,6 +358,138 @@ async function getCommunityPosts(
         author: p.author_name || `User #${p.author_tg_id}`,
         date: p.created_at,
       })),
+    },
+  };
+}
+
+// createListing — создание нового объявления через AI
+async function createListing(
+  supabase: ReturnType<typeof getSupabaseServer>,
+  args: Record<string, unknown>,
+  context: ExecutorContext
+): Promise<ToolResult> {
+  if (!context.telegramId && !context.userId) {
+    return { success: false, error: 'User authentication required to create listings' };
+  }
+
+  const title = args.title as string;
+  if (!title || title.trim().length < 3) {
+    return { success: false, error: 'Title must be at least 3 characters' };
+  }
+
+  const price = Number(args.price);
+  if (!price || price <= 0) {
+    return { success: false, error: 'Price must be greater than 0' };
+  }
+
+  const { data, error } = await supabase
+    .from('listings')
+    .insert({
+      title: title.trim(),
+      description: (args.description as string)?.trim() || null,
+      price,
+      currency: (args.currency as string) || 'USD',
+      category: (args.category as string) || 'housing',
+      location: (args.location as string) || null,
+      author_id: context.userId || null,
+      is_active: true,
+    })
+    .select('id, title, price, currency, category, location')
+    .single();
+
+  if (error) return { success: false, error: error.message };
+
+  return {
+    success: true,
+    data: {
+      message: 'Listing created successfully',
+      listing: data,
+    },
+  };
+}
+
+// createEvent — создание нового события через AI
+async function createEvent(
+  supabase: ReturnType<typeof getSupabaseServer>,
+  args: Record<string, unknown>,
+  context: ExecutorContext
+): Promise<ToolResult> {
+  if (!context.telegramId && !context.userId) {
+    return { success: false, error: 'User authentication required to create events' };
+  }
+
+  const title = args.title as string;
+  if (!title || title.trim().length < 3) {
+    return { success: false, error: 'Title must be at least 3 characters' };
+  }
+
+  const startsAt = args.starts_at as string;
+  if (!startsAt) {
+    return { success: false, error: 'starts_at date is required' };
+  }
+
+  const { data, error } = await supabase
+    .from('events')
+    .insert({
+      title: title.trim(),
+      description: (args.description as string)?.trim() || null,
+      category: (args.category as string) || null,
+      starts_at: startsAt,
+      location: (args.location as string) || null,
+      author_id: context.userId || null,
+      is_active: true,
+    })
+    .select('id, title, category, starts_at, location')
+    .single();
+
+  if (error) return { success: false, error: error.message };
+
+  return {
+    success: true,
+    data: {
+      message: 'Event created successfully',
+      event: data,
+    },
+  };
+}
+
+// rsvpEvent — записаться/отписаться от события через AI
+async function rsvpEvent(
+  supabase: ReturnType<typeof getSupabaseServer>,
+  args: Record<string, unknown>,
+  context: ExecutorContext
+): Promise<ToolResult> {
+  if (!context.userId) {
+    return { success: false, error: 'User authentication required for RSVP' };
+  }
+
+  const eventId = args.event_id as string;
+  if (!eventId) {
+    return { success: false, error: 'event_id is required' };
+  }
+
+  const status = (args.status as string) || 'going';
+  const validStatuses = ['going', 'interested', 'not_going'];
+  if (!validStatuses.includes(status)) {
+    return { success: false, error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` };
+  }
+
+  const { data, error } = await supabase
+    .from('event_attendees')
+    .upsert(
+      { event_id: eventId, user_id: context.userId, status },
+      { onConflict: 'event_id,user_id' }
+    )
+    .select('id, event_id, status')
+    .single();
+
+  if (error) return { success: false, error: error.message };
+
+  return {
+    success: true,
+    data: {
+      message: `RSVP updated: ${status}`,
+      attendance: data,
     },
   };
 }

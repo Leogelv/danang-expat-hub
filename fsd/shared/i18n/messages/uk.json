@@ -16,7 +16,22 @@
     "create": "Створити",
     "send": "Надіслати",
     "new": "Нове",
-    "filters": "Фільтри"
+    "filters": "Фільтри",
+    "delete": "Видалити",
+    "edit": "Редагувати",
+    "confirm": "Підтвердити",
+    "share": "Поділитися",
+    "report": "Поскаржитися",
+    "upload": "Завантажити",
+    "uploadImage": "Завантажити фото",
+    "description": "Опис",
+    "title": "Назва",
+    "submit": "Надіслати",
+    "back": "Назад",
+    "next": "Далі",
+    "seeAll": "Показати все",
+    "viewAll": "Дивитися все",
+    "noResults": "Результатів не знайдено"
   },
   "nav": {
     "home": "Головна",
@@ -26,7 +41,8 @@
     "events": "Події",
     "community": "Спільнота",
     "chat": "AI Чат",
-    "notifications": "Сповіщення"
+    "notifications": "Сповіщення",
+    "profile": "Профіль"
   },
   "home": {
     "eyebrow": "Danang Expat Hub",
@@ -36,7 +52,7 @@
     "askPlaceholder": "Знайди мені студію біля пляжу...",
     "explore": "Дослідити",
     "rentals": "Оренда",
-    "rentalsDesc": "Житло та байки для довгих stay",
+    "rentalsDesc": "Житло та байки для тривалого перебування",
     "market": "Маркет",
     "marketDesc": "Купуй та продавай серед експатів",
     "places": "Місця",
@@ -59,7 +75,18 @@
     "price": "Ціна",
     "priceRange": "Діапазон цін",
     "amenities": "Зручності",
-    "perMonth": "/міс"
+    "perMonth": "/міс",
+    "createListing": "Створити оголошення",
+    "editListing": "Редагувати оголошення",
+    "deleteListing": "Видалити оголошення",
+    "myListings": "Мої оголошення",
+    "contactOwner": "Зв'язатися з власником",
+    "createTitle": "Назва оголошення",
+    "createDescription": "Опишіть об'єкт",
+    "createCategory": "Категорія",
+    "createPrice": "Ціна за місяць",
+    "createLocation": "Розташування",
+    "createImages": "Додати фото"
   },
   "market": {
     "eyebrow": "Маркет",
@@ -68,7 +95,18 @@
     "searchPlaceholder": "Пошук товарів",
     "category": "Категорія",
     "condition": "Стан",
-    "price": "Ціна"
+    "price": "Ціна",
+    "sellItem": "Продати товар",
+    "editItem": "Редагувати товар",
+    "deleteItem": "Видалити товар",
+    "myItems": "Мої товари",
+    "contactSeller": "Зв'язатися з продавцем",
+    "createTitle": "Назва товару",
+    "createDescription": "Опис товару",
+    "createCategory": "Категорія",
+    "createCondition": "Стан",
+    "createPrice": "Ціна",
+    "createImages": "Додати фото"
   },
   "places": {
     "eyebrow": "Місця",
@@ -78,7 +116,14 @@
     "category": "Категорія",
     "wifi": "WiFi",
     "vegan": "Веган опції",
-    "priceLevel": "Рівень цін"
+    "priceLevel": "Рівень цін",
+    "suggestPlace": "Запропонувати місце",
+    "editPlace": "Редагувати місце",
+    "deletePlace": "Видалити місце",
+    "createName": "Назва місця",
+    "createAddress": "Адреса",
+    "createCategory": "Категорія",
+    "createDescription": "Опис місця"
   },
   "events": {
     "eyebrow": "Події",
@@ -89,7 +134,24 @@
     "past": "Минулі",
     "category": "Категорія",
     "participants": "учасників",
-    "spotsLeft": "місць залишилось"
+    "spotsLeft": "місць залишилось",
+    "createEvent": "Створити подію",
+    "editEvent": "Редагувати подію",
+    "deleteEvent": "Видалити подію",
+    "myEvents": "Мої події",
+    "rsvp": "Відповісти",
+    "going": "Піду",
+    "notGoing": "Не піду",
+    "interested": "Цікаво",
+    "attendees": "Учасники",
+    "startDate": "Дата початку",
+    "endDate": "Дата закінчення",
+    "organizer": "Організатор",
+    "createTitle": "Назва події",
+    "createDescription": "Опис події",
+    "createCategory": "Категорія",
+    "createLocation": "Місце проведення",
+    "createDate": "Дата та час"
   },
   "community": {
     "eyebrow": "Спільнота",
@@ -107,20 +169,39 @@
     "postTitle": "Заголовок",
     "postBody": "Що в тебе на думці?",
     "tags": "Теги",
-    "tagsHint": "Через кому: поради, житло, їжа"
+    "tagsHint": "Через кому: поради, житло, їжа",
+    "editPost": "Редагувати пост",
+    "deletePost": "Видалити пост",
+    "myPosts": "Мої пости"
   },
   "profile": {
     "language": "Мова",
     "selectLanguage": "Обери мову",
     "settings": "Налаштування",
-    "timezone": "Часовий пояс"
+    "timezone": "Часовий пояс",
+    "myListings": "Мої оголошення",
+    "myItems": "Мої товари",
+    "myEvents": "Мої події",
+    "myPosts": "Мої пости",
+    "editProfile": "Редагувати профіль",
+    "preferences": "Вподобання"
   },
   "chat": {
     "eyebrow": "AI Асистент",
     "title": "Запитай будь-що",
     "description": "Я знаю Дананг вздовж і впоперек. Житло, місця, події — просто запитай.",
     "placeholder": "Напиши питання...",
-    "thinking": "Думаю..."
+    "thinking": "Думаю...",
+    "p2pChat": "Повідомлення",
+    "aiChat": "AI Чат",
+    "rooms": "Діалоги",
+    "newMessage": "Нове повідомлення",
+    "sendMessage": "Надіслати повідомлення",
+    "typeMessage": "Напишіть повідомлення...",
+    "translate": "Перекласти",
+    "translating": "Переклад...",
+    "noRooms": "Діалогів ще немає",
+    "startChat": "Почати чат"
   },
   "notifications": {
     "eyebrow": "Сповіщення",

@@ -16,7 +16,22 @@
     "create": "Создать",
     "send": "Отправить",
     "new": "Новое",
-    "filters": "Фильтры"
+    "filters": "Фильтры",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "confirm": "Подтвердить",
+    "share": "Поделиться",
+    "report": "Пожаловаться",
+    "upload": "Загрузить",
+    "uploadImage": "Загрузить фото",
+    "description": "Описание",
+    "title": "Название",
+    "submit": "Отправить",
+    "back": "Назад",
+    "next": "Далее",
+    "seeAll": "Показать все",
+    "viewAll": "Смотреть все",
+    "noResults": "Результатов не найдено"
   },
   "nav": {
     "home": "Главная",
@@ -26,7 +41,8 @@
     "events": "События",
     "community": "Сообщество",
     "chat": "AI Чат",
-    "notifications": "Уведомления"
+    "notifications": "Уведомления",
+    "profile": "Профиль"
   },
   "home": {
     "eyebrow": "Danang Expat Hub",
@@ -36,7 +52,7 @@
     "askPlaceholder": "Найди мне студию у пляжа...",
     "explore": "Изучить",
     "rentals": "Аренда",
-    "rentalsDesc": "Жильё и байки для долгих stay",
+    "rentalsDesc": "Жильё и байки для долгого пребывания",
     "market": "Маркет",
     "marketDesc": "Покупай и продавай среди экспатов",
     "places": "Места",
@@ -59,7 +75,18 @@
     "price": "Цена",
     "priceRange": "Диапазон цен",
     "amenities": "Удобства",
-    "perMonth": "/мес"
+    "perMonth": "/мес",
+    "createListing": "Создать объявление",
+    "editListing": "Редактировать объявление",
+    "deleteListing": "Удалить объявление",
+    "myListings": "Мои объявления",
+    "contactOwner": "Связаться с владельцем",
+    "createTitle": "Название объявления",
+    "createDescription": "Опишите объект",
+    "createCategory": "Категория",
+    "createPrice": "Цена за месяц",
+    "createLocation": "Расположение",
+    "createImages": "Добавить фото"
   },
   "market": {
     "eyebrow": "Маркет",
@@ -68,7 +95,18 @@
     "searchPlaceholder": "Поиск товаров",
     "category": "Категория",
     "condition": "Состояние",
-    "price": "Цена"
+    "price": "Цена",
+    "sellItem": "Продать товар",
+    "editItem": "Редактировать товар",
+    "deleteItem": "Удалить товар",
+    "myItems": "Мои товары",
+    "contactSeller": "Связаться с продавцом",
+    "createTitle": "Название товара",
+    "createDescription": "Описание товара",
+    "createCategory": "Категория",
+    "createCondition": "Состояние",
+    "createPrice": "Цена",
+    "createImages": "Добавить фото"
   },
   "places": {
     "eyebrow": "Места",
@@ -78,7 +116,14 @@
     "category": "Категория",
     "wifi": "WiFi",
     "vegan": "Веган опции",
-    "priceLevel": "Уровень цен"
+    "priceLevel": "Уровень цен",
+    "suggestPlace": "Предложить место",
+    "editPlace": "Редактировать место",
+    "deletePlace": "Удалить место",
+    "createName": "Название места",
+    "createAddress": "Адрес",
+    "createCategory": "Категория",
+    "createDescription": "Описание места"
   },
   "events": {
     "eyebrow": "События",
@@ -89,7 +134,24 @@
     "past": "Прошедшие",
     "category": "Категория",
     "participants": "участников",
-    "spotsLeft": "мест осталось"
+    "spotsLeft": "мест осталось",
+    "createEvent": "Создать событие",
+    "editEvent": "Редактировать событие",
+    "deleteEvent": "Удалить событие",
+    "myEvents": "Мои события",
+    "rsvp": "Ответить",
+    "going": "Пойду",
+    "notGoing": "Не пойду",
+    "interested": "Интересно",
+    "attendees": "Участники",
+    "startDate": "Дата начала",
+    "endDate": "Дата окончания",
+    "organizer": "Организатор",
+    "createTitle": "Название события",
+    "createDescription": "Описание события",
+    "createCategory": "Категория",
+    "createLocation": "Место проведения",
+    "createDate": "Дата и время"
   },
   "community": {
     "eyebrow": "Сообщество",
@@ -107,20 +169,39 @@
     "postTitle": "Заголовок",
     "postBody": "Что у тебя на уме?",
     "tags": "Теги",
-    "tagsHint": "Через запятую: советы, жильё, еда"
+    "tagsHint": "Через запятую: советы, жильё, еда",
+    "editPost": "Редактировать пост",
+    "deletePost": "Удалить пост",
+    "myPosts": "Мои посты"
   },
   "profile": {
     "language": "Язык",
     "selectLanguage": "Выбери язык",
     "settings": "Настройки",
-    "timezone": "Часовой пояс"
+    "timezone": "Часовой пояс",
+    "myListings": "Мои объявления",
+    "myItems": "Мои товары",
+    "myEvents": "Мои события",
+    "myPosts": "Мои посты",
+    "editProfile": "Редактировать профиль",
+    "preferences": "Предпочтения"
   },
   "chat": {
     "eyebrow": "AI Ассистент",
     "title": "Спроси что угодно",
     "description": "Я знаю Дананг вдоль и поперёк. Жильё, места, события — просто спроси.",
     "placeholder": "Напиши вопрос...",
-    "thinking": "Думаю..."
+    "thinking": "Думаю...",
+    "p2pChat": "Сообщения",
+    "aiChat": "AI Чат",
+    "rooms": "Диалоги",
+    "newMessage": "Новое сообщение",
+    "sendMessage": "Отправить сообщение",
+    "typeMessage": "Напишите сообщение...",
+    "translate": "Перевести",
+    "translating": "Перевод...",
+    "noRooms": "Диалогов пока нет",
+    "startChat": "Начать чат"
   },
   "notifications": {
     "eyebrow": "Уведомления",

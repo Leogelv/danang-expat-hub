@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
-import { MapPin, Star, Wifi, X, Leaf } from 'lucide-react';
+import React, { useMemo, useState, useCallback } from 'react';
+import { MapPin, Star, Wifi, X, Leaf, Search, Plus } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { AccentBadge, GlassCard } from '@/fsd/shared/ui/client';
 import { ImageCarousel } from '@/fsd/shared/ui/client/media/ImageCarousel';
 import { AppShell } from '@/fsd/shared/components/AppShell';
 import { useRemoteData } from '@/fsd/shared/hooks/useRemoteData';
+import { SuggestPlaceModal, type SuggestPlaceData } from '@/fsd/features/places/suggest-place';
 
 interface Place {
   id: string;
@@ -23,35 +25,65 @@ interface Place {
 }
 
 export const PlacesPage: React.FC = () => {
-  const { data, isLoading } = useRemoteData<Place>('/api/places');
+  const t = useTranslations('places');
+  const tCommon = useTranslations('common');
+
+  const { data, isLoading, refresh } = useRemoteData<Place>('/api/places');
   const [search, setSearch] = useState('');
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const filtered = useMemo(() => {
     return data.filter((place) => place.name.toLowerCase().includes(search.toLowerCase()));
   }, [data, search]);
 
+  // Предложить новое место
+  const handleSuggestPlace = useCallback(async (formData: SuggestPlaceData) => {
+    const res = await fetch('/api/places', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+    if (res.ok) refresh();
+  }, [refresh]);
+
   return (
     <AppShell
-      eyebrow="Places"
-      title="Local recommendations"
-      description="Cafes, coworking, and hidden gems curated by expats."
+      eyebrow={t('eyebrow')}
+      title={t('title')}
+      description={t('description')}
       variant="lagoon"
-      action={<AccentBadge label="Curated" tone="tide" />}
+      action={
+        <button
+          onClick={() => setIsCreateModalOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500 text-white text-sm font-medium hover:bg-cyan-400 transition-colors"
+        >
+          <Plus className="w-4 h-4" />
+          {t('suggestPlace')}
+        </button>
+      }
     >
+      {/* Поиск */}
       <GlassCard className="flex items-center gap-3" padding="md">
+        <Search className="h-4 w-4 text-white/60" />
         <input
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search places"
+          placeholder={t('searchPlaceholder')}
           className="w-full bg-transparent text-sm text-white/90 placeholder:text-white/40 focus:outline-none"
         />
+        {search && (
+          <button type="button" onClick={() => setSearch('')} className="text-white/40 hover:text-white/70">
+            <X className="h-3.5 w-3.5" />
+          </button>
+        )}
       </GlassCard>
 
+      {/* Список мест */}
       <div className="grid gap-3 lg:grid-cols-2">
         {isLoading && <LoadingCard />}
         {!isLoading && filtered.length === 0 && (
-          <EmptyState message="No places yet. Try another keyword or ask the AI assistant." />
+          <EmptyState message={tCommon('noResults')} />
         )}
         {filtered.map((place) => (
           <PlaceCard key={place.id} place={place} onClick={() => setSelectedPlace(place)} />
@@ -63,6 +95,13 @@ export const PlacesPage: React.FC = () => {
         place={selectedPlace}
         isOpen={!!selectedPlace}
         onClose={() => setSelectedPlace(null)}
+      />
+
+      {/* Suggest Place Modal */}
+      <SuggestPlaceModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSubmit={handleSuggestPlace}
       />
     </AppShell>
   );

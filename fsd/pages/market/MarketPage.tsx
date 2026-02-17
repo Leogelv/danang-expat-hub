@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
-import { Handshake, Search, Tag, X } from 'lucide-react';
+import React, { useMemo, useState, useCallback } from 'react';
+import { Handshake, Search, Tag, X, Plus } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { AccentBadge, GlassCard } from '@/fsd/shared/ui/client';
 import { ImageCarousel } from '@/fsd/shared/ui/client/media/ImageCarousel';
 import { AppShell } from '@/fsd/shared/components/AppShell';
 import { useRemoteData } from '@/fsd/shared/hooks/useRemoteData';
+import { CreateMarketItemModal, type CreateMarketItemData } from '@/fsd/features/market/create-item';
 
 interface MarketItem {
   id: string;
@@ -20,39 +22,68 @@ interface MarketItem {
 }
 
 export const MarketPage: React.FC = () => {
-  const { data, isLoading } = useRemoteData<MarketItem>('/api/market');
+  const t = useTranslations('market');
+  const tCommon = useTranslations('common');
+
+  const { data, isLoading, refresh } = useRemoteData<MarketItem>('/api/market');
   const [search, setSearch] = useState('');
   const [selectedItem, setSelectedItem] = useState<MarketItem | null>(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const filtered = useMemo(() => {
     return data.filter((item) => item.title.toLowerCase().includes(search.toLowerCase()));
   }, [data, search]);
 
+  // Создание нового товара
+  const handleCreateItem = useCallback(async (formData: CreateMarketItemData) => {
+    const res = await fetch('/api/market', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+    if (res.ok) refresh();
+  }, [refresh]);
+
   return (
     <AppShell
-      eyebrow="Marketplace"
-      title="Buy and sell with expats"
-      description="Quick listings for furniture, electronics, bikes, and essentials."
+      eyebrow={t('eyebrow')}
+      title={t('title')}
+      description={t('description')}
       variant="midnight"
-      action={<AccentBadge label="Live" tone="aurora" />}
+      action={
+        <button
+          onClick={() => setIsCreateModalOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500 text-white text-sm font-medium hover:bg-cyan-400 transition-colors"
+        >
+          <Plus className="w-4 h-4" />
+          {t('sellItem')}
+        </button>
+      }
     >
+      {/* Поиск */}
       <GlassCard className="flex items-center gap-3" padding="md">
         <Search className="h-4 w-4 text-white/60" />
         <input
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search items"
+          placeholder={t('searchPlaceholder')}
           className="w-full bg-transparent text-sm text-white/90 placeholder:text-white/40 focus:outline-none"
         />
+        {search && (
+          <button type="button" onClick={() => setSearch('')} className="text-white/40 hover:text-white/70">
+            <X className="h-3.5 w-3.5" />
+          </button>
+        )}
       </GlassCard>
 
+      {/* Список товаров */}
       <div className="grid gap-3 lg:grid-cols-2">
         {isLoading && <LoadingCard />}
         {!isLoading && filtered.length === 0 && (
-          <EmptyState message="No market items yet. Try another keyword or ask the AI assistant." />
+          <EmptyState message={tCommon('noResults')} />
         )}
         {filtered.map((item) => (
-          <MarketCard key={item.id} item={item} onClick={() => setSelectedItem(item)} />
+          <MarketCard key={item.id} item={item} onClick={() => setSelectedItem(item)} contactLabel={t('contactSeller')} />
         ))}
       </div>
 
@@ -61,12 +92,20 @@ export const MarketPage: React.FC = () => {
         item={selectedItem}
         isOpen={!!selectedItem}
         onClose={() => setSelectedItem(null)}
+        contactLabel={t('contactSeller')}
+      />
+
+      {/* Create Modal */}
+      <CreateMarketItemModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSubmit={handleCreateItem}
       />
     </AppShell>
   );
 };
 
-const MarketCard: React.FC<{ item: MarketItem; onClick: () => void }> = ({ item, onClick }) => (
+const MarketCard: React.FC<{ item: MarketItem; onClick: () => void; contactLabel: string }> = ({ item, onClick }) => (
   <GlassCard
     className="flex h-full flex-col gap-3 cursor-pointer hover:border-white/20 transition-colors"
     padding="md"
@@ -109,7 +148,8 @@ const MarketDetailSheet: React.FC<{
   item: MarketItem | null;
   isOpen: boolean;
   onClose: () => void;
-}> = ({ item, isOpen, onClose }) => {
+  contactLabel: string;
+}> = ({ item, isOpen, onClose, contactLabel }) => {
   if (!isOpen || !item) return null;
 
   return (
@@ -156,7 +196,7 @@ const MarketDetailSheet: React.FC<{
               rel="noopener noreferrer"
               className="block w-full py-4 rounded-xl bg-cyan-500 text-white text-center font-semibold hover:bg-cyan-400 transition-colors"
             >
-              Contact: {item.contact}
+              {contactLabel}: {item.contact}
             </a>
           )}
         </div>

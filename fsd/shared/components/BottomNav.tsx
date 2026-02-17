@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Bell,
   Building2,
@@ -16,20 +17,22 @@ import {
 } from 'lucide-react';
 import clsx from 'clsx';
 
+/* Ключи навигации для i18n — соответствуют nav.* в JSON переводах */
 const navItems = [
-  { href: '/', label: 'Home', icon: Home },
-  { href: '/chat', label: 'AI', icon: MessageCircle },
-  { href: '/rentals', label: 'Rentals', icon: Building2 },
-  { href: '/market', label: 'Market', icon: ShoppingBag },
-  { href: '/places', label: 'Places', icon: Coffee },
-  { href: '/events', label: 'Events', icon: CalendarDays },
-  { href: '/community', label: 'Community', icon: Users },
-  { href: '/notifications', label: 'Alerts', icon: Bell },
-  { href: '/profile', label: 'Profile', icon: UserCircle2 },
-];
+  { href: '/', labelKey: 'home', icon: Home },
+  { href: '/chat', labelKey: 'chat', icon: MessageCircle },
+  { href: '/rentals', labelKey: 'rentals', icon: Building2 },
+  { href: '/market', labelKey: 'market', icon: ShoppingBag },
+  { href: '/places', labelKey: 'places', icon: Coffee },
+  { href: '/events', labelKey: 'events', icon: CalendarDays },
+  { href: '/community', labelKey: 'community', icon: Users },
+  { href: '/notifications', labelKey: 'notifications', icon: Bell },
+  { href: '/profile', labelKey: 'profile', icon: UserCircle2 },
+] as const;
 
 export const BottomNav: React.FC = () => {
   const pathname = usePathname();
+  const t = useTranslations('nav');
 
   return (
     <div className="fixed bottom-4 left-1/2 z-20 w-[92%] max-w-[720px] -translate-x-1/2">
@@ -56,7 +59,7 @@ export const BottomNav: React.FC = () => {
                 >
                   <Icon className="h-4 w-4" />
                 </span>
-                {item.label}
+                {t(item.labelKey)}
               </Link>
             );
           })}

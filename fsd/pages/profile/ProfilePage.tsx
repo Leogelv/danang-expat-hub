@@ -1,11 +1,14 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { Mail, MapPin, User, UserCircle2 } from 'lucide-react';
+import Link from 'next/link';
+import { Home, Mail, MapPin, ShoppingBag, User, UserCircle2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { AccentBadge, GlassCard } from '@/fsd/shared/ui/client';
 import { AppShell } from '@/fsd/shared/components/AppShell';
 import { useAuth } from '@/fsd/app/providers/AuthProvider';
 import { useRemoteData } from '@/fsd/shared/hooks/useRemoteData';
+import { LanguageSelector } from '@/fsd/features/language-selector';
 
 interface FavoriteItem {
   id: string;
@@ -18,6 +21,9 @@ interface FavoriteItem {
 }
 
 export const ProfilePage: React.FC = () => {
+  const t = useTranslations('profile');
+  const tCommon = useTranslations('common');
+  const tNav = useTranslations('nav');
   const { user, status } = useAuth();
   const favoritesUrl = useMemo(() => {
     if (!user?.id) return '';
@@ -28,12 +34,13 @@ export const ProfilePage: React.FC = () => {
 
   return (
     <AppShell
-      eyebrow="Profile"
-      title={user?.first_name ? `${user.first_name}'s space` : 'Your profile'}
-      description="Your Telegram identity, preferences, and saved items."
+      eyebrow={tNav('profile')}
+      title={user?.first_name ? `${user.first_name}'s space` : t('editProfile')}
+      description={t('settings')}
       variant="midnight"
       action={<AccentBadge label={status === 'authenticated' ? 'Signed in' : 'Guest'} tone="neutral" />}
     >
+      {/* Профиль пользователя */}
       <GlassCard className="flex flex-col gap-4" padding="lg">
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-white/5">
@@ -54,15 +61,44 @@ export const ProfilePage: React.FC = () => {
         <div className="grid gap-3 md:grid-cols-2">
           <InfoRow icon={<User className="h-4 w-4" />} label="Telegram ID" value={user?.telegram_id ? String(user.telegram_id) : '—'} />
           <InfoRow icon={<Mail className="h-4 w-4" />} label="User ID" value={user?.id || '—'} />
-          <InfoRow icon={<MapPin className="h-4 w-4" />} label="Timezone" value={user?.timezone || 'UTC'} />
+          <InfoRow icon={<MapPin className="h-4 w-4" />} label={t('timezone')} value={user?.timezone || 'UTC'} />
         </div>
       </GlassCard>
 
+      {/* Выбор языка */}
+      <GlassCard className="flex flex-col gap-3" padding="lg">
+        <h3 className="text-lg font-semibold text-white">{t('language')}</h3>
+        <p className="text-sm text-white/60">{t('selectLanguage')}</p>
+        <LanguageSelector />
+      </GlassCard>
+
+      {/* Быстрые ссылки на пользовательские разделы */}
+      <GlassCard className="flex flex-col gap-3" padding="lg">
+        <h3 className="text-lg font-semibold text-white">{t('preferences')}</h3>
+        <div className="grid gap-2 sm:grid-cols-2">
+          <Link
+            href="/rentals"
+            className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/80 hover:bg-white/10 transition-colors"
+          >
+            <Home className="h-4 w-4 text-white/60" />
+            {t('myListings')}
+          </Link>
+          <Link
+            href="/market"
+            className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/80 hover:bg-white/10 transition-colors"
+          >
+            <ShoppingBag className="h-4 w-4 text-white/60" />
+            {t('myItems')}
+          </Link>
+        </div>
+      </GlassCard>
+
+      {/* Избранное */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-white">Favorites</h3>
-            <p className="text-sm text-white/60">Saved listings, places, and events.</p>
+            <h3 className="text-lg font-semibold text-white">{tCommon('favorites') || 'Favorites'}</h3>
+            <p className="text-sm text-white/60">{tCommon('noResults')}</p>
           </div>
           <AccentBadge label={`${favorites.length}`} tone="neutral" />
         </div>
@@ -70,7 +106,7 @@ export const ProfilePage: React.FC = () => {
         <div className="grid gap-3 lg:grid-cols-2">
           {isLoading && <LoadingCard />}
           {!isLoading && favorites.length === 0 && (
-            <EmptyState message="No favorites yet. Save listings or ask the AI to add items here." />
+            <EmptyState message={tCommon('empty')} />
           )}
           {favorites.map((item) => (
             <GlassCard key={`${item.source}-${item.id}`} className="flex h-full flex-col gap-3" padding="md">

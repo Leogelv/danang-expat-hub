@@ -228,6 +228,96 @@ export const AI_TOOLS: FunctionTool[] = [
       },
     },
   },
+  {
+    type: 'function',
+    function: {
+      name: 'create_listing',
+      description: 'Create a new rental listing (apartment, house, room, bike). Use when user wants to post a rental ad.',
+      parameters: {
+        type: 'object',
+        properties: {
+          title: {
+            type: 'string',
+            description: 'Title of the listing',
+          },
+          description: {
+            type: 'string',
+            description: 'Detailed description',
+          },
+          price: {
+            type: 'number',
+            description: 'Monthly price in USD',
+          },
+          category: {
+            type: 'string',
+            enum: ['housing', 'apartment', 'house', 'room', 'studio', 'bike'],
+            description: 'Category of the listing',
+          },
+          location: {
+            type: 'string',
+            description: 'Area/district (e.g., "An Thuong", "My Khe")',
+          },
+        },
+        required: ['title', 'price'],
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'create_event',
+      description: 'Create a new event in Da Nang. Use when user wants to organize a meetup, party, or activity.',
+      parameters: {
+        type: 'object',
+        properties: {
+          title: {
+            type: 'string',
+            description: 'Event title',
+          },
+          description: {
+            type: 'string',
+            description: 'Event description',
+          },
+          category: {
+            type: 'string',
+            enum: ['social', 'sports', 'business', 'culture', 'party', 'other'],
+            description: 'Event category',
+          },
+          starts_at: {
+            type: 'string',
+            description: 'Event start date/time (ISO format)',
+          },
+          location: {
+            type: 'string',
+            description: 'Event location',
+          },
+        },
+        required: ['title', 'starts_at'],
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'rsvp_event',
+      description: 'RSVP to an event (going, interested, not going). Use when user wants to attend or show interest in an event.',
+      parameters: {
+        type: 'object',
+        properties: {
+          event_id: {
+            type: 'string',
+            description: 'ID of the event to RSVP to',
+          },
+          status: {
+            type: 'string',
+            enum: ['going', 'interested', 'not_going'],
+            description: 'RSVP status (default: going)',
+          },
+        },
+        required: ['event_id'],
+      },
+    },
+  },
 ];
 
 // Типы для результатов инструментов
@@ -245,4 +335,7 @@ export type ToolName =
   | 'search_events'
   | 'get_user_favorites'
   | 'create_community_post'
-  | 'get_community_posts';
+  | 'get_community_posts'
+  | 'create_listing'
+  | 'create_event'
+  | 'rsvp_event';

@@ -16,7 +16,22 @@
     "create": "Create",
     "send": "Send",
     "new": "New",
-    "filters": "Filters"
+    "filters": "Filters",
+    "delete": "Delete",
+    "edit": "Edit",
+    "confirm": "Confirm",
+    "share": "Share",
+    "report": "Report",
+    "upload": "Upload",
+    "uploadImage": "Upload image",
+    "description": "Description",
+    "title": "Title",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "seeAll": "See all",
+    "viewAll": "View all",
+    "noResults": "No results found"
   },
   "nav": {
     "home": "Home",
@@ -26,7 +41,8 @@
     "events": "Events",
     "community": "Community",
     "chat": "AI Chat",
-    "notifications": "Alerts"
+    "notifications": "Alerts",
+    "profile": "Profile"
   },
   "home": {
     "eyebrow": "Danang Expat Hub",
@@ -59,7 +75,18 @@
     "price": "Price",
     "priceRange": "Price range",
     "amenities": "Amenities",
-    "perMonth": "/month"
+    "perMonth": "/month",
+    "createListing": "Create listing",
+    "editListing": "Edit listing",
+    "deleteListing": "Delete listing",
+    "myListings": "My listings",
+    "contactOwner": "Contact owner",
+    "createTitle": "Listing title",
+    "createDescription": "Describe the property",
+    "createCategory": "Category",
+    "createPrice": "Monthly price",
+    "createLocation": "Location",
+    "createImages": "Add photos"
   },
   "market": {
     "eyebrow": "Market",
@@ -68,7 +95,18 @@
     "searchPlaceholder": "Search items",
     "category": "Category",
     "condition": "Condition",
-    "price": "Price"
+    "price": "Price",
+    "sellItem": "Sell item",
+    "editItem": "Edit item",
+    "deleteItem": "Delete item",
+    "myItems": "My items",
+    "contactSeller": "Contact seller",
+    "createTitle": "Item name",
+    "createDescription": "Describe the item",
+    "createCategory": "Category",
+    "createCondition": "Condition",
+    "createPrice": "Price",
+    "createImages": "Add photos"
   },
   "places": {
     "eyebrow": "Places",
@@ -78,7 +116,14 @@
     "category": "Category",
     "wifi": "WiFi",
     "vegan": "Vegan options",
-    "priceLevel": "Price level"
+    "priceLevel": "Price level",
+    "suggestPlace": "Suggest a place",
+    "editPlace": "Edit place",
+    "deletePlace": "Delete place",
+    "createName": "Place name",
+    "createAddress": "Address",
+    "createCategory": "Category",
+    "createDescription": "Describe the place"
   },
   "events": {
     "eyebrow": "Events",
@@ -89,7 +134,24 @@
     "past": "Past",
     "category": "Category",
     "participants": "participants",
-    "spotsLeft": "spots left"
+    "spotsLeft": "spots left",
+    "createEvent": "Create event",
+    "editEvent": "Edit event",
+    "deleteEvent": "Delete event",
+    "myEvents": "My events",
+    "rsvp": "RSVP",
+    "going": "Going",
+    "notGoing": "Not going",
+    "interested": "Interested",
+    "attendees": "Attendees",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "organizer": "Organizer",
+    "createTitle": "Event title",
+    "createDescription": "Describe the event",
+    "createCategory": "Category",
+    "createLocation": "Location",
+    "createDate": "Date and time"
   },
   "community": {
     "eyebrow": "Community",
@@ -107,20 +169,39 @@
     "postTitle": "Title",
     "postBody": "What's on your mind?",
     "tags": "Tags",
-    "tagsHint": "Comma separated: tips, housing, food"
+    "tagsHint": "Comma separated: tips, housing, food",
+    "editPost": "Edit post",
+    "deletePost": "Delete post",
+    "myPosts": "My posts"
   },
   "profile": {
     "language": "Language",
     "selectLanguage": "Select your language",
     "settings": "Settings",
-    "timezone": "Timezone"
+    "timezone": "Timezone",
+    "myListings": "My listings",
+    "myItems": "My items",
+    "myEvents": "My events",
+    "myPosts": "My posts",
+    "editProfile": "Edit profile",
+    "preferences": "Preferences"
   },
   "chat": {
     "eyebrow": "AI Assistant",
     "title": "Ask me anything",
     "description": "I know Danang inside out. Housing, places, events — just ask.",
     "placeholder": "Type your question...",
-    "thinking": "Thinking..."
+    "thinking": "Thinking...",
+    "p2pChat": "Messages",
+    "aiChat": "AI Chat",
+    "rooms": "Conversations",
+    "newMessage": "New message",
+    "sendMessage": "Send message",
+    "typeMessage": "Type a message...",
+    "translate": "Translate",
+    "translating": "Translating...",
+    "noRooms": "No conversations yet",
+    "startChat": "Start a chat"
   },
   "notifications": {
     "eyebrow": "Notifications",
