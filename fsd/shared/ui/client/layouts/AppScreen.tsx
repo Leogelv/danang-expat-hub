@@ -35,7 +35,7 @@ export const AppScreen: React.FC<AppScreenProps> = ({
       <div
         className={clsx(
           'relative z-10 flex flex-1 flex-col gap-6 p-6',
-          withBottomMenu && 'pb-24',
+          withBottomMenu && 'pb-[calc(6rem+var(--tg-total-safe-area-bottom,0px))]',
           contentClassName,
         )}
       >

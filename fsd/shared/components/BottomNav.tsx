@@ -35,7 +35,10 @@ export const BottomNav: React.FC = () => {
   const t = useTranslations('nav');
 
   return (
-    <div className="fixed bottom-4 left-1/2 z-20 w-[92%] max-w-[720px] -translate-x-1/2">
+    <div
+      className="fixed left-1/2 z-20 w-[92%] max-w-[720px] -translate-x-1/2"
+      style={{ bottom: 'max(12px, calc(var(--tg-total-safe-area-bottom, 0px) + 4px))' }}
+    >
       <div className="rounded-[24px] border border-white/15 bg-slate-950/70 px-4 py-3 shadow-[0_18px_45px_rgba(0,0,0,0.35)] backdrop-blur-2xl">
         <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide">
           {navItems.map((item) => {

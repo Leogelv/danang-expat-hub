@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { AppScreen, SectionHeader, type AppScreenProps } from '@/fsd/shared/ui/client';
+import clsx from 'clsx';
+import { AppScreen, SafeAreaPage, SectionHeader, type AppScreenProps } from '@/fsd/shared/ui/client';
 import { BottomNav } from './BottomNav';
 
 interface AppShellProps extends AppScreenProps {
@@ -20,21 +21,25 @@ export const AppShell: React.FC<AppShellProps> = ({
   children,
   variant = 'ember',
   contentClassName,
+  className,
   ...rest
 }) => (
-  <AppScreen
-    variant={variant}
-    withBottomMenu
-    contentClassName={['gap-5', contentClassName].filter(Boolean).join(' ')}
-    {...rest}
-  >
-    <SectionHeader
-      eyebrow={eyebrow}
-      title={title}
-      description={description}
-      action={action}
-    />
-    {children}
-    <BottomNav />
-  </AppScreen>
+  <SafeAreaPage>
+    <AppScreen
+      variant={variant}
+      className={clsx('h-full !min-h-0', className)}
+      withBottomMenu
+      contentClassName={['gap-5', contentClassName].filter(Boolean).join(' ')}
+      {...rest}
+    >
+      <SectionHeader
+        eyebrow={eyebrow}
+        title={title}
+        description={description}
+        action={action}
+      />
+      {children}
+      <BottomNav />
+    </AppScreen>
+  </SafeAreaPage>
 );

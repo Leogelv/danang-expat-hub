@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Loader2, Sparkles, Bot, MessageSquare } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { AppScreen, AccentBadge, ActionButton, ChatBubble, GlassCard, SectionHeader } from '@/fsd/shared/ui/client';
+import { AppScreen, SafeAreaPage, AccentBadge, ActionButton, ChatBubble, GlassCard, SectionHeader } from '@/fsd/shared/ui/client';
 import { BottomNav } from '@/fsd/shared/components/BottomNav';
 import { useAuth } from '@/fsd/app/providers/AuthProvider';
 
@@ -117,13 +117,14 @@ export const ChatPage: React.FC = () => {
   };
 
   return (
-    <AppScreen variant="midnight" contentClassName="gap-5" withBottomMenu>
-      <SectionHeader
-        eyebrow={t('eyebrow')}
-        title={t('title')}
-        description={t('description')}
-        action={<AccentBadge label={status === 'authenticated' ? 'Online' : 'Guest'} tone="ember" />}
-      />
+    <SafeAreaPage>
+      <AppScreen variant="midnight" className="h-full !min-h-0" contentClassName="gap-5" withBottomMenu>
+        <SectionHeader
+          eyebrow={t('eyebrow')}
+          title={t('title')}
+          description={t('description')}
+          action={<AccentBadge label={status === 'authenticated' ? 'Online' : 'Guest'} tone="ember" />}
+        />
 
       {/* Табы AI / P2P */}
       <div className="flex gap-2">
@@ -230,8 +231,9 @@ export const ChatPage: React.FC = () => {
         </GlassCard>
       )}
 
-      <BottomNav />
-    </AppScreen>
+        <BottomNav />
+      </AppScreen>
+    </SafeAreaPage>
   );
 };
 

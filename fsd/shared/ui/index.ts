@@ -2,6 +2,7 @@
 
 // Layouts
 export { AppScreen } from './client/layouts/AppScreen';
+export { SafeAreaPage } from './client/layouts/SafeAreaPage';
 
 // Cards
 export { GlassCard, type GlassCardProps, type GlassTone } from './client/cards/GlassCard';

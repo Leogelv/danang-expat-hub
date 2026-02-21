@@ -1,5 +1,6 @@
 export { AppScreen } from './layouts/AppScreen';
 export type { AppScreenProps } from './layouts/AppScreen';
+export { SafeAreaPage } from './layouts/SafeAreaPage';
 
 export { GlassCard } from './cards/GlassCard';
 export type { GlassCardProps, GlassTone } from './cards/GlassCard';
