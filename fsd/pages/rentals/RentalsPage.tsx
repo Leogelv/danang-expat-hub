@@ -37,11 +37,7 @@ type SortMode = 'newest' | 'price_asc' | 'price_desc';
    ========================================== */
 const LOCATION_OPTIONS = ['An Thuong', 'My Khe', 'Son Tra', 'Ngu Hanh Son', 'Hai Chau'];
 
-const SORT_OPTIONS: { value: SortMode; label: string }[] = [
-  { value: 'newest', label: 'Newest' },
-  { value: 'price_asc', label: 'Price ↑' },
-  { value: 'price_desc', label: 'Price ↓' },
-];
+const SORT_MODES: SortMode[] = ['newest', 'price_asc', 'price_desc'];
 
 /* ==========================================
    Главный компонент
@@ -68,6 +64,13 @@ export const RentalsPage: React.FC = () => {
   // Текущие данные по активному табу
   const rawData = activeTab === 'housing' ? housing : bikes;
   const isLoading = activeTab === 'housing' ? housingLoading : bikesLoading;
+
+  // Подписи сортировки с i18n
+  const sortLabels: Record<SortMode, string> = useMemo(() => ({
+    newest: t('sortNewest'),
+    price_asc: t('sortPriceAsc'),
+    price_desc: t('sortPriceDesc'),
+  }), [t]);
 
   // Конфиг табов с i18n
   const TAB_CONFIG: Record<Tab, { label: string; icon: string; desc: string }> = useMemo(() => ({
@@ -209,7 +212,7 @@ export const RentalsPage: React.FC = () => {
             }`}
           >
             {showMap ? <List className="h-4 w-4" /> : <MapIcon className="h-4 w-4" />}
-            {showMap ? 'List' : 'Map'}
+            {showMap ? t('listView') : t('mapView')}
           </button>
         </div>
 
@@ -273,18 +276,18 @@ export const RentalsPage: React.FC = () => {
         {/* Сортировка */}
         <div className="flex items-center gap-1.5">
           <ArrowUpDown className="h-3.5 w-3.5 text-white/50" />
-          {SORT_OPTIONS.map((opt) => (
+          {SORT_MODES.map((mode) => (
             <button
-              key={opt.value}
+              key={mode}
               type="button"
-              onClick={() => setSortMode(opt.value)}
+              onClick={() => setSortMode(mode)}
               className={`rounded-full border px-2.5 py-1 text-xs transition-colors ${
-                sortMode === opt.value
+                sortMode === mode
                   ? 'border-orange-400/60 bg-orange-500/20 text-white'
                   : 'border-white/10 bg-white/5 text-white/60 hover:text-white/80'
               }`}
             >
-              {opt.label}
+              {sortLabels[mode]}
             </button>
           ))}
         </div>

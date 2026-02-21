@@ -3,6 +3,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useTelegramLocation, type LocationData } from '@/fsd/features/community';
 
@@ -77,6 +78,7 @@ export const CommunityMap: React.FC<CommunityMapProps> = ({
   selectedPostId,
   className,
 }) => {
+  const t = useTranslations('community');
   const { location: userLocation, requestLocation, isLoading: isLoadingLocation } = useTelegramLocation();
   const [hasRequestedLocation, setHasRequestedLocation] = useState(false);
 
@@ -171,7 +173,7 @@ export const CommunityMap: React.FC<CommunityMapProps> = ({
           userLocation ? 'text-cyan-400' : 'text-white/60',
           'hover:bg-slate-700'
         )}
-        title="Center on my location"
+        title={t('centerOnLocation')}
       >
         {isLoadingLocation ? (
           <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
@@ -185,7 +187,7 @@ export const CommunityMap: React.FC<CommunityMapProps> = ({
 
       {/* Счётчик постов на карте */}
       <div className="absolute top-4 left-4 px-3 py-1.5 bg-black/60 backdrop-blur-sm rounded-full text-xs text-white/80">
-        {geotaggedPosts.length} geotagged posts
+        {t('geotaggedCount', { count: geotaggedPosts.length })}
       </div>
     </div>
   );

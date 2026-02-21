@@ -31,7 +31,9 @@
     "next": "Next",
     "seeAll": "See all",
     "viewAll": "View all",
-    "noResults": "No results found"
+    "noResults": "No results found",
+    "favorites": "Favorites",
+    "loadingMap": "Loading map..."
   },
   "nav": {
     "home": "Home",
@@ -86,7 +88,28 @@
     "createCategory": "Category",
     "createPrice": "Monthly price",
     "createLocation": "Location",
-    "createImages": "Add photos"
+    "createImages": "Add photos",
+    "newListing": "New Listing",
+    "titleLabel": "Title",
+    "descriptionLabel": "Description",
+    "priceLabel": "Price",
+    "currencyLabel": "Currency",
+    "categoryLabel": "Category",
+    "locationLabel": "Location",
+    "photosLabel": "Photos",
+    "photosComingSoon": "Coming soon",
+    "contactLabel": "Contact",
+    "titlePlaceholder": "e.g. Modern 2BR Apartment in An Thuong",
+    "descriptionPlaceholder": "Describe the property, amenities, move-in date...",
+    "pricePlaceholder": "500",
+    "contactPlaceholder": "Phone, Telegram, Zalo...",
+    "locationPlaceholder": "e.g. An Thuong, My An, Ngu Hanh Son",
+    "sortNewest": "Newest",
+    "sortPriceAsc": "Price ↑",
+    "sortPriceDesc": "Price ↓",
+    "listView": "List",
+    "mapView": "Map",
+    "onMapCount": "{count} on map"
   },
   "market": {
     "eyebrow": "Market",
@@ -106,7 +129,20 @@
     "createCategory": "Category",
     "createCondition": "Condition",
     "createPrice": "Price",
-    "createImages": "Add photos"
+    "createImages": "Add photos",
+    "sellItem": "Sell Item",
+    "titleLabel": "Title",
+    "descriptionLabel": "Description",
+    "priceLabel": "Price",
+    "currencyLabel": "Currency",
+    "categoryLabel": "Category",
+    "conditionLabel": "Condition",
+    "contactLabel": "Contact",
+    "titlePlaceholder": "e.g. MacBook Pro 14 inch 2024",
+    "descriptionPlaceholder": "Describe condition, specs, reason for selling...",
+    "pricePlaceholder": "250",
+    "contactPlaceholder": "Phone, Telegram, Zalo...",
+    "conditionUsed": "Used"
   },
   "places": {
     "eyebrow": "Places",
@@ -123,7 +159,21 @@
     "createName": "Place name",
     "createAddress": "Address",
     "createCategory": "Category",
-    "createDescription": "Describe the place"
+    "createDescription": "Describe the place",
+    "suggestTitle": "Suggest a Place",
+    "nameLabel": "Place Name",
+    "descriptionLabel": "Description",
+    "categoryLabel": "Category",
+    "priceLevelLabel": "Price Level",
+    "addressLabel": "Address",
+    "wifiLabel": "WiFi",
+    "veganLabel": "Vegan Friendly",
+    "suggestButton": "Suggest",
+    "namePlaceholder": "e.g. Cong Ca Phe An Thuong",
+    "descriptionPlaceholder": "What makes this place special, hours, tips...",
+    "addressPlaceholder": "e.g. 12 An Thuong 4, Ngu Hanh Son",
+    "fastWifi": "Fast WiFi",
+    "contactLabel": "Contact"
   },
   "events": {
     "eyebrow": "Events",
@@ -151,7 +201,25 @@
     "createDescription": "Describe the event",
     "createCategory": "Category",
     "createLocation": "Location",
-    "createDate": "Date and time"
+    "createDate": "Date and time",
+    "createEventTitle": "Create Event",
+    "titleLabel": "Title",
+    "descriptionLabel": "Description",
+    "categoryLabel": "Category",
+    "startsAtLabel": "Starts at",
+    "endsAtLabel": "Ends at",
+    "locationLabel": "Location",
+    "priceLabel": "Price (optional)",
+    "maxPeopleLabel": "Max people",
+    "organizerLabel": "Organizer Contact",
+    "titlePlaceholder": "e.g. Beach Volleyball Saturday",
+    "descriptionPlaceholder": "What is the event about, what to bring...",
+    "locationPlaceholder": "e.g. My Khe Beach, near lifeguard tower 5",
+    "pricePlaceholder": "Free",
+    "maxPeoplePlaceholder": "Unlimited",
+    "contactPlaceholder": "Phone, Telegram, Zalo...",
+    "free": "Free",
+    "areYouGoing": "Are you going?"
   },
   "community": {
     "eyebrow": "Community",
@@ -172,7 +240,9 @@
     "tagsHint": "Comma separated: tips, housing, food",
     "editPost": "Edit post",
     "deletePost": "Delete post",
-    "myPosts": "My posts"
+    "myPosts": "My posts",
+    "centerOnLocation": "Center on my location",
+    "geotaggedCount": "{count} geotagged posts"
   },
   "profile": {
     "language": "Language",
@@ -184,7 +254,14 @@
     "myEvents": "My events",
     "myPosts": "My posts",
     "editProfile": "Edit profile",
-    "preferences": "Preferences"
+    "preferences": "Preferences",
+    "signedIn": "Signed in",
+    "guest": "Guest",
+    "userSpace": "{name}'s space",
+    "telegramUser": "Telegram User",
+    "telegramId": "Telegram ID",
+    "userId": "User ID",
+    "saved": "Saved"
   },
   "chat": {
     "eyebrow": "AI Assistant",
@@ -201,7 +278,18 @@
     "translate": "Translate",
     "translating": "Translating...",
     "noRooms": "No conversations yet",
-    "startChat": "Start a chat"
+    "startChat": "Start a chat",
+    "fallbackError": "Sorry, I did not get that. Try again.",
+    "statusOnline": "Online",
+    "statusGuest": "Guest",
+    "authFailed": "Authentication failed. Try again.",
+    "telegramRequired": "Open the mini app inside Telegram to unlock full AI features.",
+    "refreshSession": "Refresh session",
+    "comingSoon": "Coming soon",
+    "toolLabel": "Tool",
+    "noToolResults": "No matches yet. Try a new location or budget.",
+    "priceLabel": "Price",
+    "contactLabel": "Contact"
   },
   "notifications": {
     "eyebrow": "Notifications",

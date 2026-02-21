@@ -105,7 +105,9 @@ export const MarketPage: React.FC = () => {
   );
 };
 
-const MarketCard: React.FC<{ item: MarketItem; onClick: () => void; contactLabel: string }> = ({ item, onClick }) => (
+const MarketCard: React.FC<{ item: MarketItem; onClick: () => void; contactLabel: string }> = ({ item, onClick }) => {
+  const t = useTranslations('market');
+  return (
   <GlassCard
     className="flex h-full flex-col gap-3 cursor-pointer hover:border-white/20 transition-colors"
     padding="md"
@@ -123,7 +125,7 @@ const MarketCard: React.FC<{ item: MarketItem; onClick: () => void; contactLabel
         <h3 className="text-base font-semibold text-white">{item.title}</h3>
         {item.category && <p className="text-xs text-white/60">{item.category}</p>}
       </div>
-      <AccentBadge label={item.condition || 'Used'} tone="neutral" />
+      <AccentBadge label={item.condition || t('conditionUsed')} tone="neutral" />
     </div>
     {item.description && <p className="text-sm text-white/70 line-clamp-2">{item.description}</p>}
     <div className="flex flex-wrap items-center gap-2 text-xs text-white/60 mt-auto">
@@ -141,7 +143,8 @@ const MarketCard: React.FC<{ item: MarketItem; onClick: () => void; contactLabel
       )}
     </div>
   </GlassCard>
-);
+  );
+};
 
 // Detail Sheet
 const MarketDetailSheet: React.FC<{
@@ -150,6 +153,7 @@ const MarketDetailSheet: React.FC<{
   onClose: () => void;
   contactLabel: string;
 }> = ({ item, isOpen, onClose, contactLabel }) => {
+  const t = useTranslations('market');
   if (!isOpen || !item) return null;
 
   return (
@@ -175,7 +179,7 @@ const MarketDetailSheet: React.FC<{
           <div>
             <div className="flex items-start justify-between gap-3">
               <h2 className="text-xl font-bold text-white">{item.title}</h2>
-              <AccentBadge label={item.condition || 'Used'} tone="neutral" />
+              <AccentBadge label={item.condition || t('conditionUsed')} tone="neutral" />
             </div>
             {item.category && <p className="text-sm text-white/60 mt-1">{item.category}</p>}
           </div>

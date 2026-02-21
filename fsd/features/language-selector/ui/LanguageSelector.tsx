@@ -7,12 +7,14 @@ import { locales, localeNames, localeFlags, type Locale } from '@/fsd/shared/i18
 
 export interface LanguageSelectorProps {
   onChange?: (locale: Locale) => void;
+  onOpenChange?: (isOpen: boolean) => void;
   className?: string;
 }
 
 // Селектор языка для настроек профиля
 export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   onChange,
+  onOpenChange,
   className,
 }) => {
   const t = useTranslations('profile');
@@ -20,10 +22,16 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   const [isPending, startTransition] = useTransition();
   const [isOpen, setIsOpen] = useState(false);
 
+  // Обёртка для синхронизации состояния с родителем
+  const updateOpen = (value: boolean) => {
+    setIsOpen(value);
+    onOpenChange?.(value);
+  };
+
   // Смена языка через cookie и перезагрузку
   const handleLocaleChange = (newLocale: Locale) => {
     if (newLocale === currentLocale) {
-      setIsOpen(false);
+      updateOpen(false);
       return;
     }
 
@@ -55,7 +63,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       {/* Текущий язык (триггер) */}
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => updateOpen(!isOpen)}
         disabled={isPending}
         className={clsx(
           'w-full flex items-center justify-between px-4 py-3 rounded-xl',
@@ -85,7 +93,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         <>
           <div
             className="fixed inset-0 z-10"
-            onClick={() => setIsOpen(false)}
+            onClick={() => updateOpen(false)}
           />
           <div className="absolute top-full left-0 right-0 mt-2 z-20 bg-slate-800 border border-white/10 rounded-xl overflow-hidden shadow-xl">
             {locales.map((locale) => (

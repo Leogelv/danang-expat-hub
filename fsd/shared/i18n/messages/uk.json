@@ -31,7 +31,9 @@
     "next": "Далі",
     "seeAll": "Показати все",
     "viewAll": "Дивитися все",
-    "noResults": "Результатів не знайдено"
+    "noResults": "Результатів не знайдено",
+    "favorites": "Обране",
+    "loadingMap": "Завантаження карти..."
   },
   "nav": {
     "home": "Головна",
@@ -86,7 +88,28 @@
     "createCategory": "Категорія",
     "createPrice": "Ціна за місяць",
     "createLocation": "Розташування",
-    "createImages": "Додати фото"
+    "createImages": "Додати фото",
+    "newListing": "Нове оголошення",
+    "titleLabel": "Назва",
+    "descriptionLabel": "Опис",
+    "priceLabel": "Ціна",
+    "currencyLabel": "Валюта",
+    "categoryLabel": "Категорія",
+    "locationLabel": "Розташування",
+    "photosLabel": "Фото",
+    "photosComingSoon": "Незабаром",
+    "contactLabel": "Контакт",
+    "titlePlaceholder": "напр. Сучасна 2-кімн. квартира в Ан Тхионг",
+    "descriptionPlaceholder": "Опишіть об'єкт, зручності, дату заселення...",
+    "pricePlaceholder": "500",
+    "contactPlaceholder": "Телефон, Telegram, Zalo...",
+    "locationPlaceholder": "напр. Ан Тхионг, Мі Ан, Нгу Хань Шон",
+    "sortNewest": "Нові",
+    "sortPriceAsc": "Ціна ↑",
+    "sortPriceDesc": "Ціна ↓",
+    "listView": "Список",
+    "mapView": "Карта",
+    "onMapCount": "{count} на карті"
   },
   "market": {
     "eyebrow": "Маркет",
@@ -106,7 +129,20 @@
     "createCategory": "Категорія",
     "createCondition": "Стан",
     "createPrice": "Ціна",
-    "createImages": "Додати фото"
+    "createImages": "Додати фото",
+    "sellItem": "Продати товар",
+    "titleLabel": "Назва",
+    "descriptionLabel": "Опис",
+    "priceLabel": "Ціна",
+    "currencyLabel": "Валюта",
+    "categoryLabel": "Категорія",
+    "conditionLabel": "Стан",
+    "contactLabel": "Контакт",
+    "titlePlaceholder": "напр. MacBook Pro 14 дюймів 2024",
+    "descriptionPlaceholder": "Опишіть стан, характеристики, причину продажу...",
+    "pricePlaceholder": "250",
+    "contactPlaceholder": "Телефон, Telegram, Zalo...",
+    "conditionUsed": "Б/в"
   },
   "places": {
     "eyebrow": "Місця",
@@ -123,7 +159,21 @@
     "createName": "Назва місця",
     "createAddress": "Адреса",
     "createCategory": "Категорія",
-    "createDescription": "Опис місця"
+    "createDescription": "Опис місця",
+    "suggestTitle": "Запропонувати місце",
+    "nameLabel": "Назва місця",
+    "descriptionLabel": "Опис",
+    "categoryLabel": "Категорія",
+    "priceLevelLabel": "Рівень цін",
+    "addressLabel": "Адреса",
+    "wifiLabel": "WiFi",
+    "veganLabel": "Веган-френдлі",
+    "suggestButton": "Запропонувати",
+    "namePlaceholder": "напр. Cong Ca Phe An Thuong",
+    "descriptionPlaceholder": "Чим це місце особливе, години роботи, поради...",
+    "addressPlaceholder": "напр. 12 An Thuong 4, Ngu Hanh Son",
+    "fastWifi": "Швидкий WiFi",
+    "contactLabel": "Контакт"
   },
   "events": {
     "eyebrow": "Події",
@@ -151,7 +201,25 @@
     "createDescription": "Опис події",
     "createCategory": "Категорія",
     "createLocation": "Місце проведення",
-    "createDate": "Дата та час"
+    "createDate": "Дата та час",
+    "createEventTitle": "Створити подію",
+    "titleLabel": "Назва",
+    "descriptionLabel": "Опис",
+    "categoryLabel": "Категорія",
+    "startsAtLabel": "Початок",
+    "endsAtLabel": "Закінчення",
+    "locationLabel": "Місце",
+    "priceLabel": "Ціна (необов'язково)",
+    "maxPeopleLabel": "Макс. учасників",
+    "organizerLabel": "Контакт організатора",
+    "titlePlaceholder": "напр. Пляжний волейбол у суботу",
+    "descriptionPlaceholder": "Про що подія, що взяти з собою...",
+    "locationPlaceholder": "напр. Пляж Мі Кхе, біля вежі рятувальників 5",
+    "pricePlaceholder": "Безкоштовно",
+    "maxPeoplePlaceholder": "Без обмежень",
+    "contactPlaceholder": "Телефон, Telegram, Zalo...",
+    "free": "Безкоштовно",
+    "areYouGoing": "Ти підеш?"
   },
   "community": {
     "eyebrow": "Спільнота",
@@ -172,7 +240,9 @@
     "tagsHint": "Через кому: поради, житло, їжа",
     "editPost": "Редагувати пост",
     "deletePost": "Видалити пост",
-    "myPosts": "Мої пости"
+    "myPosts": "Мої пости",
+    "centerOnLocation": "До моєї геолокації",
+    "geotaggedCount": "{count} постів з геоміткою"
   },
   "profile": {
     "language": "Мова",
@@ -184,7 +254,14 @@
     "myEvents": "Мої події",
     "myPosts": "Мої пости",
     "editProfile": "Редагувати профіль",
-    "preferences": "Вподобання"
+    "preferences": "Вподобання",
+    "signedIn": "Авторизований",
+    "guest": "Гість",
+    "userSpace": "Простір {name}",
+    "telegramUser": "Користувач Telegram",
+    "telegramId": "Telegram ID",
+    "userId": "ID користувача",
+    "saved": "Збережено"
   },
   "chat": {
     "eyebrow": "AI Асистент",
@@ -201,7 +278,18 @@
     "translate": "Перекласти",
     "translating": "Переклад...",
     "noRooms": "Діалогів ще немає",
-    "startChat": "Почати чат"
+    "startChat": "Почати чат",
+    "fallbackError": "Вибачте, не зрозумів. Спробуйте ще раз.",
+    "statusOnline": "Онлайн",
+    "statusGuest": "Гість",
+    "authFailed": "Помилка авторизації. Спробуйте знову.",
+    "telegramRequired": "Відкрийте міні-додаток у Telegram для доступу до AI.",
+    "refreshSession": "Оновити сесію",
+    "comingSoon": "Незабаром",
+    "toolLabel": "Інструмент",
+    "noToolResults": "Поки немає результатів. Спробуйте іншу локацію або бюджет.",
+    "priceLabel": "Ціна",
+    "contactLabel": "Контакт"
   },
   "notifications": {
     "eyebrow": "Сповіщення",

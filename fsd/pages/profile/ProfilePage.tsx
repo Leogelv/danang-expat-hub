@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
+import clsx from 'clsx';
 import { Home, Mail, MapPin, ShoppingBag, User, UserCircle2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { AccentBadge, GlassCard } from '@/fsd/shared/ui/client';
@@ -25,6 +26,7 @@ export const ProfilePage: React.FC = () => {
   const tCommon = useTranslations('common');
   const tNav = useTranslations('nav');
   const { user, status } = useAuth();
+  const [isLangOpen, setIsLangOpen] = useState(false);
   const favoritesUrl = useMemo(() => {
     if (!user?.id) return '';
     return `/api/favorites?userId=${user.id}`;
@@ -35,10 +37,10 @@ export const ProfilePage: React.FC = () => {
   return (
     <AppShell
       eyebrow={tNav('profile')}
-      title={user?.first_name ? `${user.first_name}'s space` : t('editProfile')}
+      title={user?.first_name ? t('userSpace', { name: user.first_name }) : t('editProfile')}
       description={t('settings')}
       variant="midnight"
-      action={<AccentBadge label={status === 'authenticated' ? 'Signed in' : 'Guest'} tone="neutral" />}
+      action={<AccentBadge label={status === 'authenticated' ? t('signedIn') : t('guest')} tone="neutral" />}
     >
       {/* Профиль пользователя */}
       <GlassCard className="flex flex-col gap-4" padding="lg">
@@ -53,23 +55,23 @@ export const ProfilePage: React.FC = () => {
           </div>
           <div>
             <h3 className="text-xl font-semibold text-white">
-              {[user?.first_name, user?.last_name].filter(Boolean).join(' ') || 'Telegram User'}
+              {[user?.first_name, user?.last_name].filter(Boolean).join(' ') || t('telegramUser')}
             </h3>
             <p className="text-sm text-white/60">@{user?.username || 'no-username'}</p>
           </div>
         </div>
         <div className="grid gap-3 md:grid-cols-2">
-          <InfoRow icon={<User className="h-4 w-4" />} label="Telegram ID" value={user?.telegram_id ? String(user.telegram_id) : '—'} />
-          <InfoRow icon={<Mail className="h-4 w-4" />} label="User ID" value={user?.id || '—'} />
+          <InfoRow icon={<User className="h-4 w-4" />} label={t('telegramId')} value={user?.telegram_id ? String(user.telegram_id) : '—'} />
+          <InfoRow icon={<Mail className="h-4 w-4" />} label={t('userId')} value={user?.id || '—'} />
           <InfoRow icon={<MapPin className="h-4 w-4" />} label={t('timezone')} value={user?.timezone || 'UTC'} />
         </div>
       </GlassCard>
 
-      {/* Выбор языка */}
-      <GlassCard className="flex flex-col gap-3" padding="lg">
+      {/* Выбор языка — z-index поднимаем при открытом дропдауне чтобы он не перекрывался карточками ниже */}
+      <GlassCard className={clsx('flex flex-col gap-3', isLangOpen && 'relative z-30')} padding="lg">
         <h3 className="text-lg font-semibold text-white">{t('language')}</h3>
         <p className="text-sm text-white/60">{t('selectLanguage')}</p>
-        <LanguageSelector />
+        <LanguageSelector onOpenChange={setIsLangOpen} />
       </GlassCard>
 
       {/* Быстрые ссылки на пользовательские разделы */}
@@ -97,7 +99,7 @@ export const ProfilePage: React.FC = () => {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-white">{tCommon('favorites') || 'Favorites'}</h3>
+            <h3 className="text-lg font-semibold text-white">{tCommon('favorites')}</h3>
             <p className="text-sm text-white/60">{tCommon('noResults')}</p>
           </div>
           <AccentBadge label={`${favorites.length}`} tone="neutral" />
@@ -115,7 +117,7 @@ export const ProfilePage: React.FC = () => {
                   <h4 className="text-base font-semibold text-white">{item.title}</h4>
                   <p className="text-xs text-white/60">{item.source}</p>
                 </div>
-                <AccentBadge label="Saved" tone="neutral" />
+                <AccentBadge label={t('saved')} tone="neutral" />
               </div>
               {item.description && <p className="text-sm text-white/70">{item.description}</p>}
               <div className="flex flex-wrap items-center gap-2 text-xs text-white/60">

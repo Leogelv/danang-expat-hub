@@ -31,7 +31,9 @@
     "next": "Tiếp theo",
     "seeAll": "Xem tất cả",
     "viewAll": "Xem tất cả",
-    "noResults": "Không tìm thấy kết quả"
+    "noResults": "Không tìm thấy kết quả",
+    "favorites": "Yêu thích",
+    "loadingMap": "Đang tải bản đồ..."
   },
   "nav": {
     "home": "Trang chủ",
@@ -86,7 +88,28 @@
     "createCategory": "Danh mục",
     "createPrice": "Giá hàng tháng",
     "createLocation": "Vị trí",
-    "createImages": "Thêm ảnh"
+    "createImages": "Thêm ảnh",
+    "newListing": "Tin đăng mới",
+    "titleLabel": "Tiêu đề",
+    "descriptionLabel": "Mô tả",
+    "priceLabel": "Giá",
+    "currencyLabel": "Tiền tệ",
+    "categoryLabel": "Danh mục",
+    "locationLabel": "Vị trí",
+    "photosLabel": "Ảnh",
+    "photosComingSoon": "Sắp có",
+    "contactLabel": "Liên hệ",
+    "titlePlaceholder": "vd. Căn hộ 2PN hiện đại tại An Thượng",
+    "descriptionPlaceholder": "Mô tả bất động sản, tiện nghi, ngày nhận...",
+    "pricePlaceholder": "500",
+    "contactPlaceholder": "Điện thoại, Telegram, Zalo...",
+    "locationPlaceholder": "vd. An Thượng, Mỹ An, Ngũ Hành Sơn",
+    "sortNewest": "Mới nhất",
+    "sortPriceAsc": "Giá ↑",
+    "sortPriceDesc": "Giá ↓",
+    "listView": "Danh sách",
+    "mapView": "Bản đồ",
+    "onMapCount": "{count} trên bản đồ"
   },
   "market": {
     "eyebrow": "Chợ",
@@ -106,7 +129,20 @@
     "createCategory": "Danh mục",
     "createCondition": "Tình trạng",
     "createPrice": "Giá",
-    "createImages": "Thêm ảnh"
+    "createImages": "Thêm ảnh",
+    "sellItem": "Bán hàng",
+    "titleLabel": "Tiêu đề",
+    "descriptionLabel": "Mô tả",
+    "priceLabel": "Giá",
+    "currencyLabel": "Tiền tệ",
+    "categoryLabel": "Danh mục",
+    "conditionLabel": "Tình trạng",
+    "contactLabel": "Liên hệ",
+    "titlePlaceholder": "vd. MacBook Pro 14 inch 2024",
+    "descriptionPlaceholder": "Mô tả tình trạng, thông số, lý do bán...",
+    "pricePlaceholder": "250",
+    "contactPlaceholder": "Điện thoại, Telegram, Zalo...",
+    "conditionUsed": "Đã sử dụng"
   },
   "places": {
     "eyebrow": "Địa điểm",
@@ -123,7 +159,21 @@
     "createName": "Tên địa điểm",
     "createAddress": "Địa chỉ",
     "createCategory": "Danh mục",
-    "createDescription": "Mô tả địa điểm"
+    "createDescription": "Mô tả địa điểm",
+    "suggestTitle": "Đề xuất địa điểm",
+    "nameLabel": "Tên địa điểm",
+    "descriptionLabel": "Mô tả",
+    "categoryLabel": "Danh mục",
+    "priceLevelLabel": "Mức giá",
+    "addressLabel": "Địa chỉ",
+    "wifiLabel": "WiFi",
+    "veganLabel": "Thân thiện chay",
+    "suggestButton": "Đề xuất",
+    "namePlaceholder": "vd. Cộng Cà Phê An Thượng",
+    "descriptionPlaceholder": "Điểm đặc biệt, giờ mở cửa, mẹo...",
+    "addressPlaceholder": "vd. 12 An Thượng 4, Ngũ Hành Sơn",
+    "fastWifi": "WiFi nhanh",
+    "contactLabel": "Liên hệ"
   },
   "events": {
     "eyebrow": "Sự kiện",
@@ -151,7 +201,25 @@
     "createDescription": "Mô tả sự kiện",
     "createCategory": "Danh mục",
     "createLocation": "Địa điểm",
-    "createDate": "Ngày và giờ"
+    "createDate": "Ngày và giờ",
+    "createEventTitle": "Tạo sự kiện",
+    "titleLabel": "Tiêu đề",
+    "descriptionLabel": "Mô tả",
+    "categoryLabel": "Danh mục",
+    "startsAtLabel": "Bắt đầu",
+    "endsAtLabel": "Kết thúc",
+    "locationLabel": "Địa điểm",
+    "priceLabel": "Giá (tùy chọn)",
+    "maxPeopleLabel": "Số người tối đa",
+    "organizerLabel": "Liên hệ ban tổ chức",
+    "titlePlaceholder": "vd. Bóng chuyền bãi biển thứ Bảy",
+    "descriptionPlaceholder": "Sự kiện về gì, cần mang gì...",
+    "locationPlaceholder": "vd. Bãi biển Mỹ Khê, gần chòi cứu hộ 5",
+    "pricePlaceholder": "Miễn phí",
+    "maxPeoplePlaceholder": "Không giới hạn",
+    "contactPlaceholder": "Điện thoại, Telegram, Zalo...",
+    "free": "Miễn phí",
+    "areYouGoing": "Bạn có đi không?"
   },
   "community": {
     "eyebrow": "Cộng đồng",
@@ -172,7 +240,9 @@
     "tagsHint": "Phân cách bằng dấu phẩy: mẹo, nhà, ăn",
     "editPost": "Sửa bài viết",
     "deletePost": "Xóa bài viết",
-    "myPosts": "Bài viết của tôi"
+    "myPosts": "Bài viết của tôi",
+    "centerOnLocation": "Về vị trí của tôi",
+    "geotaggedCount": "{count} bài viết có vị trí"
   },
   "profile": {
     "language": "Ngôn ngữ",
@@ -184,7 +254,14 @@
     "myEvents": "Sự kiện của tôi",
     "myPosts": "Bài viết của tôi",
     "editProfile": "Chỉnh sửa hồ sơ",
-    "preferences": "Tùy chọn"
+    "preferences": "Tùy chọn",
+    "signedIn": "Đã đăng nhập",
+    "guest": "Khách",
+    "userSpace": "Không gian của {name}",
+    "telegramUser": "Người dùng Telegram",
+    "telegramId": "Telegram ID",
+    "userId": "ID người dùng",
+    "saved": "Đã lưu"
   },
   "chat": {
     "eyebrow": "AI Trợ lý",
@@ -201,7 +278,18 @@
     "translate": "Dịch",
     "translating": "Đang dịch...",
     "noRooms": "Chưa có cuộc trò chuyện nào",
-    "startChat": "Bắt đầu chat"
+    "startChat": "Bắt đầu chat",
+    "fallbackError": "Xin lỗi, tôi không hiểu. Hãy thử lại.",
+    "statusOnline": "Trực tuyến",
+    "statusGuest": "Khách",
+    "authFailed": "Xác thực thất bại. Hãy thử lại.",
+    "telegramRequired": "Mở ứng dụng mini trong Telegram để sử dụng AI.",
+    "refreshSession": "Làm mới phiên",
+    "comingSoon": "Sắp ra mắt",
+    "toolLabel": "Công cụ",
+    "noToolResults": "Chưa có kết quả. Thử địa điểm hoặc ngân sách khác.",
+    "priceLabel": "Giá",
+    "contactLabel": "Liên hệ"
   },
   "notifications": {
     "eyebrow": "Thông báo",

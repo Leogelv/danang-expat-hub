@@ -31,7 +31,9 @@
     "next": "Далее",
     "seeAll": "Показать все",
     "viewAll": "Смотреть все",
-    "noResults": "Результатов не найдено"
+    "noResults": "Результатов не найдено",
+    "favorites": "Избранное",
+    "loadingMap": "Загрузка карты..."
   },
   "nav": {
     "home": "Главная",
@@ -86,7 +88,28 @@
     "createCategory": "Категория",
     "createPrice": "Цена за месяц",
     "createLocation": "Расположение",
-    "createImages": "Добавить фото"
+    "createImages": "Добавить фото",
+    "newListing": "Новое объявление",
+    "titleLabel": "Название",
+    "descriptionLabel": "Описание",
+    "priceLabel": "Цена",
+    "currencyLabel": "Валюта",
+    "categoryLabel": "Категория",
+    "locationLabel": "Расположение",
+    "photosLabel": "Фото",
+    "photosComingSoon": "Скоро",
+    "contactLabel": "Контакт",
+    "titlePlaceholder": "напр. Современная 2-комн. квартира в Ан Тхыонг",
+    "descriptionPlaceholder": "Опишите объект, удобства, дату заселения...",
+    "pricePlaceholder": "500",
+    "contactPlaceholder": "Телефон, Telegram, Zalo...",
+    "locationPlaceholder": "напр. Ан Тхыонг, Ми Ан, Нгу Хань Шон",
+    "sortNewest": "Новые",
+    "sortPriceAsc": "Цена ↑",
+    "sortPriceDesc": "Цена ↓",
+    "listView": "Список",
+    "mapView": "Карта",
+    "onMapCount": "{count} на карте"
   },
   "market": {
     "eyebrow": "Маркет",
@@ -106,7 +129,20 @@
     "createCategory": "Категория",
     "createCondition": "Состояние",
     "createPrice": "Цена",
-    "createImages": "Добавить фото"
+    "createImages": "Добавить фото",
+    "sellItem": "Продать товар",
+    "titleLabel": "Название",
+    "descriptionLabel": "Описание",
+    "priceLabel": "Цена",
+    "currencyLabel": "Валюта",
+    "categoryLabel": "Категория",
+    "conditionLabel": "Состояние",
+    "contactLabel": "Контакт",
+    "titlePlaceholder": "напр. MacBook Pro 14 дюймов 2024",
+    "descriptionPlaceholder": "Опишите состояние, характеристики, причину продажи...",
+    "pricePlaceholder": "250",
+    "contactPlaceholder": "Телефон, Telegram, Zalo...",
+    "conditionUsed": "Б/у"
   },
   "places": {
     "eyebrow": "Места",
@@ -123,7 +159,21 @@
     "createName": "Название места",
     "createAddress": "Адрес",
     "createCategory": "Категория",
-    "createDescription": "Описание места"
+    "createDescription": "Описание места",
+    "suggestTitle": "Предложить место",
+    "nameLabel": "Название места",
+    "descriptionLabel": "Описание",
+    "categoryLabel": "Категория",
+    "priceLevelLabel": "Уровень цен",
+    "addressLabel": "Адрес",
+    "wifiLabel": "WiFi",
+    "veganLabel": "Веган-френдли",
+    "suggestButton": "Предложить",
+    "namePlaceholder": "напр. Cong Ca Phe An Thuong",
+    "descriptionPlaceholder": "Чем это место особенное, часы работы, советы...",
+    "addressPlaceholder": "напр. 12 An Thuong 4, Ngu Hanh Son",
+    "fastWifi": "Быстрый WiFi",
+    "contactLabel": "Контакт"
   },
   "events": {
     "eyebrow": "События",
@@ -151,7 +201,25 @@
     "createDescription": "Описание события",
     "createCategory": "Категория",
     "createLocation": "Место проведения",
-    "createDate": "Дата и время"
+    "createDate": "Дата и время",
+    "createEventTitle": "Создать событие",
+    "titleLabel": "Название",
+    "descriptionLabel": "Описание",
+    "categoryLabel": "Категория",
+    "startsAtLabel": "Начало",
+    "endsAtLabel": "Окончание",
+    "locationLabel": "Место",
+    "priceLabel": "Цена (необязательно)",
+    "maxPeopleLabel": "Макс. участников",
+    "organizerLabel": "Контакт организатора",
+    "titlePlaceholder": "напр. Пляжный волейбол в субботу",
+    "descriptionPlaceholder": "О чём событие, что взять с собой...",
+    "locationPlaceholder": "напр. Пляж Ми Кхе, у вышки спасателей 5",
+    "pricePlaceholder": "Бесплатно",
+    "maxPeoplePlaceholder": "Без ограничений",
+    "contactPlaceholder": "Телефон, Telegram, Zalo...",
+    "free": "Бесплатно",
+    "areYouGoing": "Ты идёшь?"
   },
   "community": {
     "eyebrow": "Сообщество",
@@ -172,7 +240,9 @@
     "tagsHint": "Через запятую: советы, жильё, еда",
     "editPost": "Редактировать пост",
     "deletePost": "Удалить пост",
-    "myPosts": "Мои посты"
+    "myPosts": "Мои посты",
+    "centerOnLocation": "К моей геолокации",
+    "geotaggedCount": "{count} постов с геометкой"
   },
   "profile": {
     "language": "Язык",
@@ -184,7 +254,14 @@
     "myEvents": "Мои события",
     "myPosts": "Мои посты",
     "editProfile": "Редактировать профиль",
-    "preferences": "Предпочтения"
+    "preferences": "Предпочтения",
+    "signedIn": "Авторизован",
+    "guest": "Гость",
+    "userSpace": "Пространство {name}",
+    "telegramUser": "Пользователь Telegram",
+    "telegramId": "Telegram ID",
+    "userId": "ID пользователя",
+    "saved": "Сохранено"
   },
   "chat": {
     "eyebrow": "AI Ассистент",
@@ -201,7 +278,18 @@
     "translate": "Перевести",
     "translating": "Перевод...",
     "noRooms": "Диалогов пока нет",
-    "startChat": "Начать чат"
+    "startChat": "Начать чат",
+    "fallbackError": "Извините, не понял. Попробуйте ещё раз.",
+    "statusOnline": "Онлайн",
+    "statusGuest": "Гость",
+    "authFailed": "Ошибка авторизации. Попробуйте снова.",
+    "telegramRequired": "Откройте мини-приложение в Telegram для доступа к AI.",
+    "refreshSession": "Обновить сессию",
+    "comingSoon": "Скоро",
+    "toolLabel": "Инструмент",
+    "noToolResults": "Пока нет результатов. Попробуйте другую локацию или бюджет.",
+    "priceLabel": "Цена",
+    "contactLabel": "Контакт"
   },
   "notifications": {
     "eyebrow": "Уведомления",

@@ -107,68 +107,71 @@ export const PlacesPage: React.FC = () => {
   );
 };
 
-const PlaceCard: React.FC<{ place: Place; onClick: () => void }> = ({ place, onClick }) => (
-  <GlassCard
-    className="flex h-full flex-col gap-3 cursor-pointer hover:border-white/20 transition-colors"
-    padding="md"
-    onClick={onClick}
-  >
-    {/* Image */}
-    {place.images && place.images.length > 0 && (
-      <div onClick={(e) => e.stopPropagation()}>
-        <ImageCarousel images={place.images} alt={place.name} aspectRatio="16/9" />
-      </div>
-    )}
+const PlaceCard: React.FC<{ place: Place; onClick: () => void }> = ({ place, onClick }) => {
+  const t = useTranslations('places');
+  return (
+    <GlassCard
+      className="flex h-full flex-col gap-3 cursor-pointer hover:border-white/20 transition-colors"
+      padding="md"
+      onClick={onClick}
+    >
+      {/* Image */}
+      {place.images && place.images.length > 0 && (
+        <div onClick={(e) => e.stopPropagation()}>
+          <ImageCarousel images={place.images} alt={place.name} aspectRatio="16/9" />
+        </div>
+      )}
 
-    <div className="flex items-start justify-between gap-3">
-      <div>
-        <h3 className="text-base font-semibold text-white">{place.name}</h3>
-        <p className="text-xs text-white/60">{place.category || 'Spot'}</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-base font-semibold text-white">{place.name}</h3>
+          <p className="text-xs text-white/60">{place.category || 'Spot'}</p>
+        </div>
+        <AccentBadge label={place.price_level || '$$'} tone="neutral" />
       </div>
-      <AccentBadge label={place.price_level || '$$'} tone="neutral" />
-    </div>
-    {place.description && <p className="text-sm text-white/70 line-clamp-2">{place.description}</p>}
-    <div className="flex flex-wrap items-center gap-2 text-xs text-white/60 mt-auto">
-      {place.address && (
-        <span className="flex items-center gap-1">
-          <MapPin className="h-3 w-3" />
-          {place.address}
-        </span>
-      )}
-      {place.rating && (
-        <span className="flex items-center gap-1 text-yellow-400">
-          <Star className="h-3 w-3 fill-current" />
-          {place.rating}
-        </span>
-      )}
-      {place.wifi && (
-        <span className="flex items-center gap-1 text-cyan-400">
-          <Wifi className="h-3 w-3" />
-          WiFi
-        </span>
-      )}
-      {place.vegan && (
-        <span className="flex items-center gap-1 text-green-400">
-          <Leaf className="h-3 w-3" />
-          Vegan
-        </span>
-      )}
-    </div>
-    {place.tags && place.tags.length > 0 && (
-      <div className="flex flex-wrap gap-2">
-        {place.tags.slice(0, 3).map((tag) => (
-          <span
-            key={tag}
-            className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[11px] text-white/70"
-          >
-            {tag}
+      {place.description && <p className="text-sm text-white/70 line-clamp-2">{place.description}</p>}
+      <div className="flex flex-wrap items-center gap-2 text-xs text-white/60 mt-auto">
+        {place.address && (
+          <span className="flex items-center gap-1">
+            <MapPin className="h-3 w-3" />
+            {place.address}
           </span>
-        ))}
-        {place.tags.length > 3 && <span className="text-[11px] text-white/40">+{place.tags.length - 3}</span>}
+        )}
+        {place.rating && (
+          <span className="flex items-center gap-1 text-yellow-400">
+            <Star className="h-3 w-3 fill-current" />
+            {place.rating}
+          </span>
+        )}
+        {place.wifi && (
+          <span className="flex items-center gap-1 text-cyan-400">
+            <Wifi className="h-3 w-3" />
+            {t('wifi')}
+          </span>
+        )}
+        {place.vegan && (
+          <span className="flex items-center gap-1 text-green-400">
+            <Leaf className="h-3 w-3" />
+            {t('vegan')}
+          </span>
+        )}
       </div>
-    )}
-  </GlassCard>
-);
+      {place.tags && place.tags.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {place.tags.slice(0, 3).map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[11px] text-white/70"
+            >
+              {tag}
+            </span>
+          ))}
+          {place.tags.length > 3 && <span className="text-[11px] text-white/40">+{place.tags.length - 3}</span>}
+        </div>
+      )}
+    </GlassCard>
+  );
+};
 
 // Detail Sheet
 const PlaceDetailSheet: React.FC<{
@@ -176,6 +179,7 @@ const PlaceDetailSheet: React.FC<{
   isOpen: boolean;
   onClose: () => void;
 }> = ({ place, isOpen, onClose }) => {
+  const t = useTranslations('places');
   if (!isOpen || !place) return null;
 
   return (
@@ -217,13 +221,13 @@ const PlaceDetailSheet: React.FC<{
             {place.wifi && (
               <div className="flex items-center gap-1.5 text-cyan-400">
                 <Wifi className="h-5 w-5" />
-                <span>Fast WiFi</span>
+                <span>{t('fastWifi')}</span>
               </div>
             )}
             {place.vegan && (
               <div className="flex items-center gap-1.5 text-green-400">
                 <Leaf className="h-5 w-5" />
-                <span>Vegan options</span>
+                <span>{t('vegan')}</span>
               </div>
             )}
           </div>
@@ -257,7 +261,7 @@ const PlaceDetailSheet: React.FC<{
               rel="noopener noreferrer"
               className="block w-full py-4 rounded-xl bg-teal-500 text-white text-center font-semibold hover:bg-teal-400 transition-colors"
             >
-              Contact: {place.contact}
+              {t('contactLabel')}: {place.contact}
             </a>
           )}
         </div>

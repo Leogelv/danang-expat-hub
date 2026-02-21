@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 // Динамический импорт MapLibre (не работает с SSR)
@@ -72,7 +73,8 @@ const ListingPopup: React.FC<{
   listing: MapListing;
   onClose: () => void;
   onClick: () => void;
-}> = ({ listing, onClose, onClick }) => (
+  perMonth: string;
+}> = ({ listing, onClose, onClick, perMonth }) => (
   <div
     className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 bg-slate-800 border border-white/15 rounded-xl shadow-2xl overflow-hidden cursor-pointer"
     onClick={(e) => { e.stopPropagation(); onClick(); }}
@@ -91,7 +93,7 @@ const ListingPopup: React.FC<{
       <p className="text-sm font-semibold text-white truncate">{listing.title}</p>
       <div className="flex items-center justify-between mt-1">
         <span className="text-orange-400 text-sm font-bold">
-          {listing.currency || 'USD'} {listing.price}/mo
+          {listing.currency || 'USD'} {listing.price}{perMonth}
         </span>
         <span className="text-[11px] text-white/50">{listing.location}</span>
       </div>
@@ -107,6 +109,7 @@ export const RentalsMap: React.FC<RentalsMapProps> = ({
   selectedId,
   className,
 }) => {
+  const t = useTranslations('rentals');
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const [viewState, setViewState] = useState({
@@ -170,6 +173,7 @@ export const RentalsMap: React.FC<RentalsMapProps> = ({
                   listing={hoveredListing}
                   onClose={() => setHoveredId(null)}
                   onClick={() => onListingClick?.(hoveredListing)}
+                  perMonth={t('perMonth')}
                 />
               )}
             </div>
@@ -179,7 +183,7 @@ export const RentalsMap: React.FC<RentalsMapProps> = ({
 
       {/* Счётчик на карте */}
       <div className="absolute top-3 left-3 px-3 py-1.5 bg-black/60 backdrop-blur-sm rounded-full text-xs text-white/80">
-        {geoListings.length} on map
+        {t('onMapCount', { count: geoListings.length })}
       </div>
     </div>
   );

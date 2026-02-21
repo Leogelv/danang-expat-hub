@@ -91,7 +91,7 @@ export const ChatPage: React.FC = () => {
       const assistantMessage: ChatMessage = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: payload.message ?? 'Sorry, I did not get that. Try again.',
+        content: payload.message ?? t('fallbackError'),
       };
 
       const toolMessages: ChatMessage[] = (payload.toolCalls || []).map((toolCall: ToolCallSummary) => ({
@@ -108,7 +108,7 @@ export const ChatPage: React.FC = () => {
         {
           id: crypto.randomUUID(),
           role: 'assistant',
-          content: err instanceof Error ? err.message : 'Something went wrong.',
+          content: err instanceof Error ? err.message : tCommon('error'),
         },
       ]);
     } finally {
@@ -123,7 +123,7 @@ export const ChatPage: React.FC = () => {
           eyebrow={t('eyebrow')}
           title={t('title')}
           description={t('description')}
-          action={<AccentBadge label={status === 'authenticated' ? 'Online' : 'Guest'} tone="ember" />}
+          action={<AccentBadge label={status === 'authenticated' ? t('statusOnline') : t('statusGuest')} tone="ember" />}
         />
 
       {/* Табы AI / P2P */}
@@ -183,12 +183,12 @@ export const ChatPage: React.FC = () => {
           <div className="flex flex-col gap-3 border-t border-white/10 pt-4">
             {status === 'error' && (
               <div className="rounded-2xl border border-rose-500/40 bg-rose-500/15 px-4 py-3 text-sm text-rose-100">
-                {error || 'Authentication failed. Try again.'}
+                {error || t('authFailed')}
               </div>
             )}
             {status === 'unauthenticated' && (
               <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white/80">
-                Open the mini app inside Telegram to unlock full AI features.
+                {t('telegramRequired')}
               </div>
             )}
             <div className="flex flex-col gap-2">
@@ -205,7 +205,7 @@ export const ChatPage: React.FC = () => {
                   onClick={() => refresh()}
                   className="text-xs text-white/50 hover:text-white"
                 >
-                  Refresh session
+                  {t('refreshSession')}
                 </button>
                 <ActionButton onClick={sendMessage} disabled={!input.trim() || isSending}>
                   <Sparkles className="h-4 w-4" />
@@ -224,7 +224,7 @@ export const ChatPage: React.FC = () => {
           <div className="text-center">
             <h3 className="text-lg font-semibold text-white">{t('p2pChat')}</h3>
             <p className="mt-2 text-sm text-white/50">
-              Coming soon
+              {t('comingSoon')}
             </p>
           </div>
           <p className="text-xs text-white/30">{t('noRooms')}</p>
@@ -247,13 +247,14 @@ function buildApiMessages(messages: ChatMessage[]) {
 }
 
 const ToolCallPanel: React.FC<{ toolCall: ToolCallSummary }> = ({ toolCall }) => {
+  const t = useTranslations('chat');
   const results = toolCall.result?.results ?? [];
   const error = toolCall.result?.error;
 
   return (
     <GlassCard className="space-y-3" padding="md">
       <div className="flex items-center justify-between text-xs uppercase tracking-[0.2em] text-white/60">
-        <span>Tool</span>
+        <span>{t('toolLabel')}</span>
         <span>{toolCall.name}</span>
       </div>
       {error && (
@@ -262,7 +263,7 @@ const ToolCallPanel: React.FC<{ toolCall: ToolCallSummary }> = ({ toolCall }) =>
         </div>
       )}
       {results.length === 0 ? (
-        <div className="text-sm text-white/70">No matches yet. Try a new location or budget.</div>
+        <div className="text-sm text-white/70">{t('noToolResults')}</div>
       ) : (
         <div className="space-y-3">
           {results.map((item) => (
@@ -282,8 +283,8 @@ const ToolCallPanel: React.FC<{ toolCall: ToolCallSummary }> = ({ toolCall }) =>
                 <p className="mt-2 text-xs text-white/70">{item.description}</p>
               )}
               <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-white/70">
-                {item.price ? <span>Price: ${item.price}</span> : null}
-                {item.contact ? <span>Contact: {item.contact}</span> : null}
+                {item.price ? <span>{t('priceLabel')}: ${item.price}</span> : null}
+                {item.contact ? <span>{t('contactLabel')}: {item.contact}</span> : null}
               </div>
             </div>
           ))}

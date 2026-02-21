@@ -146,7 +146,7 @@ export const EventDetailSheet: React.FC<EventDetailSheetProps> = ({
               {event.price === 0 || event.price == null ? (
                 <div className="flex items-center gap-2 px-3 py-2 bg-emerald-500/10 rounded-xl flex-1">
                   <DollarSign className="w-4 h-4 text-emerald-400" />
-                  <span className="text-sm text-emerald-300 font-medium">Free</span>
+                  <span className="text-sm text-emerald-300 font-medium">{t('free')}</span>
                 </div>
               ) : null}
               {event.max_participants && (
@@ -170,7 +170,7 @@ export const EventDetailSheet: React.FC<EventDetailSheetProps> = ({
           {/* Organizer Contact */}
           {event.organizer_contact && (
             <div className="mb-5 p-3 bg-white/5 rounded-xl">
-              <p className="text-xs text-white/40 mb-1">Organizer</p>
+              <p className="text-xs text-white/40 mb-1">{t('organizer')}</p>
               <p className="text-sm text-cyan-300">{event.organizer_contact}</p>
             </div>
           )}
@@ -178,7 +178,7 @@ export const EventDetailSheet: React.FC<EventDetailSheetProps> = ({
           {/* RSVP кнопки */}
           {userId && (
             <div className="border-t border-white/10 pt-4">
-              <p className="text-xs text-white/40 mb-3">Are you going?</p>
+              <p className="text-xs text-white/40 mb-3">{t('areYouGoing')}</p>
               <RsvpButton
                 eventId={event.id}
                 userId={userId}
