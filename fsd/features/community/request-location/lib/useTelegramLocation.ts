@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { postEvent, on } from '@telegram-apps/sdk-react';
 
 export interface LocationData {
   latitude: number;
@@ -17,7 +16,7 @@ export interface UseTelegramLocationResult {
   clearLocation: () => void;
 }
 
-// Хук для запроса геолокации через Telegram Mini App API
+// Хук для запроса геолокации через Telegram Mini App LocationManager API
 export function useTelegramLocation(): UseTelegramLocationResult {
   const [location, setLocation] = useState<LocationData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,14 +27,21 @@ export function useTelegramLocation(): UseTelegramLocationResult {
     setError(null);
 
     try {
-      // Проверяем доступность Telegram WebApp
-      if (typeof window === 'undefined' || !(window as any).Telegram?.WebApp) {
-        // Fallback на браузерную геолокацию
-        return await requestBrowserLocation();
+      // Пробуем нативный Telegram LocationManager API
+      const tgWebApp = (window as any)?.Telegram?.WebApp;
+      if (tgWebApp?.LocationManager) {
+        const loc = await requestViaLocationManager(tgWebApp.LocationManager);
+        if (loc) {
+          setLocation(loc);
+          setIsLoading(false);
+          return loc;
+        }
       }
 
-      // Запрашиваем геолокацию через Telegram
-      return await requestTelegramLocation();
+      // Fallback на браузерную Geolocation API
+      const loc = await requestBrowserLocation();
+      if (loc) setLocation(loc);
+      return loc;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to get location';
       setError(errorMessage);
@@ -45,40 +51,39 @@ export function useTelegramLocation(): UseTelegramLocationResult {
     }
   }, []);
 
-  // Запрос через Telegram Mini App API
-  const requestTelegramLocation = (): Promise<LocationData | null> => {
+  // Запрос через Telegram LocationManager (нативный API)
+  const requestViaLocationManager = (lm: any): Promise<LocationData | null> => {
     return new Promise((resolve) => {
-      const timeout = setTimeout(() => {
-        setError('Location request timeout');
-        resolve(null);
-      }, 30000);
+      const timeout = setTimeout(() => resolve(null), 15000);
 
-      // Слушаем событие location_requested
-      const cleanup = on('location_requested', (payload: any) => {
-        clearTimeout(timeout);
-
-        if (payload && payload.location_available !== false) {
-          const loc: LocationData = {
-            latitude: payload.latitude,
-            longitude: payload.longitude,
-            accuracy: payload.horizontal_accuracy,
-          };
-          setLocation(loc);
-          resolve(loc);
-        } else {
-          setError('Location not available');
+      // Инициализируем LocationManager если ещё не инициализирован
+      const doGetLocation = () => {
+        if (!lm.isLocationAvailable) {
+          clearTimeout(timeout);
           resolve(null);
+          return;
         }
-      });
 
-      // Отправляем запрос на геолокацию
-      try {
-        postEvent('web_app_request_location');
-      } catch {
-        clearTimeout(timeout);
-        cleanup();
-        // Fallback на браузер если postEvent не работает
-        requestBrowserLocation().then(resolve);
+        lm.getLocation((data: any) => {
+          clearTimeout(timeout);
+          if (data && data.latitude != null && data.longitude != null) {
+            resolve({
+              latitude: data.latitude,
+              longitude: data.longitude,
+              accuracy: data.horizontal_accuracy,
+            });
+          } else {
+            resolve(null);
+          }
+        });
+      };
+
+      if (lm.isInited) {
+        doGetLocation();
+      } else {
+        lm.init(() => {
+          doGetLocation();
+        });
       }
     });
   };
@@ -86,7 +91,7 @@ export function useTelegramLocation(): UseTelegramLocationResult {
   // Fallback на браузерную Geolocation API
   const requestBrowserLocation = (): Promise<LocationData | null> => {
     return new Promise((resolve) => {
-      if (!navigator.geolocation) {
+      if (typeof window === 'undefined' || !navigator.geolocation) {
         setError('Geolocation not supported');
         resolve(null);
         return;
@@ -94,13 +99,11 @@ export function useTelegramLocation(): UseTelegramLocationResult {
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const loc: LocationData = {
+          resolve({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             accuracy: position.coords.accuracy,
-          };
-          setLocation(loc);
-          resolve(loc);
+          });
         },
         (err) => {
           setError(err.message);

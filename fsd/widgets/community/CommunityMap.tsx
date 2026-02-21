@@ -3,6 +3,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import clsx from 'clsx';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import { useTelegramLocation, type LocationData } from '@/fsd/features/community';
 
 // Динамический импорт MapLibre (не работает с SSR)
@@ -99,9 +100,9 @@ export const CommunityMap: React.FC<CommunityMapProps> = ({
     zoom: DEFAULT_ZOOM,
   });
 
-  // Центрируем на пользователе если есть
+  // Центрируем на пользователе если есть валидные координаты
   useEffect(() => {
-    if (userLocation) {
+    if (userLocation && userLocation.latitude != null && userLocation.longitude != null) {
       setViewState((prev) => ({
         ...prev,
         latitude: userLocation.latitude,
@@ -120,8 +121,8 @@ export const CommunityMap: React.FC<CommunityMapProps> = ({
         mapStyle={MAP_STYLE}
         attributionControl={false}
       >
-        {/* Маркер пользователя */}
-        {userLocation && (
+        {/* Маркер пользователя — guard от undefined координат */}
+        {userLocation && userLocation.latitude != null && userLocation.longitude != null && (
           <Marker
             latitude={userLocation.latitude}
             longitude={userLocation.longitude}
@@ -152,7 +153,7 @@ export const CommunityMap: React.FC<CommunityMapProps> = ({
       <button
         type="button"
         onClick={() => {
-          if (userLocation) {
+          if (userLocation && userLocation.latitude != null && userLocation.longitude != null) {
             setViewState((prev) => ({
               ...prev,
               latitude: userLocation.latitude,

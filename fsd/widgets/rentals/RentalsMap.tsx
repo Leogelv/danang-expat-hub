@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import clsx from 'clsx';
+import 'maplibre-gl/dist/maplibre-gl.css';
 
 // Динамический импорт MapLibre (не работает с SSR)
 const Map = dynamic(
