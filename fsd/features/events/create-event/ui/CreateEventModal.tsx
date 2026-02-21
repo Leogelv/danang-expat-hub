@@ -42,6 +42,7 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
   const [maxParticipants, setMaxParticipants] = useState('');
   const [organizerContact, setOrganizerContact] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Сброс формы
   const resetForm = () => {
@@ -54,13 +55,15 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
     setPrice('');
     setMaxParticipants('');
     setOrganizerContact('');
+    setErrorMessage(null);
   };
 
-  // Сабмит формы
+  // Сабмит формы с обработкой ошибок
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !description.trim() || !startsAt || !organizerContact.trim()) return;
 
+    setErrorMessage(null);
     setIsSubmitting(true);
     try {
       await onSubmit({
@@ -76,6 +79,8 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
       });
       resetForm();
       onClose();
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : tCommon('error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -120,7 +125,7 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
           <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
               <CalendarPlus className="w-5 h-5 text-cyan-400" />
-              <h3 className="text-lg font-semibold text-white">Create Event</h3>
+              <h3 className="text-lg font-semibold text-white">{t('createEventTitle')}</h3>
             </div>
             <button
               type="button"
@@ -135,35 +140,35 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
           <form onSubmit={handleSubmit} className="p-5 space-y-4 overflow-y-auto flex-1">
             {/* Title */}
             <div>
-              <label className="block text-sm text-white/70 mb-1.5">Title</label>
+              <label className="block text-sm text-white/70 mb-1.5">{t('titleLabel')}</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
                 maxLength={200}
-                placeholder="e.g. Beach Volleyball Saturday"
+                placeholder={t('titlePlaceholder')}
                 className={inputCls}
               />
             </div>
 
             {/* Description */}
             <div>
-              <label className="block text-sm text-white/70 mb-1.5">Description</label>
+              <label className="block text-sm text-white/70 mb-1.5">{t('descriptionLabel')}</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
                 rows={3}
                 maxLength={5000}
-                placeholder="What is the event about, what to bring..."
+                placeholder={t('descriptionPlaceholder')}
                 className={clsx(inputCls, 'resize-none')}
               />
             </div>
 
             {/* Category */}
             <div>
-              <label className="block text-sm text-white/70 mb-1.5">Category</label>
+              <label className="block text-sm text-white/70 mb-1.5">{t('categoryLabel')}</label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as CreateEventData['category'])}
@@ -180,7 +185,7 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
               <div className="flex-1">
                 <label className="block text-sm text-white/70 mb-1.5">
                   <Clock className="w-3.5 h-3.5 inline-block mr-1" />
-                  Starts at
+                  {t('startsAtLabel')}
                 </label>
                 <input
                   type="datetime-local"
@@ -193,7 +198,7 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
               <div className="flex-1">
                 <label className="block text-sm text-white/70 mb-1.5">
                   <Clock className="w-3.5 h-3.5 inline-block mr-1" />
-                  Ends at
+                  {t('endsAtLabel')}
                 </label>
                 <input
                   type="datetime-local"
@@ -208,13 +213,13 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
             <div>
               <label className="block text-sm text-white/70 mb-1.5">
                 <MapPin className="w-3.5 h-3.5 inline-block mr-1" />
-                Location
+                {t('locationLabel')}
               </label>
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                placeholder="e.g. My Khe Beach, near lifeguard tower 5"
+                placeholder={t('locationPlaceholder')}
                 className={inputCls}
               />
             </div>
@@ -224,28 +229,28 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
               <div className="flex-1">
                 <label className="block text-sm text-white/70 mb-1.5">
                   <DollarSign className="w-3.5 h-3.5 inline-block mr-1" />
-                  Price (optional)
+                  {t('priceLabel')}
                 </label>
                 <input
                   type="number"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   min={0}
-                  placeholder="Free"
+                  placeholder={t('pricePlaceholder')}
                   className={inputCls}
                 />
               </div>
               <div className="flex-1">
                 <label className="block text-sm text-white/70 mb-1.5">
                   <Users className="w-3.5 h-3.5 inline-block mr-1" />
-                  Max people
+                  {t('maxPeopleLabel')}
                 </label>
                 <input
                   type="number"
                   value={maxParticipants}
                   onChange={(e) => setMaxParticipants(e.target.value)}
                   min={1}
-                  placeholder="Unlimited"
+                  placeholder={t('maxPeoplePlaceholder')}
                   className={inputCls}
                 />
               </div>
@@ -255,17 +260,24 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
             <div>
               <label className="block text-sm text-white/70 mb-1.5">
                 <Phone className="w-3.5 h-3.5 inline-block mr-1" />
-                Organizer Contact
+                {t('organizerLabel')}
               </label>
               <input
                 type="text"
                 value={organizerContact}
                 onChange={(e) => setOrganizerContact(e.target.value)}
                 required
-                placeholder="Phone, Telegram, Zalo..."
+                placeholder={t('contactPlaceholder')}
                 className={inputCls}
               />
             </div>
+
+            {/* Сообщение об ошибке */}
+            {errorMessage && (
+              <div className="text-sm text-rose-400 bg-rose-500/10 px-3 py-2 rounded-xl">
+                {errorMessage}
+              </div>
+            )}
 
             {/* Submit */}
             <div className="flex gap-3 pt-2">

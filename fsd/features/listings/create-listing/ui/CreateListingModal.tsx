@@ -27,7 +27,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
   onClose,
   onSubmit,
 }) => {
-  const t = useTranslations('listings');
+  const t = useTranslations('rentals');
   const tCommon = useTranslations('common');
 
   const [title, setTitle] = useState('');
@@ -38,6 +38,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
   const [location, setLocation] = useState('');
   const [contact, setContact] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Сброс формы
   const resetForm = () => {
@@ -48,13 +49,15 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
     setCategory('apartment');
     setLocation('');
     setContact('');
+    setErrorMessage(null);
   };
 
-  // Сабмит формы
+  // Сабмит формы с обработкой ошибок
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !description.trim() || !price || !contact.trim()) return;
 
+    setErrorMessage(null);
     setIsSubmitting(true);
     try {
       await onSubmit({
@@ -68,6 +71,8 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
       });
       resetForm();
       onClose();
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : tCommon('error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -110,7 +115,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
           <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
               <Home className="w-5 h-5 text-cyan-400" />
-              <h3 className="text-lg font-semibold text-white">New Listing</h3>
+              <h3 className="text-lg font-semibold text-white">{t('newListing')}</h3>
             </div>
             <button
               type="button"
@@ -125,28 +130,28 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
           <form onSubmit={handleSubmit} className="p-5 space-y-4 overflow-y-auto flex-1">
             {/* Title */}
             <div>
-              <label className="block text-sm text-white/70 mb-1.5">Title</label>
+              <label className="block text-sm text-white/70 mb-1.5">{t('titleLabel')}</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
                 maxLength={200}
-                placeholder="e.g. Modern 2BR Apartment in An Thuong"
+                placeholder={t('titlePlaceholder')}
                 className={inputCls}
               />
             </div>
 
             {/* Description */}
             <div>
-              <label className="block text-sm text-white/70 mb-1.5">Description</label>
+              <label className="block text-sm text-white/70 mb-1.5">{t('descriptionLabel')}</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
                 rows={3}
                 maxLength={5000}
-                placeholder="Describe the property, amenities, move-in date..."
+                placeholder={t('descriptionPlaceholder')}
                 className={clsx(inputCls, 'resize-none')}
               />
             </div>
@@ -156,7 +161,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
               <div className="flex-1">
                 <label className="block text-sm text-white/70 mb-1.5">
                   <DollarSign className="w-3.5 h-3.5 inline-block mr-1" />
-                  Price
+                  {t('priceLabel')}
                 </label>
                 <input
                   type="number"
@@ -164,12 +169,12 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                   onChange={(e) => setPrice(e.target.value)}
                   required
                   min={0}
-                  placeholder="500"
+                  placeholder={t('pricePlaceholder')}
                   className={inputCls}
                 />
               </div>
               <div className="w-28">
-                <label className="block text-sm text-white/70 mb-1.5">Currency</label>
+                <label className="block text-sm text-white/70 mb-1.5">{t('currencyLabel')}</label>
                 <select
                   value={currency}
                   onChange={(e) => setCurrency(e.target.value as 'USD' | 'VND')}
@@ -183,7 +188,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
 
             {/* Category */}
             <div>
-              <label className="block text-sm text-white/70 mb-1.5">Category</label>
+              <label className="block text-sm text-white/70 mb-1.5">{t('categoryLabel')}</label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as CreateListingData['category'])}
@@ -199,26 +204,26 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
             <div>
               <label className="block text-sm text-white/70 mb-1.5">
                 <MapPin className="w-3.5 h-3.5 inline-block mr-1" />
-                Location
+                {t('locationLabel')}
               </label>
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                placeholder="e.g. An Thuong, My An, Ngu Hanh Son"
+                placeholder={t('locationPlaceholder')}
                 className={inputCls}
               />
             </div>
 
             {/* Images placeholder */}
             <div>
-              <label className="block text-sm text-white/70 mb-1.5">Photos</label>
+              <label className="block text-sm text-white/70 mb-1.5">{t('photosLabel')}</label>
               <div className={clsx(
                 'flex items-center justify-center gap-2 py-6 rounded-xl border border-dashed',
                 'border-white/15 text-white/30'
               )}>
                 <ImagePlus className="w-5 h-5" />
-                <span className="text-sm">Coming soon</span>
+                <span className="text-sm">{t('photosComingSoon')}</span>
               </div>
             </div>
 
@@ -226,17 +231,24 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
             <div>
               <label className="block text-sm text-white/70 mb-1.5">
                 <Phone className="w-3.5 h-3.5 inline-block mr-1" />
-                Contact
+                {t('contactLabel')}
               </label>
               <input
                 type="text"
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
                 required
-                placeholder="Phone, Telegram, Zalo..."
+                placeholder={t('contactPlaceholder')}
                 className={inputCls}
               />
             </div>
+
+            {/* Сообщение об ошибке */}
+            {errorMessage && (
+              <div className="text-sm text-rose-400 bg-rose-500/10 px-3 py-2 rounded-xl">
+                {errorMessage}
+              </div>
+            )}
 
             {/* Submit */}
             <div className="flex gap-3 pt-2">

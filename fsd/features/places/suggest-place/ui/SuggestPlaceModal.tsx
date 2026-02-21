@@ -38,6 +38,7 @@ export const SuggestPlaceModal: React.FC<SuggestPlaceModalProps> = ({
   const [hasWifi, setHasWifi] = useState(false);
   const [isVeganFriendly, setIsVeganFriendly] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Сброс формы
   const resetForm = () => {
@@ -48,13 +49,15 @@ export const SuggestPlaceModal: React.FC<SuggestPlaceModalProps> = ({
     setPriceLevel('$$');
     setHasWifi(false);
     setIsVeganFriendly(false);
+    setErrorMessage(null);
   };
 
-  // Сабмит формы
+  // Сабмит формы с обработкой ошибок
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !description.trim() || !address.trim()) return;
 
+    setErrorMessage(null);
     setIsSubmitting(true);
     try {
       await onSubmit({
@@ -68,6 +71,8 @@ export const SuggestPlaceModal: React.FC<SuggestPlaceModalProps> = ({
       });
       resetForm();
       onClose();
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : tCommon('error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -120,7 +125,7 @@ export const SuggestPlaceModal: React.FC<SuggestPlaceModalProps> = ({
           <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
               <MapPinPlus className="w-5 h-5 text-cyan-400" />
-              <h3 className="text-lg font-semibold text-white">Suggest a Place</h3>
+              <h3 className="text-lg font-semibold text-white">{t('suggestTitle')}</h3>
             </div>
             <button
               type="button"
@@ -135,28 +140,28 @@ export const SuggestPlaceModal: React.FC<SuggestPlaceModalProps> = ({
           <form onSubmit={handleSubmit} className="p-5 space-y-4 overflow-y-auto flex-1">
             {/* Name */}
             <div>
-              <label className="block text-sm text-white/70 mb-1.5">Place Name</label>
+              <label className="block text-sm text-white/70 mb-1.5">{t('nameLabel')}</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
                 maxLength={200}
-                placeholder="e.g. Cong Ca Phe An Thuong"
+                placeholder={t('namePlaceholder')}
                 className={inputCls}
               />
             </div>
 
             {/* Description */}
             <div>
-              <label className="block text-sm text-white/70 mb-1.5">Description</label>
+              <label className="block text-sm text-white/70 mb-1.5">{t('descriptionLabel')}</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
                 rows={3}
                 maxLength={5000}
-                placeholder="What makes this place special, hours, tips..."
+                placeholder={t('descriptionPlaceholder')}
                 className={clsx(inputCls, 'resize-none')}
               />
             </div>
@@ -164,7 +169,7 @@ export const SuggestPlaceModal: React.FC<SuggestPlaceModalProps> = ({
             {/* Category + Price Level */}
             <div className="flex gap-3">
               <div className="flex-1">
-                <label className="block text-sm text-white/70 mb-1.5">Category</label>
+                <label className="block text-sm text-white/70 mb-1.5">{t('categoryLabel')}</label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value as SuggestPlaceData['category'])}
@@ -176,7 +181,7 @@ export const SuggestPlaceModal: React.FC<SuggestPlaceModalProps> = ({
                 </select>
               </div>
               <div className="w-40">
-                <label className="block text-sm text-white/70 mb-1.5">Price Level</label>
+                <label className="block text-sm text-white/70 mb-1.5">{t('priceLevelLabel')}</label>
                 <select
                   value={priceLevel}
                   onChange={(e) => setPriceLevel(e.target.value as SuggestPlaceData['price_level'])}
@@ -191,13 +196,13 @@ export const SuggestPlaceModal: React.FC<SuggestPlaceModalProps> = ({
 
             {/* Address */}
             <div>
-              <label className="block text-sm text-white/70 mb-1.5">Address</label>
+              <label className="block text-sm text-white/70 mb-1.5">{t('addressLabel')}</label>
               <input
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 required
-                placeholder="e.g. 12 An Thuong 4, Ngu Hanh Son"
+                placeholder={t('addressPlaceholder')}
                 className={inputCls}
               />
             </div>
@@ -215,7 +220,7 @@ export const SuggestPlaceModal: React.FC<SuggestPlaceModalProps> = ({
                 )}
               >
                 <Wifi className="w-4 h-4" />
-                <span>WiFi</span>
+                <span>{t('wifiLabel')}</span>
               </button>
               <button
                 type="button"
@@ -228,9 +233,16 @@ export const SuggestPlaceModal: React.FC<SuggestPlaceModalProps> = ({
                 )}
               >
                 <Leaf className="w-4 h-4" />
-                <span>Vegan Friendly</span>
+                <span>{t('veganLabel')}</span>
               </button>
             </div>
+
+            {/* Сообщение об ошибке */}
+            {errorMessage && (
+              <div className="text-sm text-rose-400 bg-rose-500/10 px-3 py-2 rounded-xl">
+                {errorMessage}
+              </div>
+            )}
 
             {/* Submit */}
             <div className="flex gap-3 pt-2">
@@ -250,7 +262,7 @@ export const SuggestPlaceModal: React.FC<SuggestPlaceModalProps> = ({
                   'disabled:opacity-50 disabled:cursor-not-allowed'
                 )}
               >
-                {isSubmitting ? tCommon('loading') : 'Suggest'}
+                {isSubmitting ? tCommon('loading') : t('suggestButton')}
               </button>
             </div>
           </form>

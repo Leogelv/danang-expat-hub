@@ -103,9 +103,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (!response.ok) {
         const payload = await response.json().catch(() => ({}));
-        console.error('[AuthProvider] token-exchange failed', payload);
+        console.error('[AuthProvider] token-exchange failed', {
+          status: response.status,
+          error: payload.error,
+          details: payload.details,
+          initDataLength: initData?.length,
+        });
         setStatus('error');
-        setError(payload.error || 'Token exchange failed');
+        setError(payload.details || payload.error || 'Token exchange failed');
         return;
       }
 

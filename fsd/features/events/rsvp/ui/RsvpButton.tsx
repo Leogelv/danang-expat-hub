@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 import { Check, Star, XCircle } from 'lucide-react';
 
 type RsvpStatus = 'going' | 'interested' | 'not_going';
@@ -20,6 +21,7 @@ export const RsvpButton: React.FC<RsvpButtonProps> = ({
   currentStatus = null,
   onStatusChange,
 }) => {
+  const t = useTranslations('events');
   const [status, setStatus] = useState<RsvpStatus | null>(currentStatus);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -48,9 +50,9 @@ export const RsvpButton: React.FC<RsvpButtonProps> = ({
   };
 
   const buttons: { key: RsvpStatus; icon: React.ReactNode; label: string }[] = [
-    { key: 'going', icon: <Check className="w-4 h-4" />, label: 'Going' },
-    { key: 'interested', icon: <Star className="w-4 h-4" />, label: 'Interested' },
-    { key: 'not_going', icon: <XCircle className="w-4 h-4" />, label: 'Can\'t go' },
+    { key: 'going', icon: <Check className="w-4 h-4" />, label: t('going') },
+    { key: 'interested', icon: <Star className="w-4 h-4" />, label: t('interested') },
+    { key: 'not_going', icon: <XCircle className="w-4 h-4" />, label: t('notGoing') },
   ];
 
   return (

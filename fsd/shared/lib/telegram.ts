@@ -39,40 +39,49 @@ export function isTelegramEnvironment(): boolean {
   }
 }
 
-// Получение initData через SDK (правильный способ)
+// Получение initData — приоритет: стандартный WebApp API, затем SDK
 export function getTelegramInitData(): string | null {
-  // Способ 1: через retrieveRawInitData
+  // Способ 1: window.Telegram.WebApp.initData — самый надёжный, стандартный API Telegram
+  const tg = getTelegramWebApp();
+  if (tg?.initData && tg.initData.length > 0) {
+    console.log('[getTelegramInitData] via window.Telegram.WebApp.initData', {
+      length: tg.initData.length,
+      preview: tg.initData.substring(0, 80),
+      hasHash: tg.initData.includes('hash='),
+    });
+    return tg.initData;
+  }
+
+  // Способ 2: через retrieveRawInitData (SDK bridge)
   try {
     const rawData = retrieveRawInitData?.();
     if (rawData && rawData.length > 0) {
-      console.log('[getTelegramInitData] via retrieveRawInitData, length:', rawData.length);
+      console.log('[getTelegramInitData] via retrieveRawInitData', {
+        length: rawData.length,
+        preview: rawData.substring(0, 80),
+      });
       return rawData;
     }
   } catch (e) {
     console.warn('[getTelegramInitData] retrieveRawInitData failed', e);
   }
 
-  // Способ 2: через launchParams.tgWebAppData.raw или initDataRaw
+  // Способ 3: через launchParams.initDataRaw
   try {
     const launchParams = retrieveLaunchParams?.();
-    // SDK v3 использует initDataRaw
     const rawFromParams = (launchParams as any)?.initDataRaw;
     if (rawFromParams && rawFromParams.length > 0) {
-      console.log('[getTelegramInitData] via launchParams.initDataRaw, length:', rawFromParams.length);
+      console.log('[getTelegramInitData] via launchParams.initDataRaw', {
+        length: rawFromParams.length,
+        preview: rawFromParams.substring(0, 80),
+      });
       return rawFromParams;
     }
   } catch (e) {
     console.warn('[getTelegramInitData] launchParams.initDataRaw failed', e);
   }
 
-  // Способ 3: Fallback на window.Telegram.WebApp.initData
-  const tg = getTelegramWebApp();
-  if (tg?.initData && tg.initData.length > 0) {
-    console.log('[getTelegramInitData] via window.Telegram.WebApp.initData, length:', tg.initData.length);
-    return tg.initData;
-  }
-
-  console.warn('[getTelegramInitData] no initData found');
+  console.warn('[getTelegramInitData] no initData found from any source');
   return null;
 }
 

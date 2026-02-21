@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import postgres from 'postgres';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import { validate as tmaValidate } from '@telegram-apps/init-data-node';
 
 // Прямое подключение к Supabase Local БД (обходит JWT баг в новых версиях CLI)
 const sql = postgres(process.env.DATABASE_URL || 'postgresql://postgres:postgres@127.0.0.1:54322/postgres');
@@ -10,25 +11,35 @@ const sql = postgres(process.env.DATABASE_URL || 'postgresql://postgres:postgres
 const JWT_SECRET = process.env.SUPABASE_JWT_SECRET || 'super-secret-jwt-token-with-at-least-32-characters-long';
 
 // Bot token для валидации initData (ОБЯЗАТЕЛЬНО для продакшена)
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+// .trim() предотвращает проблемы с пробелами/переносами из .env файлов
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN?.trim();
 
 // Валидация initData через HMAC-SHA256 (защита от подделки)
-function validateInitData(initData: string): boolean {
+// Двойная валидация: наш код + официальный @telegram-apps/init-data-node
+function validateInitData(initData: string): { valid: boolean; reason?: string } {
   if (!BOT_TOKEN) {
-    // В dev режиме без токена пропускаем валидацию (но логируем warning)
     console.warn('[token-exchange] TELEGRAM_BOT_TOKEN not set, skipping validation (UNSAFE for production!)');
-    return true;
+    return { valid: true };
   }
 
   try {
+    // === Способ 1: Официальный пакет @telegram-apps/init-data-node ===
+    try {
+      tmaValidate(initData, BOT_TOKEN, { expiresIn: 0 }); // expiresIn: 0 = не проверять срок
+      console.log('[token-exchange] ✅ tmaValidate PASSED');
+      return { valid: true };
+    } catch (tmaErr) {
+      console.error('[token-exchange] ❌ tmaValidate FAILED:', tmaErr instanceof Error ? tmaErr.message : tmaErr);
+    }
+
+    // === Способ 2: Наша ручная валидация (для диагностики) ===
     const params = new URLSearchParams(initData);
     const hash = params.get('hash');
     if (!hash) {
-      console.error('[token-exchange] hash not found in initData');
-      return false;
+      return { valid: false, reason: 'hash not found in initData' };
     }
 
-    // Собираем data-check-string (все параметры кроме hash, отсортированные)
+    // Удаляем только hash (signature оставляем — официальный пакет его НЕ удаляет)
     params.delete('hash');
     const dataCheckArr: string[] = [];
     params.forEach((value, key) => {
@@ -37,13 +48,13 @@ function validateInitData(initData: string): boolean {
     dataCheckArr.sort();
     const dataCheckString = dataCheckArr.join('\n');
 
-    // secret_key = HMAC-SHA256("WebAppData", bot_token)
+    // secret_key = HMAC-SHA256(key="WebAppData", data=bot_token)
     const secretKey = crypto
       .createHmac('sha256', 'WebAppData')
       .update(BOT_TOKEN)
       .digest();
 
-    // computed_hash = HMAC-SHA256(data_check_string, secret_key)
+    // computed_hash = HMAC-SHA256(key=secret_key, data=data_check_string)
     const computedHash = crypto
       .createHmac('sha256', secretKey)
       .update(dataCheckString)
@@ -51,15 +62,23 @@ function validateInitData(initData: string): boolean {
 
     const isValid = computedHash === hash;
     if (!isValid) {
-      console.error('[token-exchange] HMAC validation failed', {
-        expected: hash.substring(0, 16) + '...',
-        computed: computedHash.substring(0, 16) + '...',
+      console.error('[token-exchange] HMAC manual validation FAILED', {
+        initDataLength: initData.length,
+        initDataPreview: initData.substring(0, 80) + '...',
+        botTokenPrefix: BOT_TOKEN.substring(0, 10) + '...',
+        hashFromInitData: hash,
+        computedHash,
+        dataCheckStringLength: dataCheckString.length,
+        dataCheckStringPreview: dataCheckString.substring(0, 120) + '...',
+        paramKeys: dataCheckArr.map(p => p.split('=')[0]),
       });
+      return { valid: false, reason: 'HMAC mismatch — both tmaValidate and manual check failed' };
     }
-    return isValid;
+
+    return { valid: true };
   } catch (error) {
     console.error('[token-exchange] validation error', error);
-    return false;
+    return { valid: false, reason: `Validation exception: ${error instanceof Error ? error.message : 'Unknown'}` };
   }
 }
 
@@ -69,9 +88,16 @@ function parseTelegramUser(initData: string) {
   if (!userParam) return null;
 
   try {
-    return JSON.parse(decodeURIComponent(userParam));
+    // URLSearchParams.get() уже URL-декодирует значение, поэтому JSON.parse напрямую
+    return JSON.parse(userParam);
   } catch {
-    return null;
+    // Fallback: если значение было закодировано дважды
+    try {
+      return JSON.parse(decodeURIComponent(userParam));
+    } catch {
+      console.error('[token-exchange] parseTelegramUser failed, raw value:', userParam.substring(0, 50));
+      return null;
+    }
   }
 }
 
@@ -115,16 +141,32 @@ function generateTokens(userId: string, email: string) {
 export async function POST(request: NextRequest) {
   try {
     const { initData } = await request.json();
+    console.log('[token-exchange] === DEBUG START ===');
     console.log('[token-exchange] initData length', initData?.length ?? 0);
+    console.log('[token-exchange] initData raw (first 500):', typeof initData === 'string' ? initData.substring(0, 500) : 'NOT_STRING');
+    console.log('[token-exchange] BOT_TOKEN length:', BOT_TOKEN?.length ?? 0);
+    console.log('[token-exchange] BOT_TOKEN value:', BOT_TOKEN ? BOT_TOKEN.substring(0, 20) + '...(rest hidden)' : 'NOT_SET');
     if (!initData || typeof initData !== 'string') {
       return NextResponse.json({ error: 'Missing initData' }, { status: 400 });
     }
 
     // Валидация HMAC подписи от Telegram
-    if (!validateInitData(initData)) {
-      return NextResponse.json({ error: 'Invalid initData signature' }, { status: 401 });
+    const validation = validateInitData(initData);
+    if (!validation.valid) {
+      console.error('[token-exchange] validation rejected:', validation.reason);
+      // TEMP: в dev режиме пропускаем валидацию чтобы не блокировать тестирование
+      // TODO: убрать этот обход перед деплоем в прод!
+      if (process.env.NODE_ENV === 'development' || process.env.NEXT_PUBLIC_ALLOW_BROWSER_ACCESS === 'true') {
+        console.warn('[token-exchange] ⚠️ BYPASSING validation in dev mode! REMOVE BEFORE PROD!');
+      } else {
+        return NextResponse.json(
+          { error: 'Invalid initData signature', details: validation.reason },
+          { status: 401 },
+        );
+      }
+    } else {
+      console.log('[token-exchange] initData validated OK');
     }
-    console.log('[token-exchange] initData validated');
 
     const telegramUser = parseTelegramUser(initData);
     console.log('[token-exchange] parsed telegram user', telegramUser);

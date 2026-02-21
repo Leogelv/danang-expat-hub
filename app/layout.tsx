@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { getLocale, getMessages } from "next-intl/server";
 import "../fsd/app/styles/globals.css";
 import { AppProviders } from "@/fsd/app/providers/AppProviders";
@@ -28,6 +29,8 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className="antialiased font-montserrat">
+        {/* Стандартный Telegram Web App скрипт — обеспечивает window.Telegram.WebApp */}
+        <Script src="https://telegram.org/js/telegram-web-app.js" strategy="beforeInteractive" />
         <AppProviders locale={locale} messages={messages}>
           {children}
         </AppProviders>
